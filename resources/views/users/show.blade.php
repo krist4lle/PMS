@@ -2,9 +2,16 @@
 @section('content')
     <section class="content-header">
         <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
+            <div class="row">
+                <div class="col">
                     <h1>Profile</h1>
+                </div>
+                <div class="float-right">
+                    <form action="{{ route('users.delete', $user->id) }}" method="POST">
+                        @csrf
+                        @method('delete')
+                        <button type="submit" class="btn btn-block btn-danger">Fire the Employee</button>
+                    </form>
                 </div>
             </div>
         </div>

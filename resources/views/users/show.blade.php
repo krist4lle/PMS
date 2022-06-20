@@ -167,11 +167,16 @@
                                 <div class="tab-pane" id="settings">
 
                                     <form class="form-horizontal" method="post" enctype="multipart/form-data"
-                                    action="{{ route() }}">
+                                    action="{{ route('users.update', $user->id) }}">
                                         @csrf
                                         @method('patch')
                                         <!-- First Name -->
                                         <div class="form-group row">
+                                            @error('first_name')
+                                            <div class="alert alert-danger" role="alert">
+                                                {{ $message }}
+                                            </div>
+                                            @enderror
                                             <label for="first_name" class="col-sm-2 col-form-label">First Name</label>
                                             <div class="col-sm-10">
                                                 <input type="text" class="form-control" id="first_name"
@@ -180,6 +185,11 @@
                                         </div>
                                         <!-- Last Name -->
                                         <div class="form-group row">
+                                            @error('last_name')
+                                            <div class="alert alert-danger" role="alert">
+                                                {{ $message }}
+                                            </div>
+                                            @enderror
                                             <label for="last_name" class="col-sm-2 col-form-label">Last Name</label>
                                             <div class="col-sm-10">
                                                 <input type="text" class="form-control" id="last_name"
@@ -188,6 +198,11 @@
                                         </div>
                                         <!-- Email -->
                                         <div class="form-group row">
+                                            @error('email')
+                                            <div class="alert alert-danger" role="alert">
+                                                {{ $message }}
+                                            </div>
+                                            @enderror
                                             <label for="email" class="col-sm-2 col-form-label">Email</label>
                                             <div class="col-sm-10">
                                                 <input type="email" class="form-control" id="email"
@@ -196,6 +211,11 @@
                                         </div>
                                         <!-- Password -->
                                         <div class="form-group row">
+                                            @error('password')
+                                            <div class="alert alert-danger" role="alert">
+                                                {{ $message }}
+                                            </div>
+                                            @enderror
                                             <label for="password" class="col-sm-2 col-form-label">Password</label>
                                             <div class="col-sm-10">
                                                 <input minlength="6" maxlength="20" type="password" class="form-control"
@@ -204,9 +224,14 @@
                                         </div>
                                         <!-- Avatar -->
                                         <div class="form-group row">
+                                            @error('avatar')
+                                            <div class="alert alert-danger" role="alert">
+                                                {{ $message }}
+                                            </div>
+                                            @enderror
                                             <label for="avatar" class="col-sm-2 col-form-label">Avatar</label>
                                             <div class="col-sm-10">
-                                                <input type="file" class="form-control" id="avatar">
+                                                <input type="file" class="form-control" id="avatar" name="avatar">
                                             </div>
                                         </div>
                                         <!-- Button -->

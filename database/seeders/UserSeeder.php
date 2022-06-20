@@ -104,7 +104,7 @@ class UserSeeder extends Seeder
             'avatar' => $this->uploadAvatar('m'),
         ];
 
-        return $this->createUser($data, 'Head Management of Department', $parent, 'Management');
+        return $this->createUser($data, 'Head of Management Department', $parent, 'Management');
     }
 
     private function createArtDirector($parent)
@@ -132,7 +132,7 @@ class UserSeeder extends Seeder
             'avatar' => $this->uploadAvatar('m'),
         ];
 
-        return $this->createUser($data, 'Head Frontend of Department', $parent, 'Frontend');
+        return $this->createUser($data, 'Head of Frontend Department', $parent, 'Frontend');
     }
 
     private function createHeadOfBackendDepartment($parent)
@@ -146,7 +146,7 @@ class UserSeeder extends Seeder
             'avatar' => $this->uploadAvatar('m'),
         ];
 
-        return $this->createUser($data, 'Head Backend of Department', $parent, 'Backend');
+        return $this->createUser($data, 'Head of Backend Department', $parent, 'Backend');
     }
 
     private function createProjectManagers($parent)

@@ -152,6 +152,15 @@ return [
         'attribute-name' => [
             'rule-name' => 'custom-message',
         ],
+        'department_id' => [
+            'integer' => 'The Department field is required'
+        ],
+        'position_id' => [
+            'integer' => 'The Position field is required'
+        ],
+        'parent_id' => [
+            'integer' => 'The Parent field is required'
+        ],
     ],
 
     /*

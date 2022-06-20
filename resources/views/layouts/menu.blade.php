@@ -7,25 +7,8 @@
 </li>
 <!-- Employees -->
 <li class="nav-item">
-    <a href="#" class="nav-link">
+    <a href="{{ route('employees.index') }}" class="nav-link {{ Request::is('employees') ? 'active' : '' }}">
         <i class="nav-icon fas fa-users"></i>
-        <p>
-            Employees
-            <i class="fas fa-angle-left right"></i>
-        </p>
+        <p>Our Team</p>
     </a>
-    <ul class="nav nav-treeview" style="display: none;">
-        <li class="nav-item">
-            <a href="{{ route('users.index') }}" class="nav-link">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Our Team</p>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a href="{{ route('users.create') }}" class="nav-link">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Add Employee</p>
-            </a>
-        </li>
-    </ul>
 </li>

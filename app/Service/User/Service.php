@@ -23,18 +23,17 @@ class Service
         return $data;
     }
 
-    public function avatarUpdate($data)
+    public function avatarUpdate($data, $user)
     {
         if (isset($data['avatar'])) {
-            $oldAvatar = User::query()->where('email', $data['email'])->first()->avatar;
-            Storage::disk('local')->delete( $oldAvatar);
+            Storage::disk('local')->delete($user->avatar);
             $data['avatar'] = Storage::disk('local')->put('avatars', $data['avatar']);
         }
 
         return $data;
     }
 
-    public function dataAsigning(mixed $data)
+    public function dataAsigning($data)
     {
         $data['password'] = Hash::make($data['password']);
         $department = Department::find($data['department_id']);
@@ -49,9 +48,10 @@ class Service
         ];
     }
 
-    public function userCreate(array $completeData)
+    public function userCreate($fields, Position $position, Department $department, User $parent)
     {
         $user = new User();
+
         $user->fill($completeData['data']);
         $user->department()->associate($completeData['department']);
         $user->parent()->associate($completeData['parent']);

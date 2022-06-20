@@ -16,7 +16,7 @@ class UpdateController extends Controller
     {
         $data = $request->validated();
         $data = $service->passwordCheck($data);
-        $data = $service->avatarUpdate($data);
+        $data = $service->avatarUpdate($data, $user);
         $user->update($data);
 
         return redirect(route('users.show', $user->id));

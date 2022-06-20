@@ -17,10 +17,10 @@ class PositionSeeder extends Seeder
     {
         $positions = [
             'CEO',
-            'Head Management of Department',
+            'Head of Management Department',
             'Art Director',
-            'Head Frontend of Department',
-            'Head Backend of Department',
+            'Head of Frontend Department',
+            'Head of Backend Department',
             'Project Manager',
             'Graphic Designer',
             'UI/UX Designer',

@@ -23,12 +23,18 @@ Auth::routes();
 Route::middleware('auth')->group(function () {
     Route::get('/home', App\Http\Controllers\IndexController::class)->name('index');
 
-    Route::prefix('employees')->name('users.')->group(function () {
-        Route::get('/', App\Http\Controllers\User\IndexController::class)->name('index');
-        Route::get('/create', App\Http\Controllers\User\CreateController::class)->name('create');
-        Route::post('/', App\Http\Controllers\User\StoreController::class)->name('store');
-        Route::get('/{user}', App\Http\Controllers\User\ShowController::class)->name('show');
-        Route::patch('/{user}', App\Http\Controllers\User\UpdateController::class)->name('update');
-        Route::delete('/{user}', App\Http\Controllers\User\DeleteController::class)->name('delete');
-    });
+    Route::get('/employees', [App\Http\Controllers\Employee\IndexController::class, 'index'])->name('employees.index');
+    Route::get('/profile/{user}', [App\Http\Controllers\Employee\IndexController::class, 'profile'])->name('profile.index');
+
+});
+
+
+Route::prefix('employee')->name('users.')->group(function () {
+    Route::get('/', App\Http\Controllers\User\IndexController::class)->name('index');
+    Route::get('/create', App\Http\Controllers\User\CreateController::class)->name('create');
+    Route::post('/', App\Http\Controllers\User\StoreController::class)->name('store');
+    Route::get('/{user}', App\Http\Controllers\User\ShowController::class)->name('show');
+    Route::patch('/{user}', App\Http\Controllers\User\UpdateController::class)->name('update');
+    Route::delete('/{user}', App\Http\Controllers\User\DeleteController::class)->name('delete');
+
 });

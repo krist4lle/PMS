@@ -1,17 +1,18 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\User;
 
+use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 
-class HomeController extends Controller
+class IndexController extends Controller
 {
     public function __invoke()
     {
         $allEmployees = $this->allEmployees();
 
-        return view('home.home',  $allEmployees);
+        return view('users.index',  $allEmployees);
     }
 
     public function allEmployees()

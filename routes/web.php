@@ -21,5 +21,9 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::middleware('auth')->group(function () {
-    Route::get('/home', App\Http\Controllers\HomeController::class)->name('home');
+    Route::get('/home', App\Http\Controllers\IndexController::class)->name('index');
+
+    Route::prefix('employees')->name('users.')->group(function () {
+        Route::get('/', App\Http\Controllers\User\IndexController::class)->name('index');
+    });
 });

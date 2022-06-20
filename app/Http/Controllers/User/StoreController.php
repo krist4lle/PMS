@@ -3,39 +3,22 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\User\UpdateRequest;
+use App\Http\Requests\User\StoreRequest;
+use App\Models\Department;
+use App\Models\Position;
 use App\Models\User;
+use App\Service\User\Service;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
 class StoreController extends Controller
 {
-    public function __invoke(StoreRequest $request)
+    public function __invoke(StoreRequest $request, Service $service)
     {
         $data = $request->validated();
-        $data = $this->passwordCheck($data);
-        $data = $this->avatarSave($data);
-        $user->update($data);
-
-        return redirect(route('users.show', $user->id));
-    }
-
-    public function passwordCheck($data)
-    {
-        if ($data['password'] !== null) {
-            $data['password'] = Hash::make($data['password']);
-        } else {
-            unset($data['password']);
-        }
-
-        return $data;
-    }
-
-    public function avatarSave($data)
-    {
-        $data['avatar'] = Storage::disk('local')->put('avatars', $data['avatar']);
-
-        return $data;
+        $data = $service->avatarSave($data);
+        $service->userCreate($service->dataAsigning($data));
+        return redirect(route('users.index'));
     }
 }

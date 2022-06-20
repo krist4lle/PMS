@@ -28,13 +28,12 @@ class StoreRequest extends FormRequest
         return [
             'first_name' => 'required|string',
             'last_name' => 'required|string',
-            'email' => [
-                'required',
-                'email',
-                Rule::unique('users')->ignore($this->route('user'))
-            ],
-            'password' => 'min:6|max:20|nullable',
+            'email' => 'required|unique:users,email|email',
+            'password' => 'required|min:6|max:20',
             'avatar' => 'file',
+            'department_id' => 'integer',
+            'position_id' => 'integer',
+            'parent_id' => 'integer',
         ];
     }
 }

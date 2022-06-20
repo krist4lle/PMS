@@ -17,12 +17,9 @@ class CreateController extends Controller
         return view('users.create', $data);
     }
 
-    /**
-     * @return array
-     */
-    public function dataForUser(): array
+    public function dataForUser()
     {
-        $positions = Position::all();
+        $positions = Position::query()->where('id', '>', 5)->get();
         $departments = Department::all();
         $supervisors = User::query()
             ->where('parent_id', '<', 2)

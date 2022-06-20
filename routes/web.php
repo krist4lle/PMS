@@ -25,7 +25,9 @@ Route::middleware('auth')->group(function () {
 
     Route::prefix('employees')->name('users.')->group(function () {
         Route::get('/', App\Http\Controllers\User\IndexController::class)->name('index');
-        Route::get('/{user}', App\Http\Controllers\User\ShowController::class)->name('show');
+        Route::get('/create', App\Http\Controllers\User\CreateController::class)->name('create');
+        Route::post('/', App\Http\Controllers\User\StoreController::class)->name('store');
+        Route::get('/show/{user}', App\Http\Controllers\User\ShowController::class)->name('show');
         Route::patch('/{user}', App\Http\Controllers\User\UpdateController::class)->name('update');
     });
 });

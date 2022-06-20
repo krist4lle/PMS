@@ -22,7 +22,7 @@
                             <div class="col-sm-4 border-right border-left">
                                 <div class="description-block">
                                     <span class="description-text">
-                                        <a href="#">
+                                        <a href="{{ route('users.show', $ceo->id) }}">
                                             Profile
                                         </a>
                                     </span>
@@ -56,7 +56,7 @@
                     <div class="card-footer p-0">
                         <ul class="nav flex-column">
                             <li class="nav-item">
-                                <a href="#" class="nav-link">
+                                <a href="{{ route('users.show', $headManagement->id) }}" class="nav-link">
                                     Profile
                                 </a>
                             </li>
@@ -91,7 +91,7 @@
                     <div class="card-footer p-0">
                         <ul class="nav flex-column">
                             <li class="nav-item">
-                                <a href="#" class="nav-link">
+                                <a href="{{ route('users.show', $artDirector->id) }}" class="nav-link">
                                     Profile
                                 </a>
                             </li>
@@ -126,7 +126,7 @@
                     <div class="card-footer p-0">
                         <ul class="nav flex-column">
                             <li class="nav-item">
-                                <a href="#" class="nav-link">
+                                <a href="{{ route('users.show', $headFrontend->id) }}" class="nav-link">
                                     Profile
                                 </a>
                             </li>
@@ -161,7 +161,7 @@
                     <div class="card-footer p-0">
                         <ul class="nav flex-column">
                             <li class="nav-item">
-                                <a href="#" class="nav-link">
+                                <a href="{{ route('users.show', $headBackend->id) }}" class="nav-link">
                                     Profile
                                 </a>
                             </li>
@@ -194,7 +194,7 @@
                                 <h4 class="pl-2">
                                    {{ $user->first_name }} {{ $user->last_name }}
                                 </h4>
-                                <a href="#">
+                                <a href="{{ route('users.show', $user->id) }}">
                                     <i class="nav-icon fas fa-id-card float-right p-2"></i>
                                 </a>
                                     </div>
@@ -217,7 +217,7 @@
                                 <h4 class="pl-2">
                                    {{ $user->first_name }} {{ $user->last_name }}
                                 </h4>
-                                <a href="#">
+                                <a href="{{ route('users.show', $user->id) }}">
                                     <i class="nav-icon fas fa-id-card float-right p-2"></i>
                                 </a>
                                     </div>
@@ -240,7 +240,7 @@
                                 <h4 class="pl-2">
                                    {{ $user->first_name }} {{ $user->last_name }}
                                 </h4>
-                                <a href="#">
+                                <a href="{{ route('users.show', $user->id) }}">
                                     <i class="nav-icon fas fa-id-card float-right p-2"></i>
                                 </a>
                                     </div>
@@ -263,7 +263,7 @@
                                 <h4 class="pl-2">
                                    {{ $user->first_name }} {{ $user->last_name }}
                                 </h4>
-                                <a href="#">
+                                <a href="{{ route('users.show', $user->id) }}">
                                     <i class="nav-icon fas fa-id-card float-right p-2"></i>
                                 </a>
                                     </div>

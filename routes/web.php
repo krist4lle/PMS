@@ -26,6 +26,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/employees', [App\Http\Controllers\Employee\IndexController::class, 'index'])->name('employees.index');
     Route::get('/profile/{user}', [App\Http\Controllers\Employee\IndexController::class, 'profile'])->name('profile.index');
 
+    Route::get('/me', [App\Http\Controllers\Me\IndexController::class, 'index'])->name('me.index');
+    Route::patch('/me', [App\Http\Controllers\Me\IndexController::class, 'update'])->name('me.update');
+
 });
 
 

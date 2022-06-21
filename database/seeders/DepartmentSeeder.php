@@ -5,6 +5,8 @@ namespace Database\Seeders;
 use App\Models\Department;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Http\File;
+use Illuminate\Support\Facades\Storage;
 
 class DepartmentSeeder extends Seeder
 {
@@ -25,7 +27,17 @@ class DepartmentSeeder extends Seeder
         foreach ($departments as $departmentName) {
             $department = new Department();
             $department->name = $departmentName;
+            $department->image = $this->uploadImage($departmentName);
             $department->save();
         }
     }
+
+    private function uploadImage(string $departmentName)
+    {
+        $image = new File(database_path("departments/{$departmentName}.png"));
+
+        return Storage::putFile("departments", $image);
+    }
+
+
 }

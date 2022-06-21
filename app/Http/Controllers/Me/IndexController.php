@@ -5,7 +5,11 @@ namespace App\Http\Controllers\Me;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Me\UpdateRequest;
 use App\Models\User;
+use App\Service\Me\MeService;
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class IndexController extends Controller
 {
@@ -14,28 +18,21 @@ class IndexController extends Controller
         return view('me.index');
     }
 
-    public function update(UpdateRequest $request)
+    public function update(UpdateRequest $request, MeService $service)
     {
         $userChanges = $request->validated();
-        $userChanges = $this->nullCheck($userChanges);
+        $userChanges = $service->nullCheck($userChanges);
 
+        if (isset($userChanges['password'])) {
+            $userChanges['password'] = $service->passwordHash($userChanges['password']);
+        }
 
+        if (isset($userChanges['avatar'])) {
+            $userChanges['avatar'] = $service->avatarUpdate($userChanges['avatar']);
+        }
 
         auth()->user()->update($userChanges);
 
         return redirect(route('me.index'));
-    }
-
-    private function nullCheck($userChanges)
-    {
-        if (in_array(null, $userChanges, true) === true) {
-            foreach ($userChanges as $field => $userChange) {
-                if ($userChange === null) {
-                    unset($userChanges[$field]);
-                }
-            }
-        }
-
-        return $userChanges;
     }
 }

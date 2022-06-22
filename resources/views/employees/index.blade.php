@@ -16,8 +16,9 @@
                         </h4>
                         <p class="widget-user-desc">
                             {{ $ceo->position->title }}
-                            <a class="float-right text-white" href="{{ route('profile.index', $ceo->id) }}">Profile link <i
-                                    class="nav-icon fas fa-link"></i></a>
+                            <a class="float-right text-white" href="{{ route('profile.index', $ceo->id) }}">
+                                <i class="nav-icon fas fa-arrow-circle-right"></i>
+                            </a>
                         </p>
                     </div>
                 </div>
@@ -32,9 +33,9 @@
                 <div class="card-header align-items-center row">
                     <div class="col">{{ $headManagement->position->title }}</div>
                     <div class="col-1">
-                    <a class="text-white" href="{{ route('profile.index', $headManagement->id) }}">
-                        <i class="nav-icon fas fa-id-card float-right p-2"></i>
-                    </a>
+                        <a class="text-white" href="{{ route('profile.index', $headManagement->id) }}">
+                            <i class="nav-icon fas fa-arrow-circle-right float-right p-2"></i>
+                        </a>
                     </div>
                 </div>
                 <div class="card-body row">
@@ -53,7 +54,7 @@
                     <div class="col">{{ $artDirector->position->title }}</div>
                     <div class="col-1">
                         <a class="text-white" href="{{ route('profile.index', $artDirector->id) }}">
-                            <i class="nav-icon fas fa-id-card float-right p-2"></i>
+                            <i class="nav-icon fas fa-arrow-circle-right float-right p-2"></i>
                         </a>
                     </div>
                 </div>
@@ -73,7 +74,7 @@
                     <div class="col">{{ $headFrontend->position->title }}</div>
                     <div class="col-1">
                         <a class="text-white" href="{{ route('profile.index', $headFrontend->id) }}">
-                            <i class="nav-icon fas fa-id-card float-right p-2"></i>
+                            <i class="nav-icon fas fa-arrow-circle-right float-right p-2"></i>
                         </a>
                     </div>
                 </div>
@@ -93,7 +94,7 @@
                     <div class="col">{{ $headBackend->position->title }}</div>
                     <div class="col-1">
                         <a class="text-white" href="{{ route('profile.index', $headBackend->id) }}">
-                            <i class="nav-icon fas fa-id-card float-right p-2"></i>
+                            <i class="nav-icon fas fa-arrow-circle-right float-right p-2"></i>
                         </a>
                     </div>
                 </div>
@@ -126,7 +127,7 @@
                                    {{ $user->first_name }} {{ $user->last_name }}
                                 </h4>
                                 <a href="{{ route('profile.index', $user->id) }}">
-                                    <i class="nav-icon fas fa-id-card float-right p-2"></i>
+                                    <i class="nav-icon fas fa-arrow-circle-right float-right p-2"></i>
                                 </a>
                                     </div>
                             </span>
@@ -149,7 +150,7 @@
                                    {{ $user->first_name }} {{ $user->last_name }}
                                 </h4>
                                 <a href="{{ route('profile.index', $user->id) }}">
-                                    <i class="nav-icon fas fa-id-card float-right p-2"></i>
+                                    <i class="nav-icon fas fa-arrow-circle-right float-right p-2"></i>
                                 </a>
                                     </div>
                             </span>
@@ -172,7 +173,7 @@
                                    {{ $user->first_name }} {{ $user->last_name }}
                                 </h4>
                                 <a href="{{ route('profile.index', $user->id) }}">
-                                    <i class="nav-icon fas fa-id-card float-right p-2"></i>
+                                    <i class="nav-icon fas fa-arrow-circle-right float-right p-2"></i>
                                 </a>
                                     </div>
                             </span>
@@ -191,13 +192,13 @@
                         <div class="info-box-content">
                             <span class="info-box-number">
                                 <div class="row justify-content-between">
-                                <h4 class="pl-2">
-                                   {{ $user->first_name }} {{ $user->last_name }}
-                                </h4>
-                                <a href="{{ route('profile.index', $user->id) }}">
-                                    <i class="nav-icon fas fa-id-card float-right p-2"></i>
-                                </a>
-                                    </div>
+                                    <h4 class="pl-2">
+                                        {{ $user->first_name }} {{ $user->last_name }}
+                                    </h4>
+                                    <a href="{{ route('profile.index', $user->id) }}">
+                                        <i class="nav-icon fas fa-arrow-circle-right float-right p-2"></i>
+                                    </a>
+                                </div>
                             </span>
                             <p>{{ $user->position->title }}</p>
                         </div>

@@ -10,7 +10,7 @@ class IndexController extends Controller
 {
     public function index()
     {
-        return view('employees.index',  $this->employees());
+        return view('employees.index', $this->employees());
     }
 
     public function profile(User $user)
@@ -20,22 +20,44 @@ class IndexController extends Controller
         ]);
     }
 
-    public function employees()
+    public function employees(): array
     {
-        $users = User::with(['position', 'department', 'parent'])->get();
-        $ceo = $users->where('position_id', 1)->first();
-        $headManagement = $users->where('position_id', 2)->first();
-        $artDirector = $users->where('position_id', 3)->first();
-        $headFrontend = $users->where('position_id', 4)->first();
-        $headBackend = $users->where('position_id', 5)->first();
+        $ceo = User::whereRelation('position', 'title', 'CEO')->first();
+        $headManagement = User::whereRelation('position', 'title', 'Head of Management Department')->first();
+        $artDirector = User::whereRelation('position', 'title', 'Art Director')->first();
+        $headFrontend = User::whereRelation('position', 'title', 'Head of Frontend Department')->first();
+        $headBackend = User::whereRelation('position', 'title', 'Head of Backend Department')->first();
+        $managementEmployees = User::whereRelation('department', 'name', 'Management')
+            ->get()
+            ->reject(function ($employee) {
+                return $employee->position->title === 'Head of Management Department';
+            });
+        $designEmployees = User::whereRelation('department', 'name', 'Design')
+            ->get()
+            ->reject(function ($employee) {
+                return $employee->position->title === 'Art Director';
+            });
+        $frontendEmployees = User::whereRelation('department', 'name', 'Frontend')
+            ->get()
+            ->reject(function ($employee) {
+                return $employee->position->title === 'Head of Frontend Department';
+            });
+        $backendEmployees = User::whereRelation('department', 'name', 'Backend')
+            ->get()
+            ->reject(function ($employee) {
+                return $employee->position->title === 'Head of Backend Department';
+            });
 
         return [
-            'users' => $users,
             'ceo' => $ceo,
             'headManagement' => $headManagement,
             'artDirector' => $artDirector,
             'headFrontend' => $headFrontend,
             'headBackend' => $headBackend,
+            'managementEmployees' => $managementEmployees,
+            'designEmployees' => $designEmployees,
+            'frontendEmployees' => $frontendEmployees,
+            'backendEmployees' => $backendEmployees,
         ];
     }
 }

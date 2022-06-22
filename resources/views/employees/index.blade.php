@@ -3,23 +3,22 @@
     <!-- CEO -->
     <div class="container-fluid pt-4">
         <div class="row justify-content-center">
-            <div class="col-3">
-                <div class="card card-widget widget-user-2">
-                    <div class="widget-user-header bg-info">
-                        <div class="widget-user-image">
-                            <img class="img-circle elevation-2"
-                                 src="{{ asset($ceo->avatar) }}" alt="User Avatar">
-                        </div>
-                        <h4 class="widget-user-desc">
-                            {{ $ceo->first_name }}
-                            {{ $ceo->last_name }}
-                        </h4>
-                        <p class="widget-user-desc">
-                            {{ $ceo->position->title }}
-                            <a class="float-right text-white" href="{{ route('profile.index', $ceo->id) }}">
-                                <i class="nav-icon fas fa-arrow-circle-right"></i>
-                            </a>
-                        </p>
+            <div class="card bg-info col-3">
+                <div class="card-header align-items-center row">
+                    <div class="col">{{ $ceo->position->title }}</div>
+                    <div class="col-1">
+                        <a class="text-white" href="{{ route('profile.index', $ceo) }}">
+                            <i class="nav-icon fas fa-arrow-circle-right float-right p-2"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body row">
+                    <div class="col">
+                        <img class="col-12"
+                             src="{{ asset($ceo->avatar) }}" alt="User Avatar">
+                    </div>
+                    <div class="col-8">
+                        <h3>{{ $ceo->first_name }} {{ $ceo->last_name }}</h3>
                     </div>
                 </div>
             </div>
@@ -33,7 +32,7 @@
                 <div class="card-header align-items-center row">
                     <div class="col">{{ $headManagement->position->title }}</div>
                     <div class="col-1">
-                        <a class="text-white" href="{{ route('profile.index', $headManagement->id) }}">
+                        <a class="text-white" href="{{ route('profile.index', $headManagement) }}">
                             <i class="nav-icon fas fa-arrow-circle-right float-right p-2"></i>
                         </a>
                     </div>
@@ -53,7 +52,7 @@
                 <div class="card-header align-items-center row">
                     <div class="col">{{ $artDirector->position->title }}</div>
                     <div class="col-1">
-                        <a class="text-white" href="{{ route('profile.index', $artDirector->id) }}">
+                        <a class="text-white" href="{{ route('profile.index', $artDirector) }}">
                             <i class="nav-icon fas fa-arrow-circle-right float-right p-2"></i>
                         </a>
                     </div>
@@ -73,7 +72,7 @@
                 <div class="card-header align-items-center row">
                     <div class="col">{{ $headFrontend->position->title }}</div>
                     <div class="col-1">
-                        <a class="text-white" href="{{ route('profile.index', $headFrontend->id) }}">
+                        <a class="text-white" href="{{ route('profile.index', $headFrontend) }}">
                             <i class="nav-icon fas fa-arrow-circle-right float-right p-2"></i>
                         </a>
                     </div>
@@ -93,7 +92,7 @@
                 <div class="card-header align-items-center row">
                     <div class="col">{{ $headBackend->position->title }}</div>
                     <div class="col-1">
-                        <a class="text-white" href="{{ route('profile.index', $headBackend->id) }}">
+                        <a class="text-white" href="{{ route('profile.index', $headBackend) }}">
                             <i class="nav-icon fas fa-arrow-circle-right float-right p-2"></i>
                         </a>
                     </div>
@@ -115,7 +114,7 @@
         <div class="row align-items">
             <!-- Management -->
             <div class="col-3">
-                @foreach($users->where('parent_id', 2) as $user)
+                @foreach($managementEmployees as $user)
                     <div class="info-box">
                         <span class="info-box-icon bg-transparent">
                             <img src="{{ $user->avatar }}" alt="user_avatar">
@@ -126,7 +125,7 @@
                                 <h4 class="pl-2">
                                    {{ $user->first_name }} {{ $user->last_name }}
                                 </h4>
-                                <a href="{{ route('profile.index', $user->id) }}">
+                                <a href="{{ route('profile.index', $user) }}">
                                     <i class="nav-icon fas fa-arrow-circle-right float-right p-2"></i>
                                 </a>
                                     </div>
@@ -138,7 +137,7 @@
             </div>
             <!-- Design -->
             <div class="col-3">
-                @foreach($users->where('parent_id', 3) as $user)
+                @foreach($designEmployees as $user)
                     <div class="info-box">
                         <span class="info-box-icon bg-transparent">
                             <img src="{{ $user->avatar }}" alt="user_avatar">
@@ -149,7 +148,7 @@
                                 <h4 class="pl-2">
                                    {{ $user->first_name }} {{ $user->last_name }}
                                 </h4>
-                                <a href="{{ route('profile.index', $user->id) }}">
+                                <a href="{{ route('profile.index', $user) }}">
                                     <i class="nav-icon fas fa-arrow-circle-right float-right p-2"></i>
                                 </a>
                                     </div>
@@ -161,7 +160,7 @@
             </div>
             <!-- Frontend -->
             <div class="col-3">
-                @foreach($users->where('parent_id', 4) as $user)
+                @foreach($frontendEmployees as $user)
                     <div class="info-box">
                         <span class="info-box-icon bg-transparent">
                             <img src="{{ $user->avatar }}" alt="user_avatar">
@@ -172,7 +171,7 @@
                                 <h4 class="pl-2">
                                    {{ $user->first_name }} {{ $user->last_name }}
                                 </h4>
-                                <a href="{{ route('profile.index', $user->id) }}">
+                                <a href="{{ route('profile.index', $user) }}">
                                     <i class="nav-icon fas fa-arrow-circle-right float-right p-2"></i>
                                 </a>
                                     </div>
@@ -184,7 +183,7 @@
             </div>
             <!-- Backend -->
             <div class="col-3">
-                @foreach($users->where('parent_id', 5) as $user)
+                @foreach($backendEmployees as $user)
                     <div class="info-box">
                         <span class="info-box-icon bg-transparent">
                             <img src="{{ $user->avatar }}" alt="user_avatar">
@@ -195,7 +194,7 @@
                                     <h4 class="pl-2">
                                         {{ $user->first_name }} {{ $user->last_name }}
                                     </h4>
-                                    <a href="{{ route('profile.index', $user->id) }}">
+                                    <a href="{{ route('profile.index', $user) }}">
                                         <i class="nav-icon fas fa-arrow-circle-right float-right p-2"></i>
                                     </a>
                                 </div>

@@ -1,17 +1,70 @@
 @extends('layouts.app')
 @section('content')
-    <div class="row pt-5">
-        @foreach($departments as $department)
-            <div class="col-3">
-                <div class="card h-100">
-                    <img src="" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">This is a longer card with supporting text below as a natural lead-in to
-                            additional content. This content is a little bit longer.</p>
-                    </div>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col">
+                    <h1>Departments</h1>
                 </div>
             </div>
-        @endforeach
-    </div>
+        </div>
+    </section>
+    @if(session()->has('errorMessage'))
+        <div class="alert alert-danger mt-2" role="alert">
+            {{ session()->get('errorMessage') }}
+        </div>
+    @endif
+    <section class="content">
+        <div class="card">
+            <div class="card-body p-0">
+                <table class="table table-striped projects">
+                    <thead>
+                    <tr>
+                        <th style="width: 1%">
+                            #
+                        </th>
+                        <th style="width: 20%">
+                            Department Name
+                        </th>
+                        <th style="width: 20%">
+                            Employees
+                        </th>
+                        <th style="width: 20%">
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach($departments as $department)
+                        <tr>
+                            <td>{{ $department->id }}</td>
+                            <td>{{ $department->name }}</td>
+                            <td>{{ $department->users_count }}</td>
+                            <td class="project-actions text-right row">
+                                <a class="btn btn-primary btn-sm mx-2" href="#">
+                                    <i class="fas fa-folder">
+                                    </i>
+                                    View
+                                </a>
+                                <a class="btn btn-info btn-sm mx-2" href="#">
+                                    <i class="fas fa-pencil-alt">
+                                    </i>
+                                    Edit
+                                </a>
+                                <form action="{{ route('departments.destroy', $department) }}" method="post">
+                                    @csrf
+                                    @method('delete')
+                                    <button class="btn btn-danger btn-sm mx-2" type="submit">
+                                        <i class="fas fa-trash">
+                                        </i>
+                                        Delete
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
 @endsection

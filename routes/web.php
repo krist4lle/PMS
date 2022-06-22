@@ -33,9 +33,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/change-password', [App\Http\Controllers\Me\IndexController::class, 'changePassword'])
         ->name('me.update.password');
 
-    Route::prefix('departments')->name('departments.')->group(function (){
-        Route::get('/123', [App\Http\Controllers\Departments\IndexController::class, 'index'])->name('index');
-    });
+    Route::resource('departments', App\Http\Controllers\DepartmentController::class)
+        ->only('index', 'destroy');
+
 
 });
 

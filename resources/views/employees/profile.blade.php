@@ -30,7 +30,7 @@
                 <div class="card-footer">
                     <div class="text-right">
                         <a href="{{ route('employees.index') }}" class="btn btn-sm btn-primary">
-                            <i class="fas fa-user"></i> Back to Team
+                            <i class="fas fa-arrow-circle-left"></i> Back to Team
                         </a>
                     </div>
                 </div>

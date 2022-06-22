@@ -27,6 +27,7 @@ class IndexController extends Controller
         $artDirector = User::whereRelation('position', 'title', 'Art Director')->first();
         $headFrontend = User::whereRelation('position', 'title', 'Head of Frontend Department')->first();
         $headBackend = User::whereRelation('position', 'title', 'Head of Backend Department')->first();
+
         $managementEmployees = User::whereRelation('department', 'name', 'Management')
             ->get()
             ->reject(function ($employee) {

@@ -14,6 +14,11 @@
             {{ session()->get('errorMessage') }}
         </div>
     @endif
+    @error('name')
+    <div class="alert alert-danger mt-2" role="alert">
+        {{ $message }}
+    </div>
+    @enderror
     <section class="content">
         <div class="card">
             <div class="card-body p-0">
@@ -45,7 +50,8 @@
                                     </i>
                                     View
                                 </a>
-                                <a class="btn btn-info btn-sm mx-2" href="#">
+                                <a class="btn btn-info btn-sm mx-2" href="#" data-toggle="modal"
+                                   data-target="#ModalEdit{{ $department->id }}">
                                     <i class="fas fa-pencil-alt">
                                     </i>
                                     Edit
@@ -61,6 +67,7 @@
                                 </form>
                             </td>
                         </tr>
+                        @include('departments.modal.edit')
                     @endforeach
                     </tbody>
                 </table>

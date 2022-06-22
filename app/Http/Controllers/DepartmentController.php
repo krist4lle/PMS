@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Department\UpdateRequest;
 use App\Models\Department;
+use App\Service\DepartmentService;
 use Illuminate\Http\Request;
 
 class DepartmentController extends Controller
@@ -59,27 +61,17 @@ class DepartmentController extends Controller
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function update(UpdateRequest $request, Department $department, DepartmentService $service)
     {
-        //
+        $dataName = $request->validated();
+        $service->departmentSave($department, $dataName['name']);
+
+        return redirect(route('departments.index'));
     }
 
-    public function destroy(Department $department)
+    public function destroy(Department $department, DepartmentService $service)
     {
-        $department->loadCount('users');
-        if ($department->users_count > 0) {
-
-            return redirect(route('departments.index'))
-                ->with('errorMessage', 'Impossible to delete Department with employees');
-        }
-        $department->delete();
+        $service->departmentDelete($department);
 
         return redirect(route('departments.index'));
     }

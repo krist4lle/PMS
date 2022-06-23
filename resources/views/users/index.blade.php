@@ -8,6 +8,7 @@
                 </div>
             </div>
         </div>
+        <a href="{{ route('users.create') }}" class="btn btn-info mt-2">Create a new User</a>
     </section>
     @if(session()->has('errorMessage'))
         <div class="alert alert-danger mt-2" role="alert">
@@ -66,6 +67,7 @@
                     @endforeach
                     </tbody>
                 </table>
+                {{ $users->withQueryString() }}
             </div>
         </div>
     </section>

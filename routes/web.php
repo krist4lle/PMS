@@ -34,7 +34,7 @@ Route::middleware('auth')->group(function () {
         ->name('me.update.password');
 
     Route::resource('departments', App\Http\Controllers\DepartmentController::class)
-        ->only('index', 'update', 'destroy');
+        ->only('index', 'edit', 'update', 'destroy');
 
 
 });

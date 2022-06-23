@@ -19,3 +19,10 @@
         <p>Departments</p>
     </a>
 </li>
+<!-- Positions -->
+<li class="nav-item">
+    <a href="{{ route('positions.index') }}" class="nav-link {{ Request::is('positions') ? 'active' : '' }}">
+        <i class="nav-icon fas fa-briefcase"></i>
+        <p>Positions</p>
+    </a>
+</li>

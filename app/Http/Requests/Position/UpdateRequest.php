@@ -29,7 +29,8 @@ class UpdateRequest extends FormRequest
                 'required',
                 'string',
                 Rule::unique('positions')->ignore($this->route('position'))
-            ]
+            ],
+            'department_name' => 'required|exists:departments,name',
         ];
     }
 }

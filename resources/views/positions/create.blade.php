@@ -10,6 +10,7 @@
                     <form method="post" action="{{ route('positions.store') }}">
                         @csrf
                         <div>
+                            <label>Position Title</label>
                             @error('title')
                             <div class="alert alert-danger mt-2" role="alert">
                                 {{ $message }}
@@ -17,7 +18,23 @@
                             @enderror
                             <input type="text" class="form-control" value="{{ old('title') }}"
                                    name="title">
-                            <br>
+                            <div class="form-group mt-1">
+                                <label>Department</label>
+                                @error('department_name')
+                                <div class="alert alert-danger mt-2" role="alert">
+                                    {{ $message }}
+                                </div>
+                                @enderror
+                                <select class="form-control" name="department_name">
+                                    <option>Choose Department</option>
+                                    @foreach($departments as $department)
+                                        <option value="{{ $department->name }}"
+                                        {{ old('department_name') == $department->name ? 'selected' : ''}}>
+                                            {{ $department->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
                             <button type="submit" class="btn btn-primary">Create Position</button>
                         </div>
                     </form>

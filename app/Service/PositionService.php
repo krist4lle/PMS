@@ -12,9 +12,11 @@ use Illuminate\Support\Facades\Storage;
 
 class PositionService
 {
-    public function positionSave(Position $position, string $positionTitle)
+    public function positionSave(Position $position, array $positionData)
     {
-        $position->title = $positionTitle;
+        $position->title = $positionData['title'];
+        $department = $this->departmentForPosition($positionData['department_name']);
+        $position->department()->associate($department);
         $position->save();
     }
 
@@ -27,5 +29,10 @@ class PositionService
                 ->with('errorMessage', 'Impossible to delete Position with employees');
         }
         $position->delete();
+    }
+
+    private function departmentForPosition(string $departmentName): Department
+    {
+        return Department::where('name', $departmentName)->first();
     }
 }

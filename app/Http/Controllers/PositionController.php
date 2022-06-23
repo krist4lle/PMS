@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Position\StoreRequest;
 use App\Http\Requests\Position\UpdateRequest;
+use App\Models\Department;
 use App\Models\Position;
 use App\Service\PositionService;
 use Illuminate\Http\Request;
@@ -21,13 +22,17 @@ class PositionController extends Controller
 
     public function create()
     {
-        return view('positions.create');
+        $departments = Department::all();
+
+        return view('positions.create', [
+            'departments' => $departments
+        ]);
     }
 
     public function store(StoreRequest $request, PositionService $service)
     {
-        $positionTitle = $request->validated();
-        $service->positionSave(new Position(), $positionTitle['title']);
+        $position = $request->validated();
+        $service->positionSave(new Position(), $position);
 
         return redirect(route('positions.index'));
     }
@@ -39,15 +44,18 @@ class PositionController extends Controller
 
     public function edit(Position $position)
     {
+        $departments = Department::all();
+
         return view('positions.edit', [
-            'position' => $position
+            'position' => $position,
+            'departments' => $departments,
         ]);
     }
 
     public function update(UpdateRequest $request, Position $position, PositionService $service)
     {
-        $dataTitle = $request->validated();
-        $service->positionSave($position, $dataTitle['title']);
+        $positionData = $request->validated();
+        $service->positionSave($position, $positionData);
 
         return redirect(route('positions.index'));
     }

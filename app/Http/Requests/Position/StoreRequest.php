@@ -29,7 +29,8 @@ class StoreRequest extends FormRequest
                 'required',
                 'string',
                 Rule::unique('positions')
-            ]
+            ],
+            'department_name' => 'required|exists:departments,name'
         ];
     }
 }

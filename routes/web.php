@@ -38,8 +38,6 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('positions', App\Http\Controllers\PositionController::class)
         ->except('show');
-
-
 });
 
 

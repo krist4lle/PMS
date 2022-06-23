@@ -29,7 +29,7 @@ class IndexController extends Controller
         $userData = $request->validated();
         $service->updateUser($user, $userData);
 
-        return redirect(route('me.index'));
+        return redirect()->route('me.index')->with('success', 'Data successfully updated');
     }
 
     public function changePassword(UpdatePasswordRequest $request, UserService $service)

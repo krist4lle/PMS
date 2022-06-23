@@ -8,13 +8,12 @@ use App\Models\Department;
 use App\Models\Position;
 use App\Models\User;
 use App\Service\UserService;
-use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
     public function index()
     {
-        $users = User::with('position')->paginate(10);
+        $users = User::with('position')->whereHas('parent')->paginate(10);
 
         return view('users.index', [
             'users' => $users,

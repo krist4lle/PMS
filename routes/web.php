@@ -21,7 +21,7 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::middleware('auth')->group(function () {
-    Route::get('/home', App\Http\Controllers\IndexController::class)->name('index');
+    Route::get('/home', App\Http\Controllers\HomeController::class)->name('index');
 
     Route::get('/employees', [App\Http\Controllers\Employee\IndexController::class, 'index'])
         ->name('employees.index');
@@ -35,6 +35,9 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('departments', App\Http\Controllers\DepartmentController::class)
         ->only('index', 'edit', 'update', 'destroy');
+
+    Route::resource('positions', App\Http\Controllers\PositionController::class)
+        ->except('show');
 
 
 });

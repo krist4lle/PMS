@@ -118,7 +118,7 @@ class UserSeeder extends Seeder
             'email_verified_at' => now(),
             'password' => Hash::make('qwe123'),
             'avatar' => $this->uploadAvatar('m'),
-            'key' => 'artDirector',
+            'key' => 'headDesign',
         ];
 
         return $this->createUser($data, 'Art Director', $parent, 'Design');

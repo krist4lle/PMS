@@ -28,12 +28,11 @@ class StoreRequest extends FormRequest
         return [
             'first_name' => 'required|string',
             'last_name' => 'required|string',
-            'email' => 'required|unique:users,email|email',
-            'password' => 'required|min:6|max:20',
-            'avatar' => 'file',
-            'department_id' => 'integer',
-            'position_id' => 'integer',
-            'parent_id' => 'integer',
+            'gender' => 'required',
+            'password' => 'required|string|min:6|max:20|confirmed',
+            'password_confirmation' => 'required|string|min:6|max:20',
+            'department' => 'required|exists:departments,name',
+            'position' => 'required|exists:positions,title',
         ];
     }
 }

@@ -38,15 +38,6 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('positions', App\Http\Controllers\PositionController::class)
         ->except('show');
-});
 
-
-Route::prefix('employee')->name('users.')->group(function () {
-    Route::get('/', App\Http\Controllers\User\IndexController::class)->name('index');
-    Route::get('/create', App\Http\Controllers\User\CreateController::class)->name('create');
-    Route::post('/', App\Http\Controllers\User\StoreController::class)->name('store');
-    Route::get('/{user}', App\Http\Controllers\User\ShowController::class)->name('show');
-    Route::patch('/{user}', App\Http\Controllers\User\UpdateController::class)->name('update');
-    Route::delete('/{user}', App\Http\Controllers\User\DeleteController::class)->name('delete');
-
+    Route::resource('users', App\Http\Controllers\UserController::class);
 });

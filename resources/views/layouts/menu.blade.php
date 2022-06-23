@@ -26,3 +26,10 @@
         <p>Positions</p>
     </a>
 </li>
+<!-- Users -->
+<li class="nav-item">
+    <a href="{{ route('users.index') }}" class="nav-link {{ Request::is('users') ? 'active' : '' }}">
+        <i class="nav-icon fas fa-user-edit"></i>
+        <p>Users</p>
+    </a>
+</li>

@@ -40,20 +40,15 @@ class UserService
 
     public function createUser(array $userData): void
     {
-        $department = Department::where('name', $userData['department'])->first();
-        $position = Position::where('title', $userData['position'])->first();
-        $parent = User::query()->where('key', "head{$userData['department']}")->first();
-        $this->positionCheck($position, $department);
-
         $user = new User;
         $user->first_name = $userData['first_name'];
         $user->last_name = $userData['last_name'];
         $user->email = $this->emailCreate($userData['first_name'], $userData['last_name']);
         $user->password = Hash::make($userData['password']);
         $user->avatar = $this->avatarCreate($userData['gender']);
-        $user->position()->associate($position);
-        $user->department()->associate($department);
-        $user->parent()->associate($parent);
+        $this->departmentRelation($user, $userData['department']);
+        $this->positionRelation($user, $userData['position'], $userData['department']);
+        $this->parentRelation($user, $userData['department']);
         $user->save();
     }
 
@@ -65,13 +60,22 @@ class UserService
         if (!empty($userData['avatar'])) {
             $user->avatar = $this->avatarUpdate($user, $userData['avatar']);
         }
+        if (!empty($userData['department'])) {
+            $this->departmentRelation($user, $userData['department']);
+            $this->parentRelation($user, $userData['department']);
+        }
+        if (!empty($userData['position'])) {
+            $this->positionRelation($user, $userData['position'], $userData['department']);
+        }
         $user->save();
     }
 
-    public function changePassword(User $user, string $password): void
+    public function changePassword(User $user, string|null $password): void
     {
-        $user->password = Hash::make($password);
-        $user->save();
+        if ($password !== null) {
+            $user->password = Hash::make($password);
+            $user->save();
+        }
     }
 
     private function emailCreate(string $firstName, string $lastName): string
@@ -100,5 +104,25 @@ class UserService
         if ($position->department->name !== $department->name) {
             throw ValidationException::withMessages(['This Position does not belong to this Department']);
         }
+    }
+
+    private function departmentRelation(User $user, string $departmentName): void
+    {
+        $department = Department::where('name', $departmentName)->first();
+        $user->position()->associate($department);
+    }
+
+    private function positionRelation(User $user, string $positionTitle, string $departmentName): void
+    {
+        $department = Department::where('name', $departmentName)->first();
+        $position = Position::where('title', $positionTitle)->first();
+        $this->positionCheck($position, $department);
+        $user->position()->associate($position);
+    }
+
+    private function parentRelation(User $user, string $departmentName): void
+    {
+        $parent = User::where('key', "head{$departmentName}")->first();
+        $user->parent()->associate($parent);
     }
 }

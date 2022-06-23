@@ -5,7 +5,9 @@
             <div class="row">
                 <div class="col row justify-content-between">
                     <div>
-                        <h1>Create a new User</h1>
+                        <h1>
+                            Edit <em>{{ $user->first_name }} {{ $user->last_name }}</em>
+                        </h1>
                     </div>
                     <div>
                         <a href="{{ route('users.index') }}" type="button" class="btn btn-outline-secondary">Back</a>
@@ -16,12 +18,13 @@
     </section>
     <section class="content">
         <div class="container-fluid">
-            <div class="row">
-                <div class="col card card-primary card-outline">
-                    <label class="p-3" for="personal_data_form"><h4>User Data</h4></label>
-                    <form method="post" action="{{ route('users.store') }}"
-                          id="personal_data_form">
-                        @csrf
+            <form method="post" action="{{ route('users.update', $user) }}"
+                  enctype="multipart/form-data">
+                @csrf
+                @method('put')
+                <div class="row">
+                    <div class="col card card-primary card-outline">
+                        <label class="p-3"><h4>User Data</h4></label>
                         <div class="px-3 row">
                             <div class="col-6">
                                 <label for="first_name" class="form-label">First Name</label>
@@ -31,7 +34,7 @@
                                 </div>
                                 @enderror
                                 <input type="text" class="form-control" id="first_name" name="first_name"
-                                       placeholder="Enter First Name" value="{{ old('first_name') }}">
+                                       value="{{ $user->first_name }}">
                             </div>
                             <div class="col-6">
                                 <label for="last_name" class="form-label">Last Name</label>
@@ -41,38 +44,31 @@
                                 </div>
                                 @enderror
                                 <input type="text" class="form-control" id="last_name" name="last_name"
-                                       placeholder="Enter Last Name" value="{{ old('last_name') }}">
+                                       value="{{ $user->last_name }}">
                             </div>
                         </div>
-                        <div class="col-6 pl-3 pt-2">
-                            <label for="gender" class="form-label">Gender</label>
-                            <div class="form-group">
-                                <select name="gender" id="gender" class="form-control">
-                                    <option {{ old('gender') == 'male' ? 'selected' : '' }} value="male">Male</option>
-                                    <option {{ old('gender') == 'female' ? 'selected' : '' }} value="female">Female
-                                    </option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="px-3 row">
+                        <div class="px-3 pt-2 row align-items-end">
                             <div class="col-6">
-                                <label for="password" class="form-label">Password</label>
-                                @error('password')
+                                <label for="first_name" class="form-label">Email</label>
+                                @error('email')
                                 <div class="alert alert-danger mt-2" role="alert">
                                     {{ $message }}
                                 </div>
                                 @enderror
-                                <input type="password" class="form-control" id="password" name="password">
+                                <input type="email" class="form-control" id="email" name="email"
+                                       value="{{ $user->email }}">
                             </div>
-                            <div class="col-6">
-                                <label for="password_confirmation" class="form-label">Confirm Password</label>
-                                @error('password_confirmation')
+                            <div class="col-5">
+                                <label for="avatar" class="form-label">Avatar</label>
+                                @error('avatar')
                                 <div class="alert alert-danger mt-2" role="alert">
                                     {{ $message }}
                                 </div>
                                 @enderror
-                                <input type="password" class="form-control" id="password_confirmation"
-                                       name="password_confirmation">
+                                <input type="file" class="form-control" id="avatar" name="avatar">
+                            </div>
+                            <div class="col-1">
+                                <img src="{{ asset($user->avatar) }}" alt="userAvatar" class="col-9">
                             </div>
                         </div>
                         <div class="px-3 pt-2 row">
@@ -88,7 +84,7 @@
                                         <option>Choose Department</option>
                                         @foreach($departments as $department)
                                             <option value="{{ $department->name }}"
-                                                {{ old('department') == $department->name ? 'selected' : '' }}>
+                                                {{ $user->department->name == $department->name ? 'selected' : '' }}>
                                                 {{ $department->name }}
                                             </option>
                                         @endforeach
@@ -112,7 +108,7 @@
                                         <option>Choose Position</option>
                                         @foreach($positions as $position)
                                             <option value="{{ $position->title }}"
-                                                {{ old('position') == $position->title ? 'selected' : '' }}>
+                                                {{ $user->position->title == $position->title ? 'selected' : '' }}>
                                                 {{ $position->title }}
                                             </option>
                                         @endforeach
@@ -123,9 +119,40 @@
                         <div class="col p-3">
                             <button type="submit" class="btn btn-outline-primary">Submit</button>
                         </div>
-                    </form>
+                    </div>
                 </div>
-            </div>
+                <div class="row">
+                    <div class="col card card-primary card-outline">
+                        <label class="p-3" for="password_form"><h4>Change Password</h4></label>
+                        @csrf
+                        @method('put')
+                        <div class="row align-items-end">
+                            <div class="col-5 px-3 pb-3">
+                                <label for="password" class="form-label">Password</label>
+                                <input type="password" class="form-control" id="password" name="password">
+                                @error('password')
+                                <div class="alert alert-danger mt-2" role="alert">
+                                    {{ $message }}
+                                </div>
+                                @enderror
+                            </div>
+                            <div class="col-5 px-3 pb-3">
+                                <label for="password_confirmation" class="form-label">Confirm Password</label>
+                                <input type="password" class="form-control" id="password_confirmation"
+                                       name="password_confirmation">
+                                @error('password_confirmation')
+                                <div class="alert alert-danger mt-2" role="alert">
+                                    {{ $message }}
+                                </div>
+                                @enderror
+                            </div>
+                            <div class="col-2 px-3 pb-3">
+                                <button type="submit" class="btn btn-outline-primary">Change Password</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
         </div>
     </section>
 @endsection

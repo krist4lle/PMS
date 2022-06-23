@@ -6,7 +6,7 @@ use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class UpdateRequest extends FormRequest
+class UpdateUserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -30,11 +30,15 @@ class UpdateRequest extends FormRequest
             'last_name' => 'required|string',
             'email' => [
                 'required',
+                'string',
                 'email',
                 Rule::unique('users')->ignore($this->route('user'))
             ],
-            'password' => 'min:6|max:20|nullable',
             'avatar' => 'file',
+            'department' => 'required|exists:departments,name',
+            'position' => 'required|exists:positions,title',
+            'password' => 'nullable|string|min:6|max:20|confirmed',
+            'password_confirmation' => 'nullable|string|min:6|max:20',
         ];
     }
 }

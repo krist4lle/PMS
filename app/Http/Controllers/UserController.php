@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\User\StoreRequest;
+use App\Http\Requests\User\UpdateUserRequest;
 use App\Models\Department;
 use App\Models\Position;
 use App\Models\User;
@@ -44,18 +45,30 @@ class UserController extends Controller
         //
     }
 
-    public function edit($id)
+    public function edit(User $user)
     {
-        //
+        $departments = Department::all();
+        $positions = Position::all();
+
+        return view('users.edit', [
+            'user' => $user,
+            'departments' => $departments,
+            'positions' => $positions,
+        ]);
     }
 
-    public function update(Request $request, $id)
+    public function update(User $user, UpdateUserRequest $userRequest, UserService $service)
     {
-        //
+        $service->updateUser($user, $userRequest->validated());
+        $service->changePassword($user, $userRequest['password']);
+
+        return redirect()->back();
     }
 
-    public function destroy($id)
+    public function destroy(User $user)
     {
-        //
+        $user->delete();
+
+        return redirect()->route('users.index')->with('success', 'User successfully fired');
     }
 }

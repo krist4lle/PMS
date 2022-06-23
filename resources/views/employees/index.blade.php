@@ -120,16 +120,18 @@
                             <img src="{{ $user->avatar }}" alt="user_avatar">
                         </span>
                         <div class="info-box-content">
-                            <span class="info-box-number">
-                                <div class="row justify-content-between">
-                                <h4 class="pl-2">
-                                   {{ $user->first_name }} {{ $user->last_name }}
-                                </h4>
-                                <a href="{{ route('profile.index', $user) }}">
-                                    <i class="nav-icon fas fa-arrow-circle-right float-right p-2"></i>
-                                </a>
-                                    </div>
-                            </span>
+                            <div class="row">
+                                <div class="col">
+                                    <h4 class="pl-2">
+                                        {{ $user->first_name }} {{ $user->last_name }}
+                                    </h4>
+                                </div>
+                                <div class="col-2">
+                                    <a href="{{ route('profile.index', $user) }}">
+                                        <i class="nav-icon fas fa-arrow-circle-right float-right p-2"></i>
+                                    </a>
+                                </div>
+                            </div>
                             <p>{{ $user->position->title }}</p>
                         </div>
                     </div>
@@ -143,16 +145,18 @@
                             <img src="{{ $user->avatar }}" alt="user_avatar">
                         </span>
                         <div class="info-box-content">
-                            <span class="info-box-number">
-                                <div class="row justify-content-between">
-                                <h4 class="pl-2">
-                                   {{ $user->first_name }} {{ $user->last_name }}
-                                </h4>
-                                <a href="{{ route('profile.index', $user) }}">
-                                    <i class="nav-icon fas fa-arrow-circle-right float-right p-2"></i>
-                                </a>
-                                    </div>
-                            </span>
+                            <div class="row">
+                                <div class="col">
+                                    <h4 class="pl-2">
+                                        {{ $user->first_name }} {{ $user->last_name }}
+                                    </h4>
+                                </div>
+                                <div class="col-2">
+                                    <a href="{{ route('profile.index', $user) }}">
+                                        <i class="nav-icon fas fa-arrow-circle-right float-right p-2"></i>
+                                    </a>
+                                </div>
+                            </div>
                             <p>{{ $user->position->title }}</p>
                         </div>
                     </div>
@@ -166,16 +170,18 @@
                             <img src="{{ $user->avatar }}" alt="user_avatar">
                         </span>
                         <div class="info-box-content">
-                            <span class="info-box-number">
-                                <div class="row justify-content-between">
-                                <h4 class="pl-2">
-                                   {{ $user->first_name }} {{ $user->last_name }}
-                                </h4>
-                                <a href="{{ route('profile.index', $user) }}">
-                                    <i class="nav-icon fas fa-arrow-circle-right float-right p-2"></i>
-                                </a>
-                                    </div>
-                            </span>
+                            <div class="row">
+                                <div class="col">
+                                    <h4 class="pl-2">
+                                        {{ $user->first_name }} {{ $user->last_name }}
+                                    </h4>
+                                </div>
+                                <div class="col-2">
+                                    <a href="{{ route('profile.index', $user) }}">
+                                        <i class="nav-icon fas fa-arrow-circle-right float-right p-2"></i>
+                                    </a>
+                                </div>
+                            </div>
                             <p>{{ $user->position->title }}</p>
                         </div>
                     </div>
@@ -189,16 +195,18 @@
                             <img src="{{ $user->avatar }}" alt="user_avatar">
                         </span>
                         <div class="info-box-content">
-                            <span class="info-box-number">
-                                <div class="row justify-content-between">
+                            <div class="row">
+                                <div class="col">
                                     <h4 class="pl-2">
                                         {{ $user->first_name }} {{ $user->last_name }}
                                     </h4>
+                                </div>
+                                <div class="col-2">
                                     <a href="{{ route('profile.index', $user) }}">
                                         <i class="nav-icon fas fa-arrow-circle-right float-right p-2"></i>
                                     </a>
                                 </div>
-                            </span>
+                            </div>
                             <p>{{ $user->position->title }}</p>
                         </div>
                     </div>

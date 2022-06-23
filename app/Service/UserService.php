@@ -12,6 +12,31 @@ use Illuminate\Support\Facades\Storage;
 
 class UserService
 {
+    public function retrievingEmployees(): array
+    {
+        $ceo = User::where('key', 'ceo')->first();
+        $headManagement = User::where('key', 'headManagement')->first();
+        $artDirector = User::where('key', 'artDirector')->first();
+        $headFrontend = User::where('key', 'headFrontend')->first();
+        $headBackend = User::where('key', 'headBackend')->first();
+        $managementEmployees = $headManagement->children;
+        $designEmployees = $artDirector->children;
+        $frontendEmployees =  $headFrontend->children;
+        $backendEmployees = $headBackend->children;
+
+        return [
+            'ceo' => $ceo,
+            'headManagement' => $headManagement,
+            'artDirector' => $artDirector,
+            'headFrontend' => $headFrontend,
+            'headBackend' => $headBackend,
+            'managementEmployees' => $managementEmployees,
+            'designEmployees' => $designEmployees,
+            'frontendEmployees' => $frontendEmployees,
+            'backendEmployees' => $backendEmployees,
+        ];
+    }
+
     public function updateUser(User $user, array $userData): void
     {
         $user->first_name = $userData['first_name'];

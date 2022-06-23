@@ -12,8 +12,14 @@ use Illuminate\Support\Facades\Storage;
 
 class DepartmentService
 {
-    public function departmentSave(Department $department, string $departmentName): void
+    public function departmentSave(Department $department, string $departmentName)
     {
+        $department->loadCount('users');
+        if ($department->users_count > 0) {
+
+            return redirect(route('departments.index'))
+                ->with('errorMessage', 'Impossible to edit Department with employees');
+        }
         $department->name = $departmentName;
         $department->save();
     }

@@ -50,15 +50,11 @@ class DepartmentController extends Controller
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function edit(Department $department)
     {
-        //
+        return view('departments.edit', [
+            'department' => $department
+        ]);
     }
 
     public function update(UpdateRequest $request, Department $department, DepartmentService $service)

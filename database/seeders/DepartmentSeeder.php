@@ -27,17 +27,7 @@ class DepartmentSeeder extends Seeder
         foreach ($departments as $departmentName) {
             $department = new Department();
             $department->name = $departmentName;
-            $department->image = $this->uploadImage($departmentName);
             $department->save();
         }
     }
-
-    private function uploadImage(string $departmentName)
-    {
-        $image = new File(database_path("departments/{$departmentName}.png"));
-
-        return Storage::putFile("departments", $image);
-    }
-
-
 }

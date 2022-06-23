@@ -88,6 +88,7 @@ class UserSeeder extends Seeder
             'email_verified_at' => now(),
             'password' => Hash::make('qwe123'),
             'avatar' => $this->uploadAvatar('m'),
+            'key' => 'ceo',
         ];
 
         return $this->createUser($data, 'CEO');
@@ -102,6 +103,7 @@ class UserSeeder extends Seeder
             'email_verified_at' => now(),
             'password' => Hash::make('qwe123'),
             'avatar' => $this->uploadAvatar('m'),
+            'key' => 'headManagement',
         ];
 
         return $this->createUser($data, 'Head of Management Department', $parent, 'Management');
@@ -116,6 +118,7 @@ class UserSeeder extends Seeder
             'email_verified_at' => now(),
             'password' => Hash::make('qwe123'),
             'avatar' => $this->uploadAvatar('m'),
+            'key' => 'artDirector',
         ];
 
         return $this->createUser($data, 'Art Director', $parent, 'Design');
@@ -130,6 +133,7 @@ class UserSeeder extends Seeder
             'email_verified_at' => now(),
             'password' => Hash::make('qwe123'),
             'avatar' => $this->uploadAvatar('m'),
+            'key' => 'headFrontend',
         ];
 
         return $this->createUser($data, 'Head of Frontend Department', $parent, 'Frontend');
@@ -144,6 +148,7 @@ class UserSeeder extends Seeder
             'email_verified_at' => now(),
             'password' => Hash::make('qwe123'),
             'avatar' => $this->uploadAvatar('m'),
+            'key' => 'headBackend',
         ];
 
         return $this->createUser($data, 'Head of Backend Department', $parent, 'Backend');

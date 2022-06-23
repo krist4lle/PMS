@@ -14,32 +14,15 @@ class UserService
 {
     public function retrievingEmployees(): array
     {
-        $ceo = User::whereRelation('position', 'title', 'CEO')->first();
-        $headManagement = User::whereRelation('position', 'title', 'Head of Management Department')->first();
-        $artDirector = User::whereRelation('position', 'title', 'Art Director')->first();
-        $headFrontend = User::whereRelation('position', 'title', 'Head of Frontend Department')->first();
-        $headBackend = User::whereRelation('position', 'title', 'Head of Backend Department')->first();
-
-        $managementEmployees = User::whereRelation('department', 'name', 'Management')
-            ->get()
-            ->reject(function ($employee) {
-                return $employee->position->title === 'Head of Management Department';
-            });
-        $designEmployees = User::whereRelation('department', 'name', 'Design')
-            ->get()
-            ->reject(function ($employee) {
-                return $employee->position->title === 'Art Director';
-            });
-        $frontendEmployees = User::whereRelation('department', 'name', 'Frontend')
-            ->get()
-            ->reject(function ($employee) {
-                return $employee->position->title === 'Head of Frontend Department';
-            });
-        $backendEmployees = User::whereRelation('department', 'name', 'Backend')
-            ->get()
-            ->reject(function ($employee) {
-                return $employee->position->title === 'Head of Backend Department';
-            });
+        $ceo = User::where('key', 'ceo')->first();
+        $headManagement = User::where('key', 'headManagement')->first();
+        $artDirector = User::where('key', 'artDirector')->first();
+        $headFrontend = User::where('key', 'headFrontend')->first();
+        $headBackend = User::where('key', 'headBackend')->first();
+        $managementEmployees = $headManagement->children;
+        $designEmployees = $artDirector->children;
+        $frontendEmployees =  $headFrontend->children;
+        $backendEmployees = $headBackend->children;
 
         return [
             'ceo' => $ceo,

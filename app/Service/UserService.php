@@ -99,13 +99,6 @@ class UserService
         return Storage::put('avatars', $avatarFile);
     }
 
-    private function positionCheck(Position $position, Department $department): void
-    {
-        if ($position->department->name !== $department->name) {
-            throw ValidationException::withMessages(['This Position does not belong to this Department']);
-        }
-    }
-
     private function departmentRelation(User $user, string $departmentName): void
     {
         $department = Department::where('name', $departmentName)->first();
@@ -120,9 +113,16 @@ class UserService
         $user->position()->associate($position);
     }
 
+    private function positionCheck(Position $position, Department $department): void
+    {
+        if ($position->department->name !== $department->name) {
+            throw ValidationException::withMessages(['This Position does not belong to this Department']);
+        }
+    }
+
     private function parentRelation(User $user, string $departmentName): void
     {
-        $parent = User::where('key', "head{$departmentName}")->first();
+        $parent = User::where('key', auth()->user()->key)->first();
         $user->parent()->associate($parent);
     }
 }

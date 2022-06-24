@@ -25,7 +25,7 @@ class ClientSeeder extends Seeder
         }
     }
 
-    private function createClient()
+    private function createClient(): void
     {
         $client = new Client();
         $client->title = $this->faker->unique()->company;

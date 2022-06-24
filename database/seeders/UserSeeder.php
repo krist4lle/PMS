@@ -195,5 +195,4 @@ class UserSeeder extends Seeder
             $this->createUser($data, 'Backend Node.js Developer', $parent, 'Backend');
         }
     }
-
 }

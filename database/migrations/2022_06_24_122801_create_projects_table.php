@@ -19,7 +19,7 @@ class extends Migration
             $table->string('title')->unique();
             $table->text('description');
             $table->foreignId('client_id')->constrained();
-            $table->foreignId('manager_id')->constrained('users');
+            $table->foreignId('manager_id')->constrained('users')->restrictOnDelete();
             $table->timestamps();
             $table->timestamp('finished_at')->nullable();
             $table->timestamp('deadline')->nullable();

@@ -16,6 +16,7 @@ return new class extends Migration {
             $table->id();
             $table->string('title');
             $table->foreignId('department_id')->nullable()->constrained()->restrictOnDelete();
+            $table->foreignId('permission_id')->constrained()->restrictOnDelete();
         });
     }
 

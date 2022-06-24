@@ -12,14 +12,14 @@ class UserPolicy
 
     public function before(User $user, $ability)
     {
-        if ($user->key === 'ceo') {
+        if ($user->position->permission->title === 'ceo') {
             return true;
         }
     }
 
     public function viewAny(User $user)
     {
-        return $user->key !== null;
+        return $user->position->permission->title !== 'worker';
     }
 
     public function view(User $user, User $model)
@@ -29,7 +29,7 @@ class UserPolicy
 
     public function create(User $user)
     {
-        return $user->key !== null;
+        return $user->position->permission->title !== 'worker';
     }
 
     public function update(User $user, User $model)

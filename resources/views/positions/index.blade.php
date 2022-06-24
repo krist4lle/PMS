@@ -8,7 +8,9 @@
                 </div>
             </div>
         </div>
+        @can('create', \App\Models\Position::class)
         <a href="{{ route('positions.create') }}" class="btn btn-info mt-2">Create a new Position</a>
+        @endcan
     </section>
     @if(session()->has('errorMessage'))
         <div class="alert alert-danger mt-2" role="alert">
@@ -50,18 +52,20 @@
                                     <i class="fas fa-folder"></i>
                                     View
                                 </a>
-                                <a class="btn btn-info btn-sm mx-2" href="{{ route('positions.edit', $position) }}">
-                                    <i class="fas fa-pencil-alt"></i>
-                                    Edit
-                                </a>
-                                <form action="{{ route('positions.destroy', $position) }}" method="post">
-                                    @csrf
-                                    @method('delete')
-                                    <button class="btn btn-danger btn-sm mx-2" type="submit">
-                                        <i class="fas fa-trash"></i>
-                                        Delete
-                                    </button>
-                                </form>
+                                @canany(['update', 'delete'], $position)
+                                    <a class="btn btn-info btn-sm mx-2" href="{{ route('positions.edit', $position) }}">
+                                        <i class="fas fa-pencil-alt"></i>
+                                        Edit
+                                    </a>
+                                    <form action="{{ route('positions.destroy', $position) }}" method="post">
+                                        @csrf
+                                        @method('delete')
+                                        <button class="btn btn-danger btn-sm mx-2" type="submit">
+                                            <i class="fas fa-trash"></i>
+                                            Delete
+                                        </button>
+                                    </form>
+                                @endcan
                             </td>
                         </tr>
                     @endforeach

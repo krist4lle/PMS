@@ -16,6 +16,11 @@
             </div>
         </div>
     </section>
+    @if(session()->has('success'))
+        <div class="alert alert-success mt-2" role="alert">
+            {{ session()->get('success') }}
+        </div>
+    @endif
     <section class="content">
         <div class="container-fluid">
             <form method="post" action="{{ route('users.update', $user) }}"
@@ -83,10 +88,12 @@
                                     <select name="department" id="department" class="form-control">
                                         <option>Choose Department</option>
                                         @foreach($departments as $department)
-                                            <option value="{{ $department->name }}"
-                                                {{ $user->department->name == $department->name ? 'selected' : '' }}>
-                                                {{ $department->name }}
-                                            </option>
+
+                                                <option value="{{ $department->name }}"
+                                                    {{ $user->department->name == $department->name ? 'selected' : '' }}>
+                                                    {{ $department->name }}
+                                                </option>
+
                                         @endforeach
                                     </select>
                                 </div>
@@ -107,10 +114,12 @@
                                     <select name="position" id="position" class="form-control">
                                         <option>Choose Position</option>
                                         @foreach($positions as $position)
-                                            <option value="{{ $position->title }}"
-                                                {{ $user->position->title == $position->title ? 'selected' : '' }}>
-                                                {{ $position->title }}
-                                            </option>
+
+                                                <option value="{{ $position->title }}"
+                                                    {{ $user->position->title == $position->title ? 'selected' : '' }}>
+                                                    {{ $position->title }}
+                                                </option>
+
                                         @endforeach
                                     </select>
                                 </div>

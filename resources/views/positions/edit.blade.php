@@ -19,24 +19,26 @@
                             @enderror
                             <input type="text" class="form-control" value="{{ $position->title }}"
                                    name="title">
-                            <div class="form-group mt-1">
-                                <label>Department</label>
-                                @error('department_name')
-                                <div class="alert alert-danger mt-2" role="alert">
-                                    {{ $message }}
+                            @if(isset($position->department))
+                                <div class="form-group mt-1">
+                                    <label>Department</label>
+                                    @error('department_name')
+                                    <div class="alert alert-danger mt-2" role="alert">
+                                        {{ $message }}
+                                    </div>
+                                    @enderror
+                                    <select class="form-control" name="department_name">
+                                        <option>Choose Department</option>
+                                        @foreach($departments as $department)
+                                            <option value="{{ $department->name }}"
+                                                {{ $position->department->name == $department->name ? 'selected' : ''}}>
+                                                {{ $department->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
                                 </div>
-                                @enderror
-                                <select class="form-control" name="department_name">
-                                    <option>Choose Department</option>
-                                    @foreach($departments as $department)
-                                        <option value="{{ $department->name }}"
-                                            {{ $position->department->name == $department->name ? 'selected' : ''}}>
-                                            {{ $department->name }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <button type="submit" class="btn btn-primary">Change Position</button>
+                            @endif
+                            <button type="submit" class="btn btn-primary mt-2">Change Position</button>
                         </div>
                     </form>
                 </div>

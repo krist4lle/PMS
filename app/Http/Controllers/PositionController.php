@@ -6,6 +6,7 @@ use App\Http\Requests\Position\StoreRequest;
 use App\Http\Requests\Position\UpdateRequest;
 use App\Models\Department;
 use App\Models\Position;
+use App\Models\User;
 use App\Service\PositionService;
 use Illuminate\Http\Request;
 
@@ -22,6 +23,7 @@ class PositionController extends Controller
 
     public function create()
     {
+        $this->authorize('create', [Position::class]);
         $departments = Department::all();
 
         return view('positions.create', [
@@ -31,6 +33,7 @@ class PositionController extends Controller
 
     public function store(StoreRequest $request, PositionService $service)
     {
+        $this->authorize('create', [Position::class]);
         $position = $request->validated();
         $service->positionSave(new Position(), $position);
 
@@ -44,6 +47,7 @@ class PositionController extends Controller
 
     public function edit(Position $position)
     {
+        $this->authorize('update', [Position::class]);
         $departments = Department::all();
 
         return view('positions.edit', [
@@ -54,6 +58,7 @@ class PositionController extends Controller
 
     public function update(UpdateRequest $request, Position $position, PositionService $service)
     {
+        $this->authorize('update', [Position::class]);
         $positionData = $request->validated();
         $service->positionSave($position, $positionData);
 
@@ -62,6 +67,7 @@ class PositionController extends Controller
 
     public function destroy(Position $position, PositionService $service)
     {
+        $this->authorize('delete', [Position::class]);
         $service->positionDelete($position);
 
         return redirect(route('positions.index'));

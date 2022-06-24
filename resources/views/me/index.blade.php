@@ -9,6 +9,16 @@
             </div>
         </div>
     </section>
+    @if(session()->has('successMessage'))
+        <div class="alert alert-success mt-2" role="alert">
+            {{ session()->get('successMessage') }}
+        </div>
+    @endif
+    @if(session()->has('success'))
+        <div class="alert alert-success mt-2" role="alert">
+            {{ session()->get('success') }}
+        </div>
+    @endif
     <section class="content">
         <div class="container-fluid">
             <div class="row">
@@ -114,11 +124,6 @@
                                     {{ $message }}
                                 </div>
                                 @enderror
-                                @if(session()->has('successMessage'))
-                                    <div class="alert alert-success mt-2" role="alert">
-                                        {{ session()->get('successMessage') }}
-                                    </div>
-                                @endif
                             </div>
                             <div class="col-5 px-3 pb-3">
                                 <label for="password_confirmation" class="form-label">Confirm Password</label>

@@ -109,7 +109,7 @@ class UserService
     private function departmentRelation(User $user, string $departmentName): void
     {
         $department = Department::where('name', $departmentName)->first();
-        $user->position()->associate($department);
+        $user->department()->associate($department);
     }
 
     private function positionRelation(User $user, string $positionTitle, string $departmentName): void

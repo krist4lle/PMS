@@ -10,6 +10,13 @@ class DepartmentPolicy
 {
     use HandlesAuthorization;
 
+    public function before(User $user, $ability)
+    {
+        if ($user->key === 'ceo') {
+            return true;
+        }
+    }
+
     public function viewAny(User $user)
     {
         //
@@ -22,15 +29,15 @@ class DepartmentPolicy
 
     public function create(User $user)
     {
-        return $user->key === 'ceo';
+        //
     }
 
-    public function update(User $user, Department $department)
+    public function update(User $user)
     {
         return $user->key === 'ceo';
     }
 
-    public function delete(User $user, Department $department)
+    public function delete(User $user)
     {
         return $user->key === 'ceo';
     }

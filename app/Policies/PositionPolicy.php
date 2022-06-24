@@ -22,15 +22,15 @@ class PositionPolicy
 
     public function create(User $user)
     {
-        return $user->id > 0;
+        return $user->key == "ceo";
     }
 
-    public function update(User $user, Position $position)
+    public function update(User $user)
     {
         return $user->key == 'ceo';
     }
 
-    public function delete(User $user, Position $position)
+    public function delete(User $user)
     {
         return $user->key == 'ceo';
     }

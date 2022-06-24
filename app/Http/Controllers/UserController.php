@@ -63,13 +63,14 @@ class UserController extends Controller
 
     public function edit(User $user)
     {
+        $editor = auth()->user();
         $this->authorize('update', [User::class, $user]);
-        $user->key === 'ceo'
+        $editor->key === 'ceo'
             ? $departments = Department::all()
-            : $departments = Department::whereRelation('users', 'department_id', $user->department->id)->get();
-        $user->key === 'ceo'
+            : $departments = Department::whereRelation('users', 'department_id', $editor->department->id)->get();
+        $editor->key === 'ceo'
             ? $positions = Position::all()
-            : $positions = Position::whereRelation('department', 'name', $user->department->name)->get();
+            : $positions = Position::whereRelation('department', 'name', $editor->department->name)->get();
 
         return view('users.edit', [
             'user' => $user,

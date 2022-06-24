@@ -10,13 +10,6 @@ class DepartmentPolicy
 {
     use HandlesAuthorization;
 
-    public function before(User $user, $ability)
-    {
-        if ($user->key === 'ceo') {
-            return true;
-        }
-    }
-
     public function viewAny(User $user)
     {
         //

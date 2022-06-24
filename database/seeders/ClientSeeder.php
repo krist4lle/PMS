@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Client;
 use App\Models\Department;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -19,17 +20,18 @@ class ClientSeeder extends Seeder
 
     public function run()
     {
-        $departments = [
-            'Management',
-            'Design',
-            'Frontend',
-            'Backend',
-        ];
-
-        foreach ($departments as $departmentName) {
-            $department = new Department();
-            $department->name = $departmentName;
-            $department->save();
+        for ($i = 0; $i < 10; $i++) {
+            $this->createClient();
         }
+    }
+
+    private function createClient()
+    {
+        $client = new Client();
+        $client->title = $this->faker->unique()->company;
+        $client->description = $this->faker->realText();
+        $client->email = $this->faker->unique()->email;
+        $client->phone = $this->faker->unique()->e164PhoneNumber;
+        $client->save();
     }
 }

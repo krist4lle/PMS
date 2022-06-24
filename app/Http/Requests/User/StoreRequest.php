@@ -28,10 +28,11 @@ class StoreRequest extends FormRequest
         return [
             'first_name' => 'required|string',
             'last_name' => 'required|string',
-            'gender' => 'required',
             'password' => 'required|string|min:6|max:20|confirmed',
             'password_confirmation' => 'required|string|min:6|max:20',
-            'department' => 'required|exists:departments,name',
+            'gender' => 'required',
+            'parent' => 'nullable',
+            'department' => 'nullable',
             'position' => 'required|exists:positions,title',
         ];
     }

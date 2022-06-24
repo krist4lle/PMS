@@ -17,9 +17,7 @@ class UserController extends Controller
         $this->authorize('viewAny', [User::class]);
         $user = auth()->user();
         $user->key === 'ceo'
-            ? $users = User::with(['position', 'department', 'parent'])
-            ->whereHas('parent')
-            ->paginate(10)
+            ? $users = User::with(['position', 'department', 'parent'])->paginate(10)
             : $users = User::with(['position', 'department', 'parent'])
             ->whereRelation('parent', 'key', $user->key)
             ->paginate(10);
@@ -39,11 +37,13 @@ class UserController extends Controller
         $user->key === 'ceo'
             ? $positions = Position::all()
             : $positions = Position::whereRelation('department', 'name', $user->department->name)->get();
+        $parents = User::query()->whereHas('children')->get();
 
         return view('users.create', [
             'departments' => $departments,
             'positions' => $positions,
             'user' => $user,
+            'parents' => $parents,
         ]);
     }
 
@@ -51,6 +51,7 @@ class UserController extends Controller
     {
         $this->authorize('create', [User::class]);
         $userData = $request->validated();
+        dd($userData);
         $service->createUser($userData);
 
         return redirect(route('users.index'));

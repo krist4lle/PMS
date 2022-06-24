@@ -16,23 +16,12 @@
                 <table class="table table-striped projects">
                     <thead>
                     <tr>
-                        <th style="width: 1%">
-                            #
-                        </th>
-                        <th style="width: 20%">
-                            Project Name
-                        </th>
-                        <th style="width: 10%">
-                            Project Manager
-                        </th>
-                        <th style="width: 30%">
-                            Team Members
-                        </th>
-                        <th style="width: 8%" class="text-center">
-                            Status
-                        </th>
-                        <th style="width: 20%">
-                        </th>
+                        <th style="width: 1%">#</th>
+                        <th style="width: 20%">Project Name</th>
+                        <th style="width: 10%">Project Manager</th>
+                        <th style="width: 30%">Team Members</th>
+                        <th style="width: 8%" class="text-center">Status</th>
+                        <th style="width: 20%"></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -45,13 +34,17 @@
                                 <small>{{ \Carbon\Carbon::make($project->created_at)->format('j-F-Y') }}</small>
                             </td>
                             <td>
-                                <img alt="project_manager" class="col-10" src="{{ $project->manager->avatar }}">
+                                <a href="{{ route('profile.index', $project->manager) }}" class="col-10">
+                                    <img src="{{ $project->manager->avatar }}" alt="project_manager" class="col-9">
+                                </a>
                             </td>
                             <td>
                                 <ul class="list-inline">
                                     @foreach($project->users as $user)
                                         <li class="list-inline-item">
-                                            <img alt="$users_avatar" class="table-avatar" src="{{ $user->avatar }}">
+                                            <a href="{{ route('profile.index', $user) }}">
+                                                <img alt="$users_avatar" class="table-avatar" src="{{ $user->avatar }}">
+                                            </a>
                                         </li>
                                     @endforeach
                                 </ul>
@@ -64,9 +57,8 @@
                                 @endif
                             </td>
                             <td class="project-actions text-right">
-                                <a class="btn btn-primary btn-sm" href="#">
-                                    <i class="fas fa-folder">
-                                    </i>
+                                <a class="btn btn-primary btn-sm" href="{{ route('projects.show', $project) }}">
+                                    <i class="fas fa-folder"></i>
                                     View
                                 </a>
                                 <a class="btn btn-info btn-sm" href="#">

@@ -9,7 +9,7 @@ class ProjectController extends Controller
 {
     public function index()
     {
-        $projects = Project::all();
+        $projects = Project::with(['manager', 'users'])->get();
 
         return view('projects.index', [
             'projects' => $projects
@@ -26,9 +26,11 @@ class ProjectController extends Controller
         //
     }
 
-    public function show($id)
+    public function show(Project $project)
     {
-        //
+        return view('projects.show', [
+            'project' => $project
+        ]);
     }
 
     public function edit($id)

@@ -40,4 +40,6 @@ Route::middleware('auth')->group(function () {
         ->except('show');
 
     Route::resource('users', App\Http\Controllers\UserController::class);
+
+    Route::resource('projects', App\Http\Controllers\ProjectController::class);
 });

@@ -55,16 +55,10 @@ class UserService
         $user->first_name = $userData['first_name'];
         $user->last_name = $userData['last_name'];
         $user->email = $userData['email'];
-        if (!empty($userData['avatar'])) {
-            $user->avatar = $this->avatarUpdate($user, $userData['avatar']);
+        if (isset($userData['avatar'])) {
+            $this->avatarUpdate($user, $userData['avatar']);
         }
-        if (!empty($userData['department'])) {
-            $this->departmentRelation($user, $userData['department']);
-            $this->parentRelation($user, $userData['department']);
-        }
-        if (!empty($userData['position'])) {
-            $this->positionRelation($user, $userData['position']);
-        }
+        $this->relations($user, $userData['position'], $userData['department'], $userData['parent']);
         $user->save();
     }
 
@@ -90,11 +84,10 @@ class UserService
         return Storage::put('avatars', $avatarFile);
     }
 
-    private function avatarUpdate(User $user, UploadedFile $avatarFile): string
+    private function avatarUpdate(User $user, UploadedFile $avatarFile): void
     {
         Storage::delete($user->avatar);
-
-        return Storage::put('avatars', $avatarFile);
+        $user->avatar = Storage::put('avatars', $avatarFile);
     }
 
     private function relations(User $user, string $positionTitle, string|null $departmentName, string|null $parentPosition): void
@@ -115,7 +108,7 @@ class UserService
             $this->parentRequired($parent);
             $this->parentCheck($parent, $department);
             $user->position()->associate($position);
-            $user->position()->associate($department);
+            $user->department()->associate($department);
             $user->parent()->associate($parent);
         }
     }
@@ -124,8 +117,9 @@ class UserService
     {
         if (empty($position->department)) {
             $this->departmentNotRequired($department);
+            $user->department()->dissociate();
             $user->position()->associate($position);
-            $this->parentAdd($user, $parent);
+            $this->parentRelation($user, $parent);
         }
     }
 
@@ -164,10 +158,11 @@ class UserService
         }
     }
 
-    private function parentAdd(User $user, User|null $parent): void
+    private function parentRelation(User $user, User|null $parent): void
     {
         if ($parent !== null) {
             $user->parent()->associate($parent);
         }
+        $user->parent()->dissociate();
     }
 }

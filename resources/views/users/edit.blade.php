@@ -86,14 +86,14 @@
                                 @enderror
                                 <div class="form-group">
                                     <select name="department" id="department" class="form-control">
-                                        <option>Choose Department</option>
+                                        <option value="">Choose Department</option>
                                         @foreach($departments as $department)
-
-                                                <option value="{{ $department->name }}"
-                                                    {{ $user->department->name == $department->name ? 'selected' : '' }}>
-                                                    {{ $department->name }}
-                                                </option>
-
+                                            <option value="{{ $department->name }}"
+                                            @if(isset($user->department))
+                                                {{ $user->department->name == $department->name ? 'selected' : '' }}
+                                                @endif>
+                                                {{ $department->name }}
+                                            </option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -114,18 +114,42 @@
                                     <select name="position" id="position" class="form-control">
                                         <option>Choose Position</option>
                                         @foreach($positions as $position)
-
-                                                <option value="{{ $position->title }}"
-                                                    {{ $user->position->title == $position->title ? 'selected' : '' }}>
-                                                    {{ $position->title }}
-                                                </option>
-
+                                            <option value="{{ $position->title }}"
+                                                {{ $user->position->title == $position->title ? 'selected' : '' }}>
+                                                {{ $position->title }}
+                                            </option>
                                         @endforeach
                                     </select>
                                 </div>
                             </div>
                         </div>
-                        <div class="col p-3">
+                        <div class="px-3 row">
+                            <div class="col-6">
+                                <label for="parent" class="form-label">Supervisor</label>
+                                @error('position')
+                                <div class="alert alert-danger mt-2" role="alert">
+                                    {{ $message }}
+                                </div>
+                                @enderror
+                                <div class="form-group">
+                                    <select name="parent" id="parent" class="form-control">
+                                        <option value="">Choose Supervisor</option>
+                                        @foreach($parents as $parent)
+                                            <option value="{{ $parent->position->title }}"
+                                            @if(isset($user->parent->position))
+                                                {{ $parent->position->title == $user->parent->position->title ? 'selected' : '' }}
+                                                @endif>
+                                                {{ $parent->position->title }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-6">
+
+                            </div>
+                        </div>
+                        <div class="col pb-3 pl-3">
                             <button type="submit" class="btn btn-outline-primary">Submit</button>
                         </div>
                     </div>

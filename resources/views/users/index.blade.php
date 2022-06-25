@@ -55,16 +55,14 @@
                                     <i class="fas fa-pencil-alt"></i>
                                     Edit
                                 </a>
-                                <form action="{{ route('users.destroy', $user) }}" method="post">
-                                    @csrf
-                                    @method('delete')
-                                    <button class="btn btn-danger btn-sm mx-2" type="submit">
+                                    <button class="btn btn-danger btn-sm mx-2" data-toggle="modal"
+                                            data-target="#ModalDelete{{ $user->id }}" type="submit">
                                         <i class="fas fa-fire"></i>
                                         Fire User
                                     </button>
-                                </form>
                             </td>
                         </tr>
+                        @include('users.modal.delete')
                     @endforeach
                     </tbody>
                 </table>

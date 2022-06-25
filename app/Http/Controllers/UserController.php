@@ -25,7 +25,7 @@ class UserController extends Controller
     {
         $departments = Department::all();
         $positions = Position::all();
-        $parents = User::query()->whereHas('children')->get();
+        $parents = User::whereHas('children')->get();
 
         return view('users.create', [
             'departments' => $departments,
@@ -49,32 +49,29 @@ class UserController extends Controller
 
     public function edit(User $user)
     {
-        $editor->key === 'ceo'
-            ? $departments = Department::all()
-            : $departments = Department::whereRelation('users', 'department_id', $editor->department->id)->get();
-        $editor->key === 'ceo'
-            ? $positions = Position::all()
-            : $positions = Position::whereRelation('department', 'name', $editor->department->name)->get();
+        $departments = Department::all();
+        $positions = Position::all();
+        $parents = User::whereHas('children')->get();
 
         return view('users.edit', [
             'user' => $user,
             'departments' => $departments,
             'positions' => $positions,
+            'parents' => $parents,
         ]);
     }
 
     public function update(User $user, UpdateUserRequest $userRequest, UserService $service)
     {
-        $this->authorize('update', [User::class, $user]);
-        $service->updateUser($user, $userRequest->validated());
-        $service->changePassword($user, $userRequest['password']);
+        $userData = $userRequest->validated();
+        $service->updateUser($user, $userData);
+        $service->changePassword($user, $userData['password']);
 
         return redirect()->back()->with('success', 'User successfully updated');
     }
 
     public function destroy(User $user)
     {
-        $this->authorize('delete', [User::class, $user]);
         $user->delete();
 
         return redirect()->route('users.index')->with('success', 'User successfully fired');

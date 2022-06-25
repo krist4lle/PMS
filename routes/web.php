@@ -20,7 +20,7 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth'])->group(function () {
     Route::get('/home', App\Http\Controllers\HomeController::class)->name('index');
 
     Route::get('/employees', [App\Http\Controllers\Employee\IndexController::class, 'index'])

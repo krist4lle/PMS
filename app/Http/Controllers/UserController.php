@@ -14,13 +14,7 @@ class UserController extends Controller
 {
     public function index()
     {
-        $this->authorize('viewAny', [User::class]);
-        $user = auth()->user();
-        $user->key === 'ceo'
-            ? $users = User::with(['position', 'department', 'parent'])->paginate(10)
-            : $users = User::with(['position', 'department', 'parent'])
-            ->whereRelation('parent', 'key', $user->key)
-            ->paginate(10);
+        $users = User::with(['position', 'department', 'parent'])->paginate(10);
 
         return view('users.index', [
             'users' => $users,
@@ -29,31 +23,23 @@ class UserController extends Controller
 
     public function create()
     {
-        $this->authorize('create', [User::class]);
-        $user = auth()->user();
-        $user->key === 'ceo'
-            ? $departments = Department::all()
-            : $departments = Department::whereRelation('users', 'department_id', $user->department->id)->get();
-        $user->key === 'ceo'
-            ? $positions = Position::all()
-            : $positions = Position::whereRelation('department', 'name', $user->department->name)->get();
+        $departments = Department::all();
+        $positions = Position::all();
         $parents = User::query()->whereHas('children')->get();
 
         return view('users.create', [
             'departments' => $departments,
             'positions' => $positions,
-            'user' => $user,
             'parents' => $parents,
         ]);
     }
 
     public function store(StoreRequest $request, UserService $service)
     {
-        $this->authorize('create', [User::class]);
         $userData = $request->validated();
         $service->createUser($userData);
 
-        return redirect(route('users.index'));
+        return redirect()->route('users.index')->with('success', 'User successfully created');
     }
 
     public function show($id)
@@ -63,8 +49,6 @@ class UserController extends Controller
 
     public function edit(User $user)
     {
-        $editor = auth()->user();
-        $this->authorize('update', [User::class, $user]);
         $editor->key === 'ceo'
             ? $departments = Department::all()
             : $departments = Department::whereRelation('users', 'department_id', $editor->department->id)->get();

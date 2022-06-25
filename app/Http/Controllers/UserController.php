@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\User\StoreRequest;
 use App\Http\Requests\User\UpdateUserRequest;
+use App\Mail\User\PasswordMail;
 use App\Models\Department;
 use App\Models\Position;
 use App\Models\User;
 use App\Service\UserService;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Mail;
 
 class UserController extends Controller
 {

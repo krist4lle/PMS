@@ -44,17 +44,7 @@
                                        placeholder="Enter Last Name" value="{{ old('last_name') }}">
                             </div>
                         </div>
-                        <div class="col-6 pl-3 pt-2">
-                            <label for="gender" class="form-label">Gender</label>
-                            <div class="form-group">
-                                <select name="gender" id="gender" class="form-control">
-                                    <option {{ old('gender') == 'male' ? 'selected' : '' }} value="male">Male</option>
-                                    <option {{ old('gender') == 'female' ? 'selected' : '' }} value="female">Female
-                                    </option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="px-3 row">
+                        <div class="px-3 pt-2 row">
                             <div class="col-6">
                                 <label for="password" class="form-label">Password</label>
                                 @error('password')
@@ -77,6 +67,38 @@
                         </div>
                         <div class="px-3 pt-2 row">
                             <div class="col-6">
+                                <label for="gender" class="form-label">Gender</label>
+                                <div class="form-group">
+                                    <select name="gender" id="gender" class="form-control">
+                                        <option {{ old('gender') == 'male' ? 'selected' : '' }} value="male">Male
+                                        </option>
+                                        <option {{ old('gender') == 'female' ? 'selected' : '' }} value="female">Female
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <label for="parent" class="form-label">Supervisor</label>
+                                @error('parent')
+                                <div class="alert alert-danger mt-2" role="alert">
+                                    {{ $message }}
+                                </div>
+                                @enderror
+                                <div class="form-group">
+                                    <select name="parent" id="parent" class="form-control">
+                                        <option value="">Choose Supervisor</option>
+                                        @foreach($parents as $parent)
+                                            <option {{ old('parent') === $parent->position->title ? 'selected' : '' }}
+                                                value=" {{ $parent->position->title }}">
+                                                {{ $parent->position->title }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="px-3 row">
+                            <div class="col-6">
                                 <label for="department" class="form-label">Department</label>
                                 @error('department')
                                 <div class="alert alert-danger mt-2" role="alert">
@@ -85,14 +107,12 @@
                                 @enderror
                                 <div class="form-group">
                                     <select name="department" id="department" class="form-control">
-                                        <option>Choose Department</option>
+                                        <option value="">Choose Department</option>
                                         @foreach($departments as $department)
-
-                                                <option value="{{ $department->name }}"
-                                                    {{ old('department') == $department->name ? 'selected' : '' }}>
-                                                    {{ $department->name }}
-                                                </option>
-
+                                            <option value="{{ $department->name }}"
+                                                {{ old('department') == $department->name ? 'selected' : '' }}>
+                                                {{ $department->name }}
+                                            </option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -113,12 +133,10 @@
                                     <select name="position" id="position" class="form-control">
                                         <option>Choose Position</option>
                                         @foreach($positions as $position)
-
-                                                <option value="{{ $position->title }}"
-                                                    {{ old('position') == $position->title ? 'selected' : '' }}>
-                                                    {{ $position->title }}
-                                                </option>
-
+                                            <option value="{{ $position->title }}"
+                                                {{ old('position') == $position->title ? 'selected' : '' }}>
+                                                {{ $position->title }}
+                                            </option>
                                         @endforeach
                                     </select>
                                 </div>

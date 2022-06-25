@@ -12,7 +12,7 @@ class UserPolicy
 
     public function before(User $user, $ability)
     {
-        if ($user->position->permission->title === 'ceo') {
+        if ($user->key === 'ceo') {
             return true;
         }
     }

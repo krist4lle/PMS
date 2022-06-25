@@ -22,7 +22,7 @@ class UserService
         $headBackend = User::where('key', 'headBackend')->first();
         $managementEmployees = $headManagement->children;
         $designEmployees = $artDirector->children;
-        $frontendEmployees =  $headFrontend->children;
+        $frontendEmployees = $headFrontend->children;
         $backendEmployees = $headBackend->children;
 
         return [
@@ -46,9 +46,7 @@ class UserService
         $user->email = $this->emailCreate($userData['first_name'], $userData['last_name']);
         $user->password = Hash::make($userData['password']);
         $user->avatar = $this->avatarCreate($userData['gender']);
-        $this->departmentRelation($user, $userData['department']);
-        $this->positionRelation($user, $userData['position'], $userData['department']);
-        $this->parentRelation($user, $userData['department']);
+        $this->relations($user, $userData['position'], $userData['department'], $userData['parent']);
         $user->save();
     }
 
@@ -57,16 +55,10 @@ class UserService
         $user->first_name = $userData['first_name'];
         $user->last_name = $userData['last_name'];
         $user->email = $userData['email'];
-        if (!empty($userData['avatar'])) {
-            $user->avatar = $this->avatarUpdate($user, $userData['avatar']);
+        if (isset($userData['avatar'])) {
+            $this->avatarUpdate($user, $userData['avatar']);
         }
-        if (!empty($userData['department'])) {
-            $this->departmentRelation($user, $userData['department']);
-            $this->parentRelation($user, $userData['department']);
-        }
-        if (!empty($userData['position'])) {
-            $this->positionRelation($user, $userData['position'], $userData['department']);
-        }
+        $this->relations($user, $userData['position'], $userData['department'], $userData['parent']);
         $user->save();
     }
 
@@ -92,25 +84,43 @@ class UserService
         return Storage::put('avatars', $avatarFile);
     }
 
-    private function avatarUpdate(User $user, UploadedFile $avatarFile): string
+    private function avatarUpdate(User $user, UploadedFile $avatarFile): void
     {
         Storage::delete($user->avatar);
-
-        return Storage::put('avatars', $avatarFile);
+        $user->avatar = Storage::put('avatars', $avatarFile);
     }
 
-    private function departmentRelation(User $user, string $departmentName): void
+    private function relations(User $user, string $positionTitle, string|null $departmentName, string|null $parentPosition): void
     {
-        $department = Department::where('name', $departmentName)->first();
-        $user->department()->associate($department);
-    }
-
-    private function positionRelation(User $user, string $positionTitle, string $departmentName): void
-    {
-        $department = Department::where('name', $departmentName)->first();
         $position = Position::where('title', $positionTitle)->first();
-        $this->positionCheck($position, $department);
-        $user->position()->associate($position);
+        $department = Department::where('name', $departmentName)->first();
+        $parent = User::whereRelation('position', 'title', $parentPosition)->first();
+        $this->positionHasDepartment($user, $position, $department, $parent);
+        $this->positionHasNotDepartment($user, $position, $department, $parent);
+
+    }
+
+    private function positionHasDepartment(User $user, Position $position, Department|null $department, User|null $parent): void
+    {
+        if (isset($position->department)) {
+            $this->departmentRequired($department);
+            $this->positionCheck($position, $department);
+            $this->parentRequired($parent);
+            $this->parentCheck($parent, $department);
+            $user->position()->associate($position);
+            $user->department()->associate($department);
+            $user->parent()->associate($parent);
+        }
+    }
+
+    private function positionHasNotDepartment(User $user, Position $position, Department|null $department, User|null $parent): void
+    {
+        if (empty($position->department)) {
+            $this->departmentNotRequired($department);
+            $user->department()->dissociate();
+            $user->position()->associate($position);
+            $this->parentRelation($user, $parent);
+        }
     }
 
     private function positionCheck(Position $position, Department $department): void
@@ -120,9 +130,39 @@ class UserService
         }
     }
 
-    private function parentRelation(User $user, string $departmentName): void
+    private function departmentRequired(Department|null $department): void
     {
-        $parent = User::where('key', auth()->user()->key)->first();
-        $user->parent()->associate($parent);
+        if ($department === null) {
+            throw ValidationException::withMessages(['This Position required a Department']);
+        }
+    }
+
+    private function departmentNotRequired(Department|null $department): void
+    {
+        if ($department !== null) {
+            throw ValidationException::withMessages(['This Position does not require any Department']);
+        }
+    }
+
+    private function parentRequired(User|null $parent): void
+    {
+        if ($parent === null) {
+            throw ValidationException::withMessages(['This Position required a Supervisor']);
+        }
+    }
+
+    private function parentCheck(User $parent, Department $department): void
+    {
+        if (empty($parent->position->department) || $parent->position->department->name !== $department->name) {
+            throw ValidationException::withMessages(['This Supervisor does not belong to this Department']);
+        }
+    }
+
+    private function parentRelation(User $user, User|null $parent): void
+    {
+        if ($parent !== null) {
+            $user->parent()->associate($parent);
+        }
+        $user->parent()->dissociate();
     }
 }

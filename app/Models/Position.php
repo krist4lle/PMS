@@ -24,9 +24,4 @@ class Position extends Model
     {
         return $this->belongsTo(Department::class);
     }
-
-    public function permission()
-    {
-        return $this->belongsTo(Permission::class);
-    }
 }

@@ -23,7 +23,6 @@ class PositionController extends Controller
 
     public function create()
     {
-        $this->authorize('create', [Position::class]);
         $departments = Department::all();
 
         return view('positions.create', [
@@ -33,11 +32,10 @@ class PositionController extends Controller
 
     public function store(StoreRequest $request, PositionService $service)
     {
-        $this->authorize('create', [Position::class]);
-        $position = $request->validated();
-        $service->positionSave(new Position(), $position);
+        $positionData = $request->validated();
+        $service->positionSave(new Position(), $positionData);
 
-        return redirect(route('positions.index'));
+        return redirect(route('positions.index'))->with('success', 'Position successfully created');
     }
 
     public function show($id)
@@ -47,7 +45,6 @@ class PositionController extends Controller
 
     public function edit(Position $position)
     {
-        $this->authorize('update', [Position::class]);
         $departments = Department::all();
 
         return view('positions.edit', [
@@ -58,18 +55,16 @@ class PositionController extends Controller
 
     public function update(UpdateRequest $request, Position $position, PositionService $service)
     {
-        $this->authorize('update', [Position::class]);
         $positionData = $request->validated();
         $service->positionSave($position, $positionData);
 
-        return redirect(route('positions.index'));
+        return redirect(route('positions.index'))->with('success', 'Position successfully updated');
     }
 
     public function destroy(Position $position, PositionService $service)
     {
-        $this->authorize('delete', [Position::class]);
         $service->positionDelete($position);
 
-        return redirect(route('positions.index'));
+        return redirect(route('positions.index'))->with('success', 'Position successfully deleted');
     }
 }

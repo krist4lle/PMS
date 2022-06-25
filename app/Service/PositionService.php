@@ -4,19 +4,13 @@ namespace App\Service;
 
 use App\Models\Department;
 use App\Models\Position;
-use App\Models\User;
-use Illuminate\Http\File;
-use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
 
 class PositionService
 {
-    public function positionSave(Position $position, array $positionData)
+    public function positionSave(Position $position, array $positionData): void
     {
         $position->title = $positionData['title'];
-        $department = $this->departmentForPosition($positionData['department_name']);
-        $position->department()->associate($department);
+        $this->departmentCheck($positionData['department_name'], $position);
         $position->save();
     }
 
@@ -31,8 +25,11 @@ class PositionService
         $position->delete();
     }
 
-    private function departmentForPosition(string $departmentName): Department
+    private function departmentCheck(string|null $departmentName, Position $position): void
     {
-        return Department::where('name', $departmentName)->first();
+        $department = Department::where('name', $departmentName)->first();
+        $department !== null
+            ? $position->department()->associate($department)
+            : $position->department()->dissociate();
     }
 }

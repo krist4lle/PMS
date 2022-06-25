@@ -17,6 +17,11 @@
             {{ session()->get('errorMessage') }}
         </div>
     @endif
+    @if(session()->has('success'))
+        <div class="alert alert-success mt-2" role="alert">
+            {{ session()->get('success') }}
+        </div>
+    @endif
     @error('name')
     <div class="alert alert-danger mt-2" role="alert">
         {{ $message }}

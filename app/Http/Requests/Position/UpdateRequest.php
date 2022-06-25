@@ -30,7 +30,7 @@ class UpdateRequest extends FormRequest
                 'string',
                 Rule::unique('positions')->ignore($this->route('position'))
             ],
-            'department_name' => 'required|exists:departments,name',
+            'department_name' => 'nullable|exists:departments,name',
         ];
     }
 }

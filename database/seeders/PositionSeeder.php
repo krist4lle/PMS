@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\Department;
-use App\Models\Permission;
 use App\Models\Position;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -30,29 +29,19 @@ class PositionSeeder extends Seeder
 
     private function createPosition(array $positionTitles, Department $department): void
     {
-        $permission = Permission::where('title', 'worker')->first();
-
         foreach ($positionTitles as $positionTitle) {
             $position = new Position();
             $position->title = $positionTitle;
             $position->department()->associate($department);
-            $position->permission()->associate($permission);
             $position->save();
         }
     }
 
     private function createCeo(): void
     {
-        $permission = Permission::where('title', 'ceo')->first();
         $ceo = new Position();
         $ceo->title = 'CEO';
-        $ceo->permission()->associate($permission);
         $ceo->save();
-    }
-
-    private function headPermission(): Permission
-    {
-        return Permission::where('title', 'head')->first();
     }
 
     private function managementDepartment(): Department
@@ -79,7 +68,6 @@ class PositionSeeder extends Seeder
     {
         $headManagement = new Position();
         $headManagement->title = 'Head of Management Department';
-        $headManagement->permission()->associate($this->headPermission());
         $headManagement->department()->associate($this->managementDepartment());
         $headManagement->save();
     }
@@ -88,7 +76,6 @@ class PositionSeeder extends Seeder
     {
         $headDesign = new Position();
         $headDesign->title = 'Art Director';
-        $headDesign->permission()->associate($this->headPermission());
         $headDesign->department()->associate($this->designDepartment());
         $headDesign->save();
     }
@@ -97,7 +84,6 @@ class PositionSeeder extends Seeder
     {
         $headFrontend = new Position();
         $headFrontend->title = 'Head of Frontend Department';
-        $headFrontend->permission()->associate($this->headPermission());
         $headFrontend->department()->associate($this->frontendDepartment());
         $headFrontend->save();
     }
@@ -106,7 +92,6 @@ class PositionSeeder extends Seeder
     {
         $headBackend = new Position();
         $headBackend->title =  'Head of Backend Department';
-        $headBackend->permission()->associate($this->headPermission());
         $headBackend->department()->associate($this->backendDepartment());
         $headBackend->save();
     }

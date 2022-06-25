@@ -9,6 +9,7 @@ use Illuminate\Http\File;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
 class UserService
@@ -22,7 +23,7 @@ class UserService
         $headBackend = User::where('key', 'headBackend')->first();
         $managementEmployees = $headManagement->children;
         $designEmployees = $artDirector->children;
-        $frontendEmployees =  $headFrontend->children;
+        $frontendEmployees = $headFrontend->children;
         $backendEmployees = $headBackend->children;
 
         return [
@@ -46,9 +47,7 @@ class UserService
         $user->email = $this->emailCreate($userData['first_name'], $userData['last_name']);
         $user->password = Hash::make($userData['password']);
         $user->avatar = $this->avatarCreate($userData['gender']);
-        $this->departmentRelation($user, $userData['department']);
-        $this->positionRelation($user, $userData['position'], $userData['department']);
-        $this->parentRelation($user, $userData['department']);
+        $this->relationships($user, $userData['parent'], $userData['department'], $userData['position']);
         $user->save();
     }
 
@@ -65,7 +64,7 @@ class UserService
             $this->parentRelation($user, $userData['department']);
         }
         if (!empty($userData['position'])) {
-            $this->positionRelation($user, $userData['position'], $userData['department']);
+            $this->positionRelation($user, $userData['position']);
         }
         $user->save();
     }
@@ -99,30 +98,43 @@ class UserService
         return Storage::put('avatars', $avatarFile);
     }
 
-    private function departmentRelation(User $user, string $departmentName): void
+    private function relationships(User $user, string|null $parentPosition, string|null $department, string $position)
     {
-        $department = Department::where('name', $departmentName)->first();
-        $user->department()->associate($department);
+        $this->positionRelation($user, $position);
     }
 
-    private function positionRelation(User $user, string $positionTitle, string $departmentName): void
+    private function positionRelation(User $user, string $positionTitle): void
     {
-        $department = Department::where('name', $departmentName)->first();
         $position = Position::where('title', $positionTitle)->first();
-        $this->positionCheck($position, $department);
+        if (isset($position->department)) {
+            $this->positionCheck($position, $department);
+        }
         $user->position()->associate($position);
+    }
+
+
+    private function departmentRelation(User $user, string|null $departmentName): void
+    {
+        if ($departmentName !== null) {
+            $department = Department::where('name', $departmentName)->first();
+            $user->department()->associate($department);
+        }
     }
 
     private function positionCheck(Position $position, Department $department): void
     {
+
         if ($position->department->name !== $department->name) {
             throw ValidationException::withMessages(['This Position does not belong to this Department']);
         }
+
     }
 
-    private function parentRelation(User $user, string $departmentName): void
+    private function parentRelation(User $user, string|null $parentPosition): void
     {
-        $parent = User::where('key', auth()->user()->key)->first();
-        $user->parent()->associate($parent);
+        if ($parentPosition !== null) {
+            $parent = User::whereRelation('position', 'title', $parentPosition)->first();
+            $user->parent()->associate($parent);
+        }
     }
 }

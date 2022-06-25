@@ -51,7 +51,6 @@ class UserController extends Controller
     {
         $this->authorize('create', [User::class]);
         $userData = $request->validated();
-        dd($userData);
         $service->createUser($userData);
 
         return redirect(route('users.index'));

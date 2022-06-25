@@ -86,7 +86,7 @@
                                 @enderror
                                 <div class="form-group">
                                     <select name="parent" id="parent" class="form-control">
-                                        <option value="null">Choose Supervisor</option>
+                                        <option value="">Choose Supervisor</option>
                                         @foreach($parents as $parent)
                                             <option {{ old('parent') === $parent->position->title ? 'selected' : '' }}
                                                 value=" {{ $parent->position->title }}">
@@ -107,7 +107,7 @@
                                 @enderror
                                 <div class="form-group">
                                     <select name="department" id="department" class="form-control">
-                                        <option value="null">Choose Department</option>
+                                        <option value="">Choose Department</option>
                                         @foreach($departments as $department)
                                             <option value="{{ $department->name }}"
                                                 {{ old('department') == $department->name ? 'selected' : '' }}>
@@ -133,12 +133,10 @@
                                     <select name="position" id="position" class="form-control">
                                         <option>Choose Position</option>
                                         @foreach($positions as $position)
-
                                             <option value="{{ $position->title }}"
                                                 {{ old('position') == $position->title ? 'selected' : '' }}>
                                                 {{ $position->title }}
                                             </option>
-
                                         @endforeach
                                     </select>
                                 </div>

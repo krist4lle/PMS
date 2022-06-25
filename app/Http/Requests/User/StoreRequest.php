@@ -31,8 +31,8 @@ class StoreRequest extends FormRequest
             'password' => 'required|string|min:6|max:20|confirmed',
             'password_confirmation' => 'required|string|min:6|max:20',
             'gender' => 'required',
-            'parent' => 'nullable',
-            'department' => 'nullable',
+            'parent' => 'nullable|exists:positions,title',
+            'department' => 'nullable|exists:departments,name',
             'position' => 'required|exists:positions,title',
         ];
     }

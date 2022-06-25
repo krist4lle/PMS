@@ -61,7 +61,9 @@ class UserService
         if (isset($userData['avatar'])) {
             $this->avatarUpdate($user, $userData['avatar']);
         }
-        $this->relations($user, $userData['position'], $userData['department'], $userData['parent']);
+        if (isset($userData['position'])) {
+            $this->relations($user, $userData['position'], $userData['department'], $userData['parent']);
+        }
         $user->save();
     }
 

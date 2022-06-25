@@ -9,7 +9,6 @@ use Illuminate\Http\File;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
 class UserService
@@ -47,7 +46,7 @@ class UserService
         $user->email = $this->emailCreate($userData['first_name'], $userData['last_name']);
         $user->password = Hash::make($userData['password']);
         $user->avatar = $this->avatarCreate($userData['gender']);
-        $this->relationships($user, $userData['position'], $userData['department'], $userData['parent']);
+        $this->relations($user, $userData['position'], $userData['department'], $userData['parent']);
         $user->save();
     }
 
@@ -98,7 +97,7 @@ class UserService
         return Storage::put('avatars', $avatarFile);
     }
 
-    private function relationships(User $user, string $positionTitle, string|null $departmentName, string|null $parentPosition): void
+    private function relations(User $user, string $positionTitle, string|null $departmentName, string|null $parentPosition): void
     {
         $position = Position::where('title', $positionTitle)->first();
         $department = Department::where('name', $departmentName)->first();

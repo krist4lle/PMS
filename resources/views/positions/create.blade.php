@@ -26,7 +26,7 @@
                                 </div>
                                 @enderror
                                 <select class="form-control" name="department_name">
-                                    <option>Choose Department</option>
+                                    <option value="">Choose Department</option>
                                     @foreach($departments as $department)
                                         <option value="{{ $department->name }}"
                                         {{ old('department_name') == $department->name ? 'selected' : ''}}>

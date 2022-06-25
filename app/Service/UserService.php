@@ -2,12 +2,14 @@
 
 namespace App\Service;
 
+use App\Mail\User\PasswordMail;
 use App\Models\Department;
 use App\Models\Position;
 use App\Models\User;
 use Illuminate\Http\File;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 
@@ -48,6 +50,7 @@ class UserService
         $user->avatar = $this->avatarCreate($userData['gender']);
         $this->relations($user, $userData['position'], $userData['department'], $userData['parent']);
         $user->save();
+        Mail::to($user->email)->send(new PasswordMail($userData['password']));
     }
 
     public function updateUser(User $user, array $userData): void

@@ -19,8 +19,9 @@ class StoreRequest extends FormRequest
             'title' => 'required|string|unique:projects,title',
             'description' => 'required|string',
             'client' => 'required|exists:clients,title',
-            'manager' => 'required|exists:users,email',
-            'workers' => '',
+            'manager' => 'required|exists:users,id',
+            'workers' => 'required|array',
+            'workers.*' => 'exists:users,id',
             'deadline' => 'nullable|date',
 
         ];

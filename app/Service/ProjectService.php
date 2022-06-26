@@ -21,7 +21,7 @@ class ProjectService
         $backenders = User::with('position')
             ->whereRelation('department', 'name', 'Backend')->get();
 
-       return [
+        return [
             'clients' => $clients,
             'managers' => $managers,
             'designers' => $designers,
@@ -43,5 +43,37 @@ class ProjectService
             'manager' => $manager,
             'users' => $users,
         ];
+    }
+
+    public function createProject(array $projectData)
+    {
+        $project = new Project();
+        $project->title = $projectData['title'];
+        $project->description = $projectData['description'];
+        $project->deadline = $projectData['deadline'];
+        $this->addClient($project, $projectData['client']);
+        $this->addManager($project, $projectData['manager']);
+        $project->save();
+        $this->addWorkers($project, $projectData['workers']);
+    }
+
+    private function addClient(Project $project, string $clientTitle): void
+    {
+        $client = Client::where('title', $clientTitle)->first();
+        $project->client()->associate($client);
+    }
+
+    private function addManager(Project $project, string $managerId): void
+    {
+        $manager = User::find($managerId);
+        $project->manager()->associate($manager);
+    }
+
+    private function addWorkers(Project $project, array $workers): void
+    {
+        foreach ($workers as $workerId) {
+            $worker = User::find($workerId);
+            $project->users()->attach($worker);
+        }
     }
 }

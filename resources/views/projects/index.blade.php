@@ -10,6 +10,11 @@
             </div>
         </div>
     </section>
+    @if(session()->has('success'))
+        <div class="alert alert-success mt-2" role="alert">
+            {{ session()->get('success') }}
+        </div>
+    @endif
     <section class="content">
         <div class="card">
             <div class="card-body p-0">
@@ -76,6 +81,7 @@
                     @endforeach
                     </tbody>
                 </table>
+                {{ $projects->withQueryString() }}
             </div>
         </div>
     </section>

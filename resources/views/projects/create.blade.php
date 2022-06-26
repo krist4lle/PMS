@@ -82,8 +82,8 @@
                                     <select name="manager" id="manager" class="form-control">
                                         <option>Choose Project Manager</option>
                                         @foreach($managers as $manager)
-                                            <option value="{{ $manager->email }}"
-                                                {{ old('manager') == $manager->email ? 'selected' : '' }}>
+                                            <option value="{{ $manager->id }}"
+                                                {{ old('manager') == $manager->id ? 'selected' : '' }}>
                                                 {{ $manager->first_name }} {{ $manager->last_name }}
                                             </option>
                                         @endforeach
@@ -95,24 +95,44 @@
                             <div class="row">
                                 <div class="col-12">
                                     <div class="form-group">
-                                        <label>Multiple</label>
-                                        <select class="duallistbox" multiple="multiple" style="display: none;">
-                                            <option selected="">Alabama</option>
-                                            <option>Alaska</option>
-                                            <option>California</option>
-                                            <option>Delaware</option>
-                                            <option>Tennessee</option>
-                                            <option>Texas</option>
-                                            <option>Washington</option>
+                                        <label>Workers</label>
+                                        @error('workers')
+                                        <div class="alert alert-danger mt-2" role="alert">
+                                            {{ $message }}
+                                        </div>
+                                        @enderror
+                                        <select name="workers[]" class="duallistbox" multiple="multiple"
+                                                style="display: none;">
+                                            <option value="">Designers</option>
+                                            @foreach($designers as $designer)
+                                                <option value="{{ $designer->id }}"
+                                                    {{ is_array(old('workers')) && in_array($designer->id, old('workers')) ? 'selected' : '' }}>
+                                                    {{ $designer->first_name }} {{ $designer->last_name }}
+                                                    : {{ $designer->position->title }}
+                                                </option>
+                                            @endforeach
+                                            <option value="">Frontend Developers</option>
+                                            @foreach($frontenders as $frontender)
+                                                <option value="{{ $frontender->id }}"
+                                                    {{ is_array(old('workers')) && in_array($frontender->id, old('workers')) ? 'selected' : '' }}>
+                                                    {{ $frontender->first_name }} {{ $frontender->last_name }}
+                                                    : {{ $frontender->position->title }}
+                                                </option>
+                                            @endforeach
+                                            <option value="">Backend Developers</option>
+                                            @foreach($backenders as $backender)
+                                                <option value="{{ $backender->id }}"
+                                                    {{ is_array(old('workers')) && in_array($backender->id, old('workers')) ? 'selected' : '' }}>
+                                                    {{ $backender->first_name }} {{ $backender->last_name }}
+                                                    : {{ $backender->position->title }}
+                                                </option>
+                                            @endforeach
                                         </select>
                                     </div>
-
                                 </div>
-
                             </div>
-
                         </div>
-                        <div class="col p-3">
+                        <div class="col px-3 pb-3">
                             <button type="submit" class="btn btn-outline-primary">Submit</button>
                         </div>
                     </form>

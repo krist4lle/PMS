@@ -13,7 +13,7 @@ class ProjectController extends Controller
 {
     public function index()
     {
-        $projects = Project::with(['manager', 'users'])->get();
+        $projects = Project::with(['manager', 'users'])->paginate(10);
 
         return view('projects.index', [
             'projects' => $projects
@@ -25,10 +25,12 @@ class ProjectController extends Controller
         return view('projects.create', $service->dataToCreateProject());
     }
 
-    public function store(StoreRequest $request)
+    public function store(StoreRequest $request, ProjectService $service)
     {
         $projectData = $request->validated();
-        dd($projectData);
+        $service->createProject($projectData);
+
+        return redirect(route('projects.index'))->with('success', 'Project successfully created');
     }
 
     public function show(Project $project, ProjectService $service)

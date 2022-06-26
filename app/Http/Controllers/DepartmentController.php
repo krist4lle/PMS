@@ -35,8 +35,6 @@ class DepartmentController extends Controller
 
     public function edit(Department $department)
     {
-        $this->authorize('update', [Department::class]);
-
         return view('departments.edit', [
             'department' => $department
         ]);
@@ -44,7 +42,6 @@ class DepartmentController extends Controller
 
     public function update(UpdateRequest $request, Department $department, DepartmentService $service)
     {
-        $this->authorize('update', [Department::class]);
         $dataName = $request->validated();
         $service->departmentSave($department, $dataName['name']);
 
@@ -53,7 +50,6 @@ class DepartmentController extends Controller
 
     public function destroy(Department $department, DepartmentService $service)
     {
-        $this->authorize('delete', [Department::class]);
         $service->departmentDelete($department);
 
         return redirect(route('departments.index'));

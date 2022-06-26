@@ -10,6 +10,16 @@
             </div>
         </div>
     </section>
+    @if(session()->has('success'))
+        <div class="alert alert-success mt-2" role="alert">
+            {{ session()->get('success') }}
+        </div>
+    @endif
+    @if(session()->has('error'))
+        <div class="alert alert-danger mt-2" role="alert">
+            {{ session()->get('error') }}
+        </div>
+    @endif
     <section class="content">
         <div class="card">
             <div class="card-body p-0">
@@ -56,26 +66,29 @@
                                     <span class="badge badge-warning">In progress</span>
                                 @endif
                             </td>
-                            <td class="project-actions text-right">
-                                <a class="btn btn-primary btn-sm" href="{{ route('projects.show', $project) }}">
+                            <td class="project-actions text-right row">
+                                <a class="btn btn-primary btn-sm mx-2" href="{{ route('projects.show', $project) }}">
                                     <i class="fas fa-folder"></i>
                                     View
                                 </a>
-                                <a class="btn btn-info btn-sm" href="#">
+                                <a class="btn btn-info btn-sm mx-2" href="{{ route('projects.edit', $project) }}">
                                     <i class="fas fa-pencil-alt">
                                     </i>
                                     Edit
                                 </a>
-                                <a class="btn btn-danger btn-sm" href="#">
-                                    <i class="fas fa-trash">
-                                    </i>
-                                    Delete
-                                </a>
+                                <form action="{{ route('projects.destroy', $project) }}" method="post">
+                                    @csrf
+                                    @method('delete')
+                                    <button class="btn btn-danger btn-sm mx-2" type="submit">
+                                        <i class="fas fa-trash"></i>Delete
+                                    </button>
+                                </form>
                             </td>
                         </tr>
                     @endforeach
                     </tbody>
                 </table>
+                {{ $projects->withQueryString() }}
             </div>
         </div>
     </section>

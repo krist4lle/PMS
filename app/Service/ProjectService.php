@@ -45,16 +45,38 @@ class ProjectService
         ];
     }
 
-    public function createProject(array $projectData)
+    public function dataToEditProject(Project $project): array
     {
-        $project = new Project();
+        $project->load(['client', 'manager', 'users']);
+        $assignedWorkers = $project->users->pluck('id')->toArray();
+        $dataToEditProject = [
+            'project' => $project,
+            'assignedWorkers' => $assignedWorkers
+        ];
+
+        return array_merge($dataToEditProject, $this->dataToCreateProject());
+    }
+
+    public function createProject(Project $project, array $projectData): void
+    {
+        $this->saveProject($project, $projectData);
+        $project->users()->attach($projectData['workers']);
+    }
+
+    public function updateProject(Project $project, array $projectData)
+    {
+        $this->saveProject($project, $projectData);
+        $project->users()->sync($projectData['workers']);
+    }
+
+    private function saveProject(Project $project, array $projectData): void
+    {
         $project->title = $projectData['title'];
         $project->description = $projectData['description'];
         $project->deadline = $projectData['deadline'];
         $this->addClient($project, $projectData['client']);
         $this->addManager($project, $projectData['manager']);
         $project->save();
-        $this->addWorkers($project, $projectData['workers']);
     }
 
     private function addClient(Project $project, string $clientTitle): void
@@ -67,13 +89,5 @@ class ProjectService
     {
         $manager = User::find($managerId);
         $project->manager()->associate($manager);
-    }
-
-    private function addWorkers(Project $project, array $workers): void
-    {
-        foreach ($workers as $workerId) {
-            $worker = User::find($workerId);
-            $project->users()->attach($worker);
-        }
     }
 }

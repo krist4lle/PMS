@@ -66,7 +66,7 @@
                                     <i class="fas fa-folder"></i>
                                     View
                                 </a>
-                                <a class="btn btn-info btn-sm" href="#">
+                                <a class="btn btn-info btn-sm" href="{{ route('projects.edit', $project) }}">
                                     <i class="fas fa-pencil-alt">
                                     </i>
                                     Edit

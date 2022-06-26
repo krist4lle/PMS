@@ -46,16 +46,19 @@
                         <br>
                         <div class="text-muted">
                             <p class="text-sm">Client Company
-                                <b class="d-block">{{ $project->client->title }}</b>
+                                <b class="d-block">
+                                    {{ $client->title }}
+                                    <a href="{{ route('clients.show', $client) }}"><i class="nav-icon fas fa-link"></i></a>
+                                </b>
                             </p>
                             <p class="text-sm">Project Leader
                                 <b class="d-block">
-                                    {{ $project->manager->first_name }} {{ $project->manager->last_name }}
+                                    {{ $manager->first_name }} {{ $manager->last_name }}
                                     <a href=""><i class="nav-icon fas fa-link"></i></a>
                                 </b>
                             </p>
                             <p>Team</p>
-                            @foreach($project->users as $user)
+                            @foreach($users as $user)
                                 <div>
                                     <b>{{ $user->first_name }} {{ $user->last_name }}</b> -
                                     "{{ $user->position->title }}"
@@ -66,8 +69,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
-
     </section>
 @endsection

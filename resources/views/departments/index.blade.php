@@ -49,7 +49,6 @@
                                     <i class="fas fa-folder"></i>
                                     View
                                 </a>
-                                @canany(['update', 'delete'], $department)
                                 <a class="btn btn-info btn-sm mx-2" href="{{ route('departments.edit', $department) }}">
                                     <i class="fas fa-pencil-alt"></i>
                                     Edit
@@ -62,7 +61,6 @@
                                         Delete
                                     </button>
                                 </form>
-                                @endcan
                             </td>
                         </tr>
                     @endforeach

@@ -18,6 +18,8 @@ class IndexController extends Controller
 
     public function profile(User $user)
     {
+        $user->load(['position', 'department']);
+
         return view('employees.profile', [
             'user' => $user,
         ]);

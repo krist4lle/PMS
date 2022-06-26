@@ -17,11 +17,15 @@ class UserService
 {
     public function retrievingEmployees(): array
     {
-        $ceo = User::where('key', 'ceo')->first();
-        $headManagement = User::where('key', 'headManagement')->first();
-        $artDirector = User::where('key', 'headDesign')->first();
-        $headFrontend = User::where('key', 'headFrontend')->first();
-        $headBackend = User::where('key', 'headBackend')->first();
+        $ceo = User::where('key', 'ceo')->with('position')->first();
+        $headManagement = User::where('key', 'headManagement')
+            ->with(['position', 'children', 'children.position'])->first();
+        $artDirector = User::where('key', 'headDesign')
+            ->with(['position', 'children', 'children.position'])->first();
+        $headFrontend = User::where('key', 'headFrontend')
+            ->with(['position', 'children', 'children.position'])->first();
+        $headBackend = User::where('key', 'headBackend')
+            ->with(['position', 'children', 'children.position'])->first();
         $managementEmployees = $headManagement->children;
         $designEmployees = $artDirector->children;
         $frontendEmployees = $headFrontend->children;

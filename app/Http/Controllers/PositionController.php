@@ -46,6 +46,7 @@ class PositionController extends Controller
     public function edit(Position $position)
     {
         $departments = Department::all();
+        $position->load('department');
 
         return view('positions.edit', [
             'position' => $position,

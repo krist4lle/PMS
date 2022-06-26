@@ -63,10 +63,16 @@ class ProjectService
         $project->users()->attach($projectData['workers']);
     }
 
-    public function updateProject(Project $project, array $projectData)
+    public function updateProject(Project $project, array $projectData): void
     {
         $this->saveProject($project, $projectData);
         $project->users()->sync($projectData['workers']);
+    }
+
+    public function projectStatus(Project $project, string $finishedAtDate): void
+    {
+        $project->finished_at !== null ? $project->finished_at = null : $project->finished_at = $finishedAtDate;
+        $project->save();
     }
 
     private function saveProject(Project $project, array $projectData): void

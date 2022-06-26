@@ -5,7 +5,14 @@
             <div class="row mb-2">
                 <div class="col row justify-content-between">
                     <div>
-                        <h1>Project: <em>{{ $project->title }}</em></h1>
+                        <h1>
+                            Project: <em>{{ $project->title }}</em>
+                            @if($project->finished_at !== null)
+                                <span class="badge badge-success">Success</span>
+                            @else
+                                <span class="badge badge-warning">In progress</span>
+                            @endif
+                        </h1>
                     </div>
                     <div>
                         <a href="{{ route('projects.index') }}" type="button" class="btn btn-outline-secondary">Back</a>
@@ -65,6 +72,22 @@
                                     <a href=""><i class="nav-icon fas fa-link"></i></a>
                                 </div>
                             @endforeach
+                            <div class="pt-3">
+                                <form action="{{ route('projects.finished', $project) }}" method="post">
+                                    @csrf
+                                    @method('patch')
+                                    <input type="hidden" value="{{ date('Y-m-d H:i:s') }}" name="finished_at">
+                                    @if($project->finished_at !== null)
+                                        <button class="btn btn-outline-info" type="submit">
+                                            Start Project
+                                        </button>
+                                    @else
+                                        <button class="btn btn-outline-info" type="submit">
+                                            Close Project
+                                        </button>
+                                    @endif
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>

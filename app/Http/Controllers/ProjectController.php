@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Project\FinishedRequest;
 use App\Http\Requests\Project\StoreRequest;
 use App\Http\Requests\Project\UpdateRequest;
-use App\Models\Client;
 use App\Models\Project;
-use App\Models\User;
 use App\Service\ProjectService;
-use Illuminate\Http\Request;
 
 class ProjectController extends Controller
 {
@@ -49,11 +47,24 @@ class ProjectController extends Controller
         $projectData = $request->validated();
         $service->updateProject($project, $projectData);
 
-        return redirect(route('projects.index'))->with('success', 'Project successfully edited');
+        return redirect()->back()->with('success', 'Project successfully edited');
     }
 
-    public function destroy($id)
+    public function destroy(Project $project)
     {
-        //
+        if ($project->finished_at === null) {
+            return redirect()->back()->with('error', 'Impossible to delete Project in progress');
+        } else {
+            $project->delete();
+            return redirect()->back()->with('success', 'Project successfully deleted');
+        }
+    }
+
+    public function finished(FinishedRequest $request, Project $project, ProjectService $service)
+    {
+        $finishedAtDate = $request->validated();
+        $service->projectStatus($project, $finishedAtDate['finished_at']);
+
+        return redirect()->back();
     }
 }

@@ -16,7 +16,7 @@ class IndexController extends Controller
 {
     public function index()
     {
-        $user = auth()->user()->loadCount('issues');
+        $user = auth()->user()->loadCount(['issues', 'projects']);
 
         return view('me.index', [
             'user' => $user,
@@ -48,6 +48,16 @@ class IndexController extends Controller
 
         return view('me.issues', [
             'issues' => $issues
+        ]);
+    }
+
+    public function projects(User $user)
+    {
+        $user->load('projects');
+        $projects = $user->projects;
+
+        return view('me.projects', [
+            'projects' => $projects
         ]);
     }
 }

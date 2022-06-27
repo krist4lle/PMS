@@ -4,7 +4,7 @@
         <div class="container-fluid">
             <div class="col row justify-content-between">
                 <div>
-                    <h1>My Issues</h1>
+                    <h1>My Projects</h1>
                 </div>
                 <div>
                     <a href="{{ route('me.index') }}" type="button" class="btn btn-outline-secondary">
@@ -20,36 +20,29 @@
                 <table class="table table-striped projects">
                     <thead>
                     <tr>
-                        <th style="width: 10%">Issue</th>
+                        <th style="width: 20%">Project</th>
                         <th style="width: 40%">Description</th>
                         <th style="width: 10%">Status</th>
                         <th style="width: 20%"></th>
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach($issues as $issue)
+                    @foreach($projects as $project)
                         <tr>
-                            <td>{{ $issue->title }}</td>
-                            <td>{{ $issue->description }}</td>
-                            <td><span class="badge badge-info">{{ $issue->status->status }}</span></td>
+                            <td>{{ $project->title }}</td>
+                            <td>{{ $project->description }}</td>
+                            <td>
+                                @if($project->finished_at !== null)
+                                    <span class="badge badge-success">Closed</span>
+                                @else
+                                    <span class="badge badge-warning">In progress</span>
+                                @endif
+                            </td>
                             <td class="project-actions text-right row">
-                                <a class="btn btn-primary btn-sm mx-2" href="{{ route('issues.show', $issue) }}">
+                                <a class="btn btn-primary btn-sm mx-2" href="{{ route('projects.show', $project) }}">
                                     <i class="fas fa-folder"></i>
                                     View
                                 </a>
-                                @if(empty($issue->finished_at))
-                                    <form action="{{ route('issues.status', $issue) }}" method="post">
-                                        @csrf
-                                        @method('patch')
-                                        <button type="submit" class="btn btn-info btn-sm mx-2">
-                                            @if($issue->status->status === 'new')
-                                                Accept
-                                            @else
-                                                Close
-                                            @endif
-                                        </button>
-                                    </form>
-                                @endif
                             </td>
                         </tr>
                     @endforeach

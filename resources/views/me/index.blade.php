@@ -56,6 +56,15 @@
                             <hr>
                             <strong>
                                 <i class="fas fa-list mr-1"></i>
+                                My Projects
+                                <span class="badge badge-warning">{{ $user->projects_count }}</span>
+                            </strong>
+                            <a href="{{ route('me.projects', $user) }}" class="float-right">
+                                <i class="fas fa-arrow-circle-right mr-1"></i>
+                            </a>
+                            <hr>
+                            <strong>
+                                <i class="fas fa-clipboard-list mr-1"></i>
                                 My Issues
                                 <span class="badge badge-warning">{{ $user->issues_count }}</span>
                             </strong>

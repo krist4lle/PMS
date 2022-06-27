@@ -7,13 +7,28 @@
                     <h1>Issue: {{ $issue->title }}</h1>
                 </div>
                 <div>
-                    <a href="" type="button" class="btn btn-outline-secondary">
-                        To Clients
-                    </a>
+                    @if(empty($issue->finished_at))
+                        <form action="{{ route('issues.status', $issue) }}" method="post">
+                            @csrf
+                            @method('patch')
+                            <button type="submit" class="btn btn-primary">
+                                @if($issue->status->status === 'new')
+                                    Accept
+                                @else
+                                    Close
+                                @endif
+                            </button>
+                        </form>
+                    @endif
                 </div>
             </div>
         </div>
     </section>
+    @if(session()->has('success'))
+        <div class="alert alert-success mt-2" role="alert">
+            {{ session()->get('success') }}
+        </div>
+    @endif
     <section>
         <div class="invoice p-3 mb-3">
             <div class="row">

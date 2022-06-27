@@ -44,7 +44,7 @@ class ProjectService
         $client = $project->client;
         $manager = $project->manager;
         $users = $project->users;
-        $issues = $project->issues;
+        $issues = $project->issues->sortByDesc('updated_at');
 
         return [
             'project' => $project,
@@ -81,11 +81,14 @@ class ProjectService
 
     public function projectStatus(Project $project, string $finishedAtDate): void
     {
-        if (empty($project->issues)) {
+        $newStatus = $project->issues->where('issue_status_id', 1)->isNotEmpty();
+        $inProgressStatus = $project->issues->where('issue_status_id', 2)->isNotEmpty();
+
+        if ($newStatus || $inProgressStatus) {
+            redirect()->back()->with('error', 'Impossible to close Project with active Issues');
+        } else {
             $project->finished_at !== null ? $project->finished_at = null : $project->finished_at = $finishedAtDate;
             $project->save();
-        } else {
-            redirect()->back()->with('error', 'Impossible to close Project with active Issues');
         }
     }
 

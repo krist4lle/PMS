@@ -8,7 +8,7 @@
                         <h1>
                             Project: <em>{{ $project->title }}</em>
                             @if($project->finished_at !== null)
-                                <span class="badge badge-success">Success</span>
+                                <span class="badge badge-success">Closed</span>
                             @else
                                 <span class="badge badge-warning">In progress</span>
                             @endif
@@ -23,9 +23,19 @@
             </div>
         </div>
     </section>
+    @if($errors->has('error'))
+        <div class="alert alert-danger mt-2" role="alert">
+            {{ $errors->first('error') }}
+        </div>
+    @endif
     @if(session()->has('error'))
         <div class="alert alert-danger mt-2" role="alert">
             {{ session()->get('error') }}
+        </div>
+    @endif
+    @if(session()->has('success'))
+        <div class="alert alert-success mt-2" role="alert">
+            {{ session()->get('success') }}
         </div>
     @endif
     <section class="content">
@@ -37,9 +47,10 @@
                             <div class="col-12">
                                 <h4>
                                     Issues
-                                    <a href="{{ route('issues.create') }}" class="float-right btn btn-outline-info">
+                                    <button class="float-right btn btn-outline-info" data-toggle="modal"
+                                            data-target="#Modal">
                                         Create Issue
-                                    </a>
+                                    </button>
                                 </h4>
                                 @foreach($issues as $issue)
                                     <div class="post">
@@ -109,15 +120,13 @@
                                         @csrf
                                         @method('patch')
                                         <input type="hidden" value="{{ date('Y-m-d H:i:s') }}" name="finished_at">
-                                        @if($project->finished_at !== null)
-                                            <button class="btn btn-outline-info" type="submit">
+                                        <button class="btn btn-outline-info" type="submit">
+                                            @if($project->finished_at !== null)
                                                 Start Project
-                                            </button>
-                                        @else
-                                            <button class="btn btn-outline-info" type="submit">
+                                            @else
                                                 Close Project
-                                            </button>
-                                        @endif
+                                            @endif
+                                        </button>
                                     </form>
                                 </div>
                                 <div class="pl-3">
@@ -141,4 +150,5 @@
             </div>
         </div>
     </section>
+    @include('projects.modal.issues_create')
 @endsection

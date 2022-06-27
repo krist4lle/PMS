@@ -18,7 +18,7 @@ class ClientService
         $client->title = $clientData['title'];
         $client->description = $clientData['description'];
         $client->email = $clientData['email'];
-        $client->phone = $clientData['phone'];
+        $client->phone = '+' . $clientData['phone'];
         $client->save();
     }
 }

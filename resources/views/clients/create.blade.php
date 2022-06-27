@@ -8,7 +8,9 @@
                         <h1>Add a new Client</h1>
                     </div>
                     <div>
-                        <a href="{{ route('clients.index') }}" type="button" class="btn btn-outline-secondary">Back</a>
+                        <a href="{{ route('clients.index') }}" type="button" class="btn btn-outline-secondary">
+                            To Clients
+                        </a>
                     </div>
                 </div>
             </div>
@@ -66,7 +68,7 @@
                                 </div>
                                 @enderror
                                 <input type="tel" class="form-control" id="phone" name="phone"
-                                       placeholder="Enter Phone number with '+'" value="{{ old('phone') }}">
+                                       placeholder="Enter Phone number without '+'" value="{{ old('phone') }}">
                             </div>
                         </div>
                         <div class="col p-3">

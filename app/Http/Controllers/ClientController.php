@@ -53,7 +53,7 @@ class ClientController extends Controller
         $clientData = $request->validated();
         $service->clientSave($client, $clientData);
 
-        return redirect()->route('clients.index')->with('success', 'Client successfully updated');
+        return redirect()->back()->with('success', 'Client successfully updated');
     }
 
     public function destroy(Client $client)

@@ -32,6 +32,8 @@ Route::middleware(['auth'])->group(function () {
     Route::patch('/me', [App\Http\Controllers\Me\IndexController::class, 'update'])->name('me.update');
     Route::post('/change-password', [App\Http\Controllers\Me\IndexController::class, 'changePassword'])
         ->name('me.update.password');
+    Route::get('my-issues/{user}', [App\Http\Controllers\Me\IndexController::class, 'issues'])
+        ->name('me.issues');
 
     Route::resource('departments', App\Http\Controllers\DepartmentController::class)
         ->only('index', 'edit', 'update', 'destroy');

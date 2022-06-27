@@ -53,6 +53,15 @@
                                     {{ $user->department->name }}
                                 </p>
                             @endif
+                            <hr>
+                            <strong>
+                                <i class="fas fa-list mr-1"></i>
+                                My Issues
+                                <span class="badge badge-warning">{{ $user->issues_count }}</span>
+                            </strong>
+                            <a href="{{ route('me.issues', $user) }}" class="float-right">
+                                <i class="fas fa-arrow-circle-right mr-1"></i>
+                            </a>
                         </div>
                     </div>
                 </div>

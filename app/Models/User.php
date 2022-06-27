@@ -52,9 +52,9 @@ class User extends Authenticatable
         return $this->hasMany(self::class, 'parent_id', 'id');
     }
 
-    public function project()
+    public function managerProjects()
     {
-        return $this->hasMany(Project::class);
+        return $this->hasMany(Project::class, 'manager_id', 'id');
     }
 
     public function projects()

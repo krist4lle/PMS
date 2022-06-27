@@ -26,22 +26,14 @@
                 <table class="table table-striped projects">
                     <thead>
                     <tr>
-                        <th style="width: 1%">
-                            #
-                        </th>
-                        <th style="width: 20%">
-                            User Name
-                        </th>
-                        <th style="width: 20%">
-                            Position
-                        </th>
-                        <th style="width: 20%">
-                        </th>
+                        <th style="width: 1%">#</th>
+                        <th style="width: 20%">User Name</th>
+                        <th style="width: 20%">Position</th>
+                        <th style="width: 20%"></th>
                     </tr>
                     </thead>
                     <tbody>
                     @foreach($users as $user)
-
                         <tr>
                             <td>{{ $user->id }}</td>
                             <td>{{ $user->first_name }} {{ $user->last_name }}</td>
@@ -55,11 +47,11 @@
                                     <i class="fas fa-pencil-alt"></i>
                                     Edit
                                 </a>
-                                    <button class="btn btn-danger btn-sm mx-2" data-toggle="modal"
-                                            data-target="#ModalDelete{{ $user->id }}" type="submit">
-                                        <i class="fas fa-fire"></i>
-                                        Fire User
-                                    </button>
+                                <button class="btn btn-danger btn-sm mx-2" data-toggle="modal"
+                                        data-target="#ModalDelete{{ $user->id }}" type="submit">
+                                    <i class="fas fa-fire"></i>
+                                    Fire User
+                                </button>
                             </td>
                         </tr>
                         @include('users.modal.delete')

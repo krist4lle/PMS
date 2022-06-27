@@ -114,6 +114,12 @@
                                     <a href=""><i class="nav-icon fas fa-link"></i></a>
                                 </div>
                             @endforeach
+                            <br>
+                            <p class="text-sm">Deadline
+                                <b class="d-block">
+                                    {{ \Carbon\Carbon::create($project->deadline)->diffForHumans() }}
+                                </b>
+                            </p>
                             <div class="pt-3 pl-2 row">
                                 <div>
                                     <form action="{{ route('projects.finished', $project) }}" method="post">

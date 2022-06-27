@@ -53,7 +53,7 @@ class ProjectSeeder extends Seeder
 
     private function deadline(): string
     {
-        $date = rand(2022, 2024) . '-' . rand(1, 12) . '-' . rand(1, 30);
+        $date = rand(2023, 2024) . '-' . rand(1, 12) . '-' . rand(1, 30);
         return date_format(date_create($date), 'Y-m-d');
     }
 

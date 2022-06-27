@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Issue\StoreRequest;
+use App\Http\Requests\Issue\UpdateRequest;
 use App\Models\Issue;
 use App\Models\IssueStatus;
 use App\Models\Project;
@@ -47,13 +48,19 @@ class IssueController extends Controller
         return redirect()->back();
     }
 
-    public function update(Request $request, $id)
+    public function update(UpdateRequest $request, Issue $issue, IssueService $service)
     {
-        //
+        $issueData = $request->validated();
+        $service->updateIssue($issue, $issueData);
+
+        return redirect()->back()->with('success', 'Issue successfully updated');
     }
 
-    public function destroy($id)
+    public function destroy(Issue $issue)
     {
-        //
+        $project = $issue->project;
+        $issue->delete();
+
+        return redirect()->route('projects.show', $project)->with('success', 'Issue successfully deleted');
     }
 }

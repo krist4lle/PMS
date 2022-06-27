@@ -48,7 +48,7 @@ Route::middleware(['auth'])->group(function () {
         ->name('projects.finished');
 
     Route::resource('issues', App\Http\Controllers\IssueController::class)
-        ->except('index', 'create');
+        ->except('index', 'create', 'edit');
     Route::patch('issue-accept/{issue}',[App\Http\Controllers\IssueController::class, 'status'])
         ->name('issues.status');
 });

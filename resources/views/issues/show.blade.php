@@ -79,8 +79,21 @@
                     </address>
                 </div>
             </div>
+            <div class="row pl-2">
+                <button class="btn btn-outline-secondary" data-toggle="modal"
+                        data-target="#Modal">
+                    Edit Issue
+                </button>
+                <form class="pl-2" action="{{ route('issues.destroy', $issue) }}" method="post">
+                    @csrf
+                    @method('delete')
+                    <button type="submit" class="btn btn-outline-danger">
+                        Delete Issue
+                    </button>
+                </form>
+            </div>
             <div class="row">
-                <div class="col-12 table-responsive">
+                <div class="col-12 table-responsive pt-3">
                     <h4>Comments</h4>
                     <table class="table table-striped">
                         <thead>
@@ -107,11 +120,11 @@
                                 </a>
                             </td>
                         </tr>
-
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
     </section>
+    @include('issues.modal.edit')
 @endsection

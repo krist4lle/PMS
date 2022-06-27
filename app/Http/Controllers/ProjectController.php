@@ -56,7 +56,7 @@ class ProjectController extends Controller
             return redirect()->back()->with('error', 'Impossible to delete Project in progress');
         } else {
             $project->delete();
-            return redirect()->back()->with('success', 'Project successfully deleted');
+            return redirect()->route('projects.index')->with('success', 'Project successfully deleted');
         }
     }
 

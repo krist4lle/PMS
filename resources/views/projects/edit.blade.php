@@ -5,15 +5,27 @@
             <div class="row">
                 <div class="col row justify-content-between">
                     <div>
-                        <h1>Edit a Project: <em>{{ $project->title }}</em></h1>
+                        <h1>
+                            Edit a Project: <em>{{ $project->title }}</em>
+                            <a href="{{ route('projects.show', $project) }}">
+                                <i class="fas fa-arrow-circle-right"></i>
+                            </a>
+                        </h1>
                     </div>
                     <div>
-                        <a href="{{ route('projects.index') }}" type="button" class="btn btn-outline-secondary">Back</a>
+                        <a href="{{ route('projects.index') }}" type="button" class="btn btn-outline-secondary">
+                            To Projects
+                        </a>
                     </div>
                 </div>
             </div>
         </div>
     </section>
+    @if(session()->has('success'))
+        <div class="alert alert-success mt-2" role="alert">
+            {{ session()->get('success') }}
+        </div>
+    @endif
     <section class="content">
         <div class="container-fluid">
             <div class="row">

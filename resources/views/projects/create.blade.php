@@ -8,7 +8,9 @@
                         <h1>Create a new Project</h1>
                     </div>
                     <div>
-                        <a href="{{ route('projects.index') }}" type="button" class="btn btn-outline-secondary">Back</a>
+                        <a href="{{ route('projects.index') }}" type="button" class="btn btn-outline-secondary">
+                            To Projects
+                        </a>
                     </div>
                 </div>
             </div>

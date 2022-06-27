@@ -15,12 +15,19 @@
                         </h1>
                     </div>
                     <div>
-                        <a href="{{ route('projects.index') }}" type="button" class="btn btn-outline-secondary">Back</a>
+                        <a href="{{ route('projects.index') }}" type="button" class="btn btn-outline-secondary">
+                            To Projects
+                        </a>
                     </div>
                 </div>
             </div>
         </div>
     </section>
+    @if(session()->has('error'))
+        <div class="alert alert-danger mt-2" role="alert">
+            {{ session()->get('error') }}
+        </div>
+    @endif
     <section class="content">
         <div class="card">
             <div class="card-body" style="display: block;">
@@ -72,21 +79,37 @@
                                     <a href=""><i class="nav-icon fas fa-link"></i></a>
                                 </div>
                             @endforeach
-                            <div class="pt-3">
-                                <form action="{{ route('projects.finished', $project) }}" method="post">
-                                    @csrf
-                                    @method('patch')
-                                    <input type="hidden" value="{{ date('Y-m-d H:i:s') }}" name="finished_at">
-                                    @if($project->finished_at !== null)
-                                        <button class="btn btn-outline-info" type="submit">
-                                            Start Project
+                            <div class="pt-3 pl-2 row">
+                                <div>
+                                    <form action="{{ route('projects.finished', $project) }}" method="post">
+                                        @csrf
+                                        @method('patch')
+                                        <input type="hidden" value="{{ date('Y-m-d H:i:s') }}" name="finished_at">
+                                        @if($project->finished_at !== null)
+                                            <button class="btn btn-outline-info" type="submit">
+                                                Start Project
+                                            </button>
+                                        @else
+                                            <button class="btn btn-outline-info" type="submit">
+                                                Close Project
+                                            </button>
+                                        @endif
+                                    </form>
+                                </div>
+                                <div class="pl-3">
+                                    <a class="btn btn-outline-secondary" href="{{ route('projects.edit', $project) }}">
+                                        Edit Project
+                                    </a>
+                                </div>
+                                <div class="pl-3">
+                                    <form action="{{ route('projects.destroy', $project) }}" method="post">
+                                        @csrf
+                                        @method('delete')
+                                        <button class="btn btn-outline-danger" type="submit">
+                                            Delete Project
                                         </button>
-                                    @else
-                                        <button class="btn btn-outline-info" type="submit">
-                                            Close Project
-                                        </button>
-                                    @endif
-                                </form>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>

@@ -5,15 +5,27 @@
             <div class="row">
                 <div class="col row justify-content-between">
                     <div>
-                        <h1>Edit a Client</h1>
+                        <h1>
+                            Edit a Client: <em>{{ $client->title }}</em>
+                            <a href="{{ route('clients.show', $client) }}">
+                                <i class="fas fa-arrow-circle-right"></i>
+                            </a>
+                        </h1>
                     </div>
                     <div>
-                        <a href="{{ route('clients.index') }}" type="button" class="btn btn-outline-secondary">Back</a>
+                        <a href="{{ route('clients.index') }}" type="button" class="btn btn-outline-secondary">
+                            To Clients
+                        </a>
                     </div>
                 </div>
             </div>
         </div>
     </section>
+    @if(session()->has('success'))
+        <div class="alert alert-success mt-2" role="alert">
+            {{ session()->get('success') }}
+        </div>
+    @endif
     <section class="content">
         <div class="container-fluid">
             <div class="row">
@@ -67,7 +79,8 @@
                                 </div>
                                 @enderror
                                 <input type="tel" class="form-control" id="phone" name="phone"
-                                       placeholder="Enter Phone number with '+'" value="{{ $client->phone }}">
+                                       placeholder="Enter Phone number without '+'"
+                                       value="{{ ltrim($client->phone, '+') }}">
                             </div>
                         </div>
                         <div class="col p-3">

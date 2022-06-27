@@ -7,7 +7,9 @@
                     <h1>Client</h1>
                 </div>
                 <div>
-                    <a href="{{ route('clients.index') }}" type="button" class="btn btn-outline-secondary">Back</a>
+                    <a href="{{ route('clients.index') }}" type="button" class="btn btn-outline-secondary">
+                        To Clients
+                    </a>
                 </div>
             </div>
         </div>

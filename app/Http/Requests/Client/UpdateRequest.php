@@ -29,7 +29,8 @@ class UpdateRequest extends FormRequest
             ],
             'phone' => [
                 'required',
-                'string',
+                'integer',
+                'digits:12',
                 Rule::unique('clients')->ignore($this->route('client')),
             ],
         ];

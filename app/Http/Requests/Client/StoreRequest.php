@@ -29,7 +29,7 @@ class StoreRequest extends FormRequest
             'title' => 'required|string|unique:clients,title',
             'description' => 'required|string',
             'email' => 'required|string|unique:clients,email',
-            'phone' => 'required|string|unique:clients,phone',
+            'phone' => 'required|integer|digits:12|unique:clients,phone',
         ];
     }
 }

@@ -13,7 +13,9 @@ class UserController extends Controller
 {
     public function index()
     {
-        $users = User::with(['position', 'department', 'parent'])->paginate(10);
+        $users = User::with(['position', 'department', 'parent'])
+            ->withCount(['projects', 'managerProjects', 'issues'])
+            ->paginate(10);
 
         return view('users.index', [
             'users' => $users,

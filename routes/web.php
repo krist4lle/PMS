@@ -32,6 +32,10 @@ Route::middleware(['auth'])->group(function () {
     Route::patch('/me', [App\Http\Controllers\Me\IndexController::class, 'update'])->name('me.update');
     Route::post('/change-password', [App\Http\Controllers\Me\IndexController::class, 'changePassword'])
         ->name('me.update.password');
+    Route::get('my-issues/{user}', [App\Http\Controllers\Me\IndexController::class, 'issues'])
+        ->name('me.issues');
+    Route::get('my-projects/{user}', [App\Http\Controllers\Me\IndexController::class, 'projects'])
+        ->name('me.projects');
 
     Route::resource('departments', App\Http\Controllers\DepartmentController::class)
         ->only('index', 'edit', 'update', 'destroy');
@@ -47,4 +51,8 @@ Route::middleware(['auth'])->group(function () {
     Route::patch('projects/finished-at/{project}', [App\Http\Controllers\ProjectController::class, 'finished'])
         ->name('projects.finished');
 
+    Route::resource('issues', App\Http\Controllers\IssueController::class)
+        ->except('index', 'create', 'edit');
+    Route::patch('issue-accept/{issue}',[App\Http\Controllers\IssueController::class, 'status'])
+        ->name('issues.status');
 });

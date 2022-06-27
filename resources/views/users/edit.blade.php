@@ -10,7 +10,7 @@
                         </h1>
                     </div>
                     <div>
-                        <a href="{{ route('users.index') }}" type="button" class="btn btn-outline-secondary">Back</a>
+                        <a href="{{ route('users.index') }}" type="button" class="btn btn-outline-secondary">To Users</a>
                     </div>
                 </div>
             </div>

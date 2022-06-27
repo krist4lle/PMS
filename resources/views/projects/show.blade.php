@@ -8,7 +8,7 @@
                         <h1>
                             Project: <em>{{ $project->title }}</em>
                             @if($project->finished_at !== null)
-                                <span class="badge badge-success">Success</span>
+                                <span class="badge badge-success">Closed</span>
                             @else
                                 <span class="badge badge-warning">In progress</span>
                             @endif
@@ -23,9 +23,19 @@
             </div>
         </div>
     </section>
+    @if($errors->has('error'))
+        <div class="alert alert-danger mt-2" role="alert">
+            {{ $errors->first('error') }}
+        </div>
+    @endif
     @if(session()->has('error'))
         <div class="alert alert-danger mt-2" role="alert">
             {{ session()->get('error') }}
+        </div>
+    @endif
+    @if(session()->has('success'))
+        <div class="alert alert-success mt-2" role="alert">
+            {{ session()->get('success') }}
         </div>
     @endif
     <section class="content">
@@ -35,20 +45,45 @@
                     <div class="col-12 col-md-12 col-lg-8 order-2 order-md-1">
                         <div class="row">
                             <div class="col-12">
-                                <h4>Issues</h4>
-                                <div class="post">
-                                    <div class="user-block">
-                                        <img class="img-circle img-bordered-sm" src="../../dist/img/user1-128x128.jpg"
-                                             alt="user image">
-                                        <span class="username"><a href="#">Jonathan Burke Jr.</a></span>
-                                        <span class="description">Shared publicly - 7:45 PM today</span>
+                                <h4>
+                                    Issues
+                                    <button class="float-right btn btn-outline-info" data-toggle="modal"
+                                            data-target="#Modal">
+                                        Create Issue
+                                    </button>
+                                </h4>
+                                @foreach($issues as $issue)
+                                    <div class="post">
+                                        <div class="row justify-content-between">
+                                            <div>
+                                                <label>
+                                                    {{ $issue->title }}
+                                                    <a href="{{ route('issues.show', $issue) }}">
+                                                        <i class="nav-icon fas fa-arrow-circle-right"></i>
+                                                    </a>
+                                                </label>
+                                            </div>
+                                            <div>
+                                                Status:
+                                                <span class="badge badge-info">{{ $issue->status->status }}</span>
+                                            </div>
+                                        </div>
+                                        <div class="user-block">
+                                            <img class="img-circle img-bordered-sm"
+                                                 src="{{ asset($issue->assignee->avatar) }}" alt="user_image">
+                                            <span class="username">
+                                                <a href="#">
+                                                    {{ $issue->assignee->first_name }} {{ $issue->assignee->last_name }}
+                                                </a>
+                                            </span>
+                                            <span class="description">
+                                                Created:
+                                                {{ $issue->created_at }}
+                                            </span>
+                                        </div>
+                                        <p>{{ $issue->description }}</p>
                                     </div>
-                                    <p>
-                                        Lorem ipsum represents a long-held tradition for designers,
-                                        typographers and the like. Some people hate it and argue for
-                                        its demise, but others ignore.
-                                    </p>
-                                </div>
+                                @endforeach
                             </div>
                         </div>
                     </div>
@@ -79,21 +114,25 @@
                                     <a href=""><i class="nav-icon fas fa-link"></i></a>
                                 </div>
                             @endforeach
+                            <br>
+                            <p class="text-sm">Deadline
+                                <b class="d-block">
+                                    {{ \Carbon\Carbon::create($project->deadline)->diffForHumans() }}
+                                </b>
+                            </p>
                             <div class="pt-3 pl-2 row">
                                 <div>
                                     <form action="{{ route('projects.finished', $project) }}" method="post">
                                         @csrf
                                         @method('patch')
                                         <input type="hidden" value="{{ date('Y-m-d H:i:s') }}" name="finished_at">
-                                        @if($project->finished_at !== null)
-                                            <button class="btn btn-outline-info" type="submit">
+                                        <button class="btn btn-outline-info" type="submit">
+                                            @if($project->finished_at !== null)
                                                 Start Project
-                                            </button>
-                                        @else
-                                            <button class="btn btn-outline-info" type="submit">
+                                            @else
                                                 Close Project
-                                            </button>
-                                        @endif
+                                            @endif
+                                        </button>
                                     </form>
                                 </div>
                                 <div class="pl-3">
@@ -117,4 +156,5 @@
             </div>
         </div>
     </section>
+    @include('projects.modal.issues_create')
 @endsection

@@ -41,7 +41,10 @@
                             <td>
                                 <a>{{ $project->title }}</a>
                                 <br>
-                                <small>{{ \Carbon\Carbon::make($project->created_at)->format('j-F-Y') }}</small>
+                                <small>
+                                    Created:
+                                    {{ \Carbon\Carbon::make($project->created_at)->format('j-F-Y') }}
+                                </small>
                             </td>
                             <td>
                                 <a href="{{ route('profile.index', $project->manager) }}" class="col-10">
@@ -61,7 +64,7 @@
                             </td>
                             <td class="project-state">
                                 @if($project->finished_at !== null)
-                                    <span class="badge badge-success">Success</span>
+                                    <span class="badge badge-success">Closed</span>
                                 @else
                                     <span class="badge badge-warning">In progress</span>
                                 @endif

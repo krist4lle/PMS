@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\IssueStatus;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -19,5 +20,7 @@ class DatabaseSeeder extends Seeder
         $this->call(UserSeeder::class);
         $this->call(ClientSeeder::class);
         $this->call(ProjectSeeder::class);
+        $this->call(IssueStatusSeeder::class);
+        $this->call(IssueSeeder::class);
     }
 }

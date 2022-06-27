@@ -16,7 +16,7 @@ class IndexController extends Controller
 {
     public function index()
     {
-        $user = auth()->user();
+        $user = auth()->user()->loadCount(['issues', 'projects']);
 
         return view('me.index', [
             'user' => $user,
@@ -39,5 +39,25 @@ class IndexController extends Controller
         $service->changePassword($user, $newPassword);
 
         return redirect(route('me.index'))->with('successMessage', 'Password changed successfully');
+    }
+
+    public function issues(User $user)
+    {
+        $user->load('issues', 'issues.status');
+        $issues = $user->issues;
+
+        return view('me.issues', [
+            'issues' => $issues
+        ]);
+    }
+
+    public function projects(User $user)
+    {
+        $user->load('projects');
+        $projects = $user->projects;
+
+        return view('me.projects', [
+            'projects' => $projects
+        ]);
     }
 }

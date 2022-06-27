@@ -47,4 +47,6 @@ Route::middleware(['auth'])->group(function () {
     Route::patch('projects/finished-at/{project}', [App\Http\Controllers\ProjectController::class, 'finished'])
         ->name('projects.finished');
 
+    Route::resource('issues', App\Http\Controllers\IssueController::class)
+        ->except('index');
 });

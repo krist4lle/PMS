@@ -32,16 +32,26 @@ class ProjectService
 
     public function dataToShowProject(Project $project): array
     {
-        $project->load(['client', 'manager', 'users', 'users.position']);
+        $project->load([
+            'client',
+            'manager',
+            'users',
+            'users.position',
+            'issues',
+            'issues.status',
+            'issues.assignee',
+        ]);
         $client = $project->client;
         $manager = $project->manager;
         $users = $project->users;
+        $issues = $project->issues;
 
         return [
             'project' => $project,
             'client' => $client,
             'manager' => $manager,
             'users' => $users,
+            'issues' => $issues,
         ];
     }
 
@@ -71,8 +81,12 @@ class ProjectService
 
     public function projectStatus(Project $project, string $finishedAtDate): void
     {
-        $project->finished_at !== null ? $project->finished_at = null : $project->finished_at = $finishedAtDate;
-        $project->save();
+        if (empty($project->issues)) {
+            $project->finished_at !== null ? $project->finished_at = null : $project->finished_at = $finishedAtDate;
+            $project->save();
+        } else {
+            redirect()->back()->with('error', 'Impossible to close Project with active Issues');
+        }
     }
 
     private function saveProject(Project $project, array $projectData): void

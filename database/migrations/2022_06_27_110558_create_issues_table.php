@@ -19,7 +19,6 @@ return new class extends Migration
             $table->string('description');
             $table->timestamps();
             $table->timestamp('finished_at')->nullable();
-            $table->timestamp('deadline')->nullable();
             $table->integer('estimate')->nullable();
             $table->foreignId('issue_status_id')->constrained()->restrictOnDelete();
             $table->foreignId('project_id')->constrained();

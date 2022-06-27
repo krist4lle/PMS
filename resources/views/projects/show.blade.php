@@ -35,20 +35,44 @@
                     <div class="col-12 col-md-12 col-lg-8 order-2 order-md-1">
                         <div class="row">
                             <div class="col-12">
-                                <h4>Issues</h4>
-                                <div class="post">
-                                    <div class="user-block">
-                                        <img class="img-circle img-bordered-sm" src="../../dist/img/user1-128x128.jpg"
-                                             alt="user image">
-                                        <span class="username"><a href="#">Jonathan Burke Jr.</a></span>
-                                        <span class="description">Shared publicly - 7:45 PM today</span>
+                                <h4>
+                                    Issues
+                                    <a href="{{ route('issues.create') }}" class="float-right btn btn-outline-info">
+                                        Create Issue
+                                    </a>
+                                </h4>
+                                @foreach($issues as $issue)
+                                    <div class="post">
+                                        <div class="row justify-content-between">
+                                            <div>
+                                                <label>
+                                                    {{ $issue->title }}
+                                                    <a href="{{ route('issues.show', $issue) }}">
+                                                        <i class="nav-icon fas fa-arrow-circle-right"></i>
+                                                    </a>
+                                                </label>
+                                            </div>
+                                            <div>
+                                                Status:
+                                                <span class="badge badge-info">{{ $issue->status->status }}</span>
+                                            </div>
+                                        </div>
+                                        <div class="user-block">
+                                            <img class="img-circle img-bordered-sm"
+                                                 src="{{ asset($issue->assignee->avatar) }}" alt="user_image">
+                                            <span class="username">
+                                                <a href="#">
+                                                    {{ $issue->assignee->first_name }} {{ $issue->assignee->last_name }}
+                                                </a>
+                                            </span>
+                                            <span class="description">
+                                                Created:
+                                                {{ $issue->created_at }}
+                                            </span>
+                                        </div>
+                                        <p>{{ $issue->description }}</p>
                                     </div>
-                                    <p>
-                                        Lorem ipsum represents a long-held tradition for designers,
-                                        typographers and the like. Some people hate it and argue for
-                                        its demise, but others ignore.
-                                    </p>
-                                </div>
+                                @endforeach
                             </div>
                         </div>
                     </div>

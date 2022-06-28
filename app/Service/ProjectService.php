@@ -3,8 +3,6 @@
 namespace App\Service;
 
 use App\Models\Client;
-use App\Models\Department;
-use App\Models\Position;
 use App\Models\Project;
 use App\Models\User;
 
@@ -13,6 +11,7 @@ class ProjectService
     public function prepareDataToCreateProject(): array
     {
         $clients = Client::all();
+        $ceo = User::with('position')->where('key', 'ceo')->first();
         $managers = User::whereRelation('department', 'name', 'Management')->get();
         $designers = User::with('position')
             ->whereRelation('department', 'name', 'Design')->get();
@@ -23,6 +22,7 @@ class ProjectService
 
         return [
             'clients' => $clients,
+            'ceo' => $ceo,
             'managers' => $managers,
             'designers' => $designers,
             'frontenders' => $frontenders,
@@ -55,10 +55,9 @@ class ProjectService
     public function prepareDataToEditProject(Project $project): array
     {
         $project->load(['client', 'manager', 'users']);
-        $assignedWorkers = $project->users->pluck('id')->toArray();
         $dataToEditProject = [
             'project' => $project,
-            'assignedWorkers' => $assignedWorkers
+            'assignedWorkers' => $project->users,
         ];
 
         return array_merge($dataToEditProject, $this->prepareDataToCreateProject());
@@ -76,17 +75,23 @@ class ProjectService
         $project->users()->sync($projectData['workers']);
     }
 
-    public function projectStatus(Project $project, string $finishedAtDate): void
+    public function projectStatusChange(Project $project)
     {
-        $newStatus = $project->issues->where('issue_status_id', 1)->isNotEmpty();
-        $inProgressStatus = $project->issues->where('issue_status_id', 2)->isNotEmpty();
+        $newStatus = $project->issues()->whereRelation('status', 'slug', 'new')
+            ->get()->isNotEmpty();
+        $inProgressStatus = $project->issues()->whereRelation('status', 'slug', 'in_progress')
+            ->get()->isNotEmpty();
+        $reviewStatus = $project->issues()->whereRelation('status', 'slug', 'review')
+            ->get()->isNotEmpty();
 
-        if ($newStatus || $inProgressStatus) {
-            redirect()->back()->with('error', 'Impossible to close Project with active Issues');
-        } else {
-            $project->finished_at !== null ? $project->finished_at = null : $project->finished_at = $finishedAtDate;
-            $project->save();
+
+        if ($newStatus || $inProgressStatus || $reviewStatus) {
+            return redirect()->back()->with('error', 'Impossible to close Project with active Issues');
         }
+        $project->finished_at = $this->finishedDateAssignment($project);
+
+        $project->save();
+
     }
 
     private function saveProject(Project $project, array $projectData): void
@@ -99,15 +104,25 @@ class ProjectService
         $project->save();
     }
 
-    private function addClient(Project $project, string $clientTitle): void
+    private function addClient(Project $project, int $clientId): void
     {
-        $client = Client::where('title', $clientTitle)->first();
+        $client = Client::find($clientId);
         $project->client()->associate($client);
     }
 
-    private function addManager(Project $project, string $managerId): void
+    private function addManager(Project $project, int $managerId): void
     {
         $manager = User::find($managerId);
         $project->manager()->associate($manager);
+    }
+
+    private function finishedDateAssignment(Project $project): null|string
+    {
+        if ($project->finished_at !== null) {
+
+            return null;
+        }
+
+        return date('Y-m-d');
     }
 }

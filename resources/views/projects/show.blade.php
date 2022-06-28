@@ -151,7 +151,7 @@
 
                             <div class="pt-3 pl-2 row">
                                 <div>
-                                    <form action="{{ route('projects.finished', $project) }}" method="post">
+                                    <form action="{{ route('projects.status', $project) }}" method="post">
                                         @csrf
                                         @method('patch')
                                         <input type="hidden" value="{{ date('Y-m-d H:i:s') }}" name="finished_at">

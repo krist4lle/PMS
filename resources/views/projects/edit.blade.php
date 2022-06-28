@@ -48,8 +48,9 @@
                             </div>
                             <div class="col-6">
                                 <label for="title" class="form-label">Deadline</label>
-                                <input type="date" class="form-control" id="deadline" name="deadline"
-                                       placeholder="Enter Title" value="{{ $project->deadline }}">
+                                <input type="date" class="form-control" id="deadline"
+                                       name="deadline" placeholder="Enter Title"
+                                       value="{{ \Carbon\Carbon::make($project->deadline)->format('Y-m-d') }}">
                             </div>
                         </div>
                         <div class="px-3 pt-2 row">
@@ -76,8 +77,8 @@
                                     <select name="client" id="client" class="form-control">
                                         <option value="">Choose Client</option>
                                         @foreach($clients as $client)
-                                            <option value="{{ $client->title }}"
-                                                {{ $project->client->title == $client->title ? 'selected' : '' }}>
+                                            <option value="{{ $client->id }}"
+                                                {{ $project->client->id == $client->id ? 'selected' : '' }}>
                                                 {{ $client->title }}
                                             </option>
                                         @endforeach
@@ -94,6 +95,9 @@
                                 <div class="form-group">
                                     <select name="manager" id="manager" class="form-control">
                                         <option>Choose Project Manager</option>
+                                        <option value="{{ $ceo->id }}" {{ $project->manager->id == $ceo->id ? 'selected' : '' }}>
+                                            {{ $ceo->first_name }} {{ $ceo->last_name }}
+                                        </option>
                                         @foreach($managers as $manager)
                                             <option value="{{ $manager->id }}"
                                                 {{ $project->manager->id == $manager->id ? 'selected' : '' }}>
@@ -114,12 +118,15 @@
                                             {{ $message }}
                                         </div>
                                         @enderror
-                                        <select name="workers[]" class="duallistbox" multiple="multiple"
-                                                style="display: none;">
+                                        <select name="workers[]" class="duallistbox" multiple="multiple" style="display: none;">
+                                            <option value="{{ $ceo->id }}"
+                                                {{ $assignedWorkers->contains($ceo) ? 'selected' : '' }}>
+                                                {{ $ceo->first_name }} {{ $ceo->last_name }}: "{{ $ceo->position->title }}"
+                                            </option>
                                             <option value="">Designers</option>
                                             @foreach($designers as $designer)
                                                 <option value="{{ $designer->id }}"
-                                                    {{ in_array($designer->id, $assignedWorkers) ? 'selected' : '' }}>
+                                                    {{ $assignedWorkers->contains($designer) ? 'selected' : '' }}>
                                                     {{ $designer->first_name }} {{ $designer->last_name }}
                                                     : {{ $designer->position->title }}
                                                 </option>
@@ -127,7 +134,7 @@
                                             <option value="">Frontend Developers</option>
                                             @foreach($frontenders as $frontender)
                                                 <option value="{{ $frontender->id }}"
-                                                    {{ in_array($frontender->id, $assignedWorkers) ? 'selected' : '' }}>
+                                                    {{ $assignedWorkers->contains($frontender) ? 'selected' : '' }}>
                                                     {{ $frontender->first_name }} {{ $frontender->last_name }}
                                                     : {{ $frontender->position->title }}
                                                 </option>
@@ -135,7 +142,7 @@
                                             <option value="">Backend Developers</option>
                                             @foreach($backenders as $backender)
                                                 <option value="{{ $backender->id }}"
-                                                    {{ in_array($backender->id, $assignedWorkers) ? 'selected' : '' }}>
+                                                    {{ $assignedWorkers->contains($backender) ? 'selected' : '' }}>
                                                     {{ $backender->first_name }} {{ $backender->last_name }}
                                                     : {{ $backender->position->title }}
                                                 </option>

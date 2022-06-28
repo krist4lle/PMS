@@ -26,7 +26,7 @@
                         @csrf
                         <div class="px-3 row">
                             <div class="col-6">
-                                <label for="title" class="form-label">Project's Title</label>
+                                <label for="title" class="form-label">Project's Title *</label>
                                 @error('title')
                                 <div class="alert alert-danger mt-2" role="alert">
                                     {{ $message }}
@@ -43,7 +43,7 @@
                         </div>
                         <div class="px-3 pt-2 row">
                             <div class="form-floating col-12">
-                                <label for="description" class="form-label">Description</label>
+                                <label for="description" class="form-label">Description *</label>
                                 @error('description')
                                 <div class="alert alert-danger mt-2" role="alert">
                                     {{ $message }}
@@ -55,7 +55,7 @@
                         </div>
                         <div class="px-3 pt-2 row">
                             <div class="col-6">
-                                <label for="client" class="form-label">Client</label>
+                                <label for="client" class="form-label">Client *</label>
                                 @error('client')
                                 <div class="alert alert-danger mt-2" role="alert">
                                     {{ $message }}
@@ -65,8 +65,8 @@
                                     <select name="client" id="client" class="form-control">
                                         <option value="">Choose Client</option>
                                         @foreach($clients as $client)
-                                            <option value="{{ $client->title }}"
-                                                {{ old('client') == $client->title ? 'selected' : '' }}>
+                                            <option value="{{ $client->id }}"
+                                                {{ old('client') == $client->id ? 'selected' : '' }}>
                                                 {{ $client->title }}
                                             </option>
                                         @endforeach
@@ -74,7 +74,7 @@
                                 </div>
                             </div>
                             <div class="col-6">
-                                <label for="manager" class="form-label">Project Manager</label>
+                                <label for="manager" class="form-label">Project Manager *</label>
                                 @error('manager')
                                 <div class="alert alert-danger mt-2" role="alert">
                                     {{ $message }}
@@ -82,7 +82,8 @@
                                 @enderror
                                 <div class="form-group">
                                     <select name="manager" id="manager" class="form-control">
-                                        <option>Choose Project Manager</option>
+                                        <option value="">Choose Project Manager</option>
+                                        <option value="{{ $ceo->id }}">{{ $ceo->first_name }} {{ $ceo->last_name }}</option>
                                         @foreach($managers as $manager)
                                             <option value="{{ $manager->id }}"
                                                 {{ old('manager') == $manager->id ? 'selected' : '' }}>
@@ -97,20 +98,22 @@
                             <div class="row">
                                 <div class="col-12">
                                     <div class="form-group">
-                                        <label>Workers</label>
+                                        <label>Workers *</label>
                                         @error('workers')
                                         <div class="alert alert-danger mt-2" role="alert">
                                             {{ $message }}
                                         </div>
                                         @enderror
-                                        <select name="workers[]" class="duallistbox" multiple="multiple"
-                                                style="display: none;">
+                                        <select name="workers[]" class="duallistbox" multiple="multiple" style="display: none;">
+                                            <option value="{{ $ceo->id }}">
+                                                {{ $ceo->first_name }} {{ $ceo->last_name }}: "{{ $ceo->position->title }}"
+                                            </option>
                                             <option value="">Designers</option>
                                             @foreach($designers as $designer)
                                                 <option value="{{ $designer->id }}"
                                                     {{ is_array(old('workers')) && in_array($designer->id, old('workers')) ? 'selected' : '' }}>
                                                     {{ $designer->first_name }} {{ $designer->last_name }}
-                                                    : {{ $designer->position->title }}
+                                                    : "{{ $designer->position->title }}"
                                                 </option>
                                             @endforeach
                                             <option value="">Frontend Developers</option>
@@ -118,7 +121,7 @@
                                                 <option value="{{ $frontender->id }}"
                                                     {{ is_array(old('workers')) && in_array($frontender->id, old('workers')) ? 'selected' : '' }}>
                                                     {{ $frontender->first_name }} {{ $frontender->last_name }}
-                                                    : {{ $frontender->position->title }}
+                                                    : "{{ $frontender->position->title }}"
                                                 </option>
                                             @endforeach
                                             <option value="">Backend Developers</option>
@@ -126,7 +129,7 @@
                                                 <option value="{{ $backender->id }}"
                                                     {{ is_array(old('workers')) && in_array($backender->id, old('workers')) ? 'selected' : '' }}>
                                                     {{ $backender->first_name }} {{ $backender->last_name }}
-                                                    : {{ $backender->position->title }}
+                                                    : "{{ $backender->position->title }}"
                                                 </option>
                                             @endforeach
                                         </select>

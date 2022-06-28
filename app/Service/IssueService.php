@@ -9,6 +9,7 @@ use App\Models\IssueStatus;
 use App\Models\Position;
 use App\Models\Project;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Validation\ValidationException;
 
 class IssueService
@@ -70,6 +71,16 @@ class IssueService
         $issue->save();
     }
 
+    public function projectFilter(User $user, int|null $filteredProjectId): Collection
+    {
+        $query = $user->issues();
+        if ($filteredProjectId !== null) {
+            $query->myIssues($filteredProjectId);
+        }
+
+        return $query->get();
+    }
+
     private function projectStatusCheck(Project $project)
     {
         if (isset($project->finished_at)) {
@@ -77,7 +88,7 @@ class IssueService
         }
     }
 
-    public function issueStatusCheck(Issue $issue, string $assigneeId): void
+    private function issueStatusCheck(Issue $issue, string $assigneeId): void
     {
         if ($issue->assignee->id != $assigneeId) {
             $status = IssueStatus::where('slug', 'new')->first();

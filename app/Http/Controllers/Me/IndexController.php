@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\Me;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Me\ProjectRequest;
 use App\Http\Requests\Me\UpdatePasswordRequest;
 use App\Http\Requests\Me\UpdateRequest;
+use App\Models\Issue;
 use App\Models\User;
+use App\Service\IssueService;
 use App\Service\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
@@ -41,12 +44,16 @@ class IndexController extends Controller
         return redirect(route('me.index'))->with('successMessage', 'Password changed successfully');
     }
 
-    public function issues()
+    public function issues(ProjectRequest $request, IssueService $service)
     {
-        $user = auth()->user()->load('issues', 'issues.status');
+        $user = auth()->user()->load('issues', 'issues.status', 'projects');
+        $filteredProjectId = $request->validated('project');
+        $issues = $service->projectFilter($user, $filteredProjectId);
 
         return view('me.issues', [
-            'issues' => $user->issues,
+            'issues' => $issues,
+            'projects' => $user->projects,
+            'filteredProjectId' => $filteredProjectId,
         ]);
     }
 

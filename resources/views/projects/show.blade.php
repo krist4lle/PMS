@@ -56,9 +56,9 @@
                                     <table class="table table-striped projects">
                                         <thead>
                                         <tr>
-                                            <th style="width: 10%">Title</th>
-                                            <th style="width: 30%">Description</th>
-                                            <th style="width: 10%">Assignee</th>
+                                            <th style="width: 10%">#</th>
+                                            <th style="width: 20%">Title</th>
+                                            <th style="width: 20%">Assignee</th>
                                             <th style="width: 5%">Status</th>
                                             <th style="width: 5%">Actions</th>
                                         </tr>
@@ -66,8 +66,8 @@
                                         <tbody>
                                         @foreach($issues as $issue)
                                             <tr>
+                                                <td>{{ $issue->id }}</td>
                                                 <td>{{ $issue->title }}</td>
-                                                <td>{{ $issue->description }}</td>
                                                 <td>
                                                     {{ $issue->assignee->first_name }} {{ $issue->assignee->last_name }}
                                                 </td>

@@ -9,3 +9,9 @@
         </a>
     </li>
 @endforeach
+<li class="nav-item">
+    <a href="{{ route('me.projects', auth()->user()) }}" class="nav-link {{ Request::is() ? 'active' : '' }}">
+        <i class="nav-icon fas fa-arrows"></i>
+        <p>My projects</p>
+    </a>
+</li>

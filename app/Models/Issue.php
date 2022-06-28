@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -10,11 +11,11 @@ class Issue extends Model
     use HasFactory;
 
     protected $fillable = [
-      'title',
-      'description',
-      'finished_at',
-      'deadline',
-      'estimate',
+        'title',
+        'description',
+        'finished_at',
+        'deadline',
+        'estimate',
     ];
 
     public function status()
@@ -30,5 +31,10 @@ class Issue extends Model
     public function assignee()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function scopeMyIssues($query, int $projectId)
+    {
+        $query->whereRelation('project', 'id', $projectId);
     }
 }

@@ -38,11 +38,6 @@ class PositionController extends Controller
         return redirect(route('positions.index'))->with('success', 'Position successfully created');
     }
 
-    public function show($id)
-    {
-        //
-    }
-
     public function edit(Position $position)
     {
         $departments = Department::all();

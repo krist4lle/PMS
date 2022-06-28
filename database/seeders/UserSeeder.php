@@ -76,6 +76,7 @@ class UserSeeder extends Seeder
             'email_verified_at' => now(),
             'password' => Hash::make('qwe123'),
             'avatar' => $this->uploadAvatar($gender[0]),
+            'key' => 'worker',
         ];
     }
 

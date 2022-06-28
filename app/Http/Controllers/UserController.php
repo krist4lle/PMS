@@ -43,11 +43,6 @@ class UserController extends Controller
         return redirect()->route('users.index')->with('success', 'User successfully created');
     }
 
-    public function show($id)
-    {
-        //
-    }
-
     public function edit(User $user)
     {
         $user->load(['department', 'position', 'parent.position']);

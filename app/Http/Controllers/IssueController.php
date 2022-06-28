@@ -13,16 +13,6 @@ use Illuminate\Http\Request;
 
 class IssueController extends Controller
 {
-    public function index()
-    {
-        //
-    }
-
-    public function create()
-    {
-        //
-    }
-
     public function store(StoreRequest $request, IssueService $service)
     {
         $issueData = $request->validated();
@@ -34,11 +24,6 @@ class IssueController extends Controller
     public function show(Issue $issue, IssueService $service)
     {
         return view('issues.show', $service->prepareDataToShowIssue($issue));
-    }
-
-    public function edit($id)
-    {
-        //
     }
 
     public function status(Issue $issue, IssueService $service)

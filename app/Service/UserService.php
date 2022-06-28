@@ -99,11 +99,11 @@ class UserService
         $user->avatar = Storage::put('avatars', $avatarFile);
     }
 
-    private function relations(User $user, string $positionTitle, string|null $departmentName, string|null $parentPosition): void
+    private function relations(User $user, string $positionId, string|null $departmentSlug, string|null $parentPosition): void
     {
-        $position = Position::where('title', $positionTitle)->first();
-        $department = Department::where('name', $departmentName)->first();
-        $parent = User::whereRelation('position', 'title', $parentPosition)->first();
+        $position = Position::find($positionId);
+        $department = Department::where('slug', $departmentSlug)->first();
+        $parent = User::whereRelation('position', 'id', $parentPosition)->first();
         $this->positionHasDepartment($user, $position, $department, $parent);
         $this->positionHasNotDepartment($user, $position, $department, $parent);
 

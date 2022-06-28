@@ -10,7 +10,7 @@ use App\Models\User;
 
 class ProjectService
 {
-    public function dataToCreateProject(): array
+    public function prepareDataToCreateProject(): array
     {
         $clients = Client::all();
         $managers = User::whereRelation('department', 'name', 'Management')->get();
@@ -30,7 +30,7 @@ class ProjectService
         ];
     }
 
-    public function dataToShowProject(Project $project): array
+    public function prepareDataToShowProject(Project $project): array
     {
         $project->load([
             'client',
@@ -41,21 +41,18 @@ class ProjectService
             'issues.status',
             'issues.assignee',
         ]);
-        $client = $project->client;
-        $manager = $project->manager;
-        $users = $project->users;
         $issues = $project->issues->sortByDesc('updated_at');
 
         return [
             'project' => $project,
-            'client' => $client,
-            'manager' => $manager,
-            'users' => $users,
+            'client' => $project->client,
+            'manager' => $project->manager,
+            'users' => $project->users,
             'issues' => $issues,
         ];
     }
 
-    public function dataToEditProject(Project $project): array
+    public function prepareDataToEditProject(Project $project): array
     {
         $project->load(['client', 'manager', 'users']);
         $assignedWorkers = $project->users->pluck('id')->toArray();
@@ -64,7 +61,7 @@ class ProjectService
             'assignedWorkers' => $assignedWorkers
         ];
 
-        return array_merge($dataToEditProject, $this->dataToCreateProject());
+        return array_merge($dataToEditProject, $this->prepareDataToCreateProject());
     }
 
     public function createProject(Project $project, array $projectData): void

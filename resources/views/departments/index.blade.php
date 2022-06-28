@@ -25,17 +25,10 @@
                 <table class="table table-striped projects">
                     <thead>
                     <tr>
-                        <th style="width: 1%">
-                            #
-                        </th>
-                        <th style="width: 20%">
-                            Department Name
-                        </th>
-                        <th style="width: 20%">
-                            Employees
-                        </th>
-                        <th style="width: 20%">
-                        </th>
+                        <th style="width: 1%">#</th>
+                        <th style="width: 20%">Department Name</th>
+                        <th style="width: 20%">Employees</th>
+                        <th style="width: 20%"></th>
                     </tr>
                     </thead>
                     <tbody>

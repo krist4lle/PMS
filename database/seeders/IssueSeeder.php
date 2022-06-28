@@ -34,7 +34,7 @@ class IssueSeeder extends Seeder
         $issue = new Issue();
         $issue->title = $this->issueTitle();
         $issue->description = $this->faker->realText();
-        $status = IssueStatus::where('status', 'new')->first();
+        $status = IssueStatus::where('slug', 'new')->first();
         $issue->status()->associate($status);
         $project = Project::all()->random();
         $issue->project()->associate($project);

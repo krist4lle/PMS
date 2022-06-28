@@ -33,7 +33,7 @@ class IssueController extends Controller
 
     public function show(Issue $issue, IssueService $service)
     {
-        return view('issues.show', $service->dataToShowIssue($issue));
+        return view('issues.show', $service->prepareDataToShowIssue($issue));
     }
 
     public function edit($id)
@@ -43,7 +43,7 @@ class IssueController extends Controller
 
     public function status(Issue $issue, IssueService $service)
     {
-        $service->issueStatus($issue);
+        $service->changeIssueStatus($issue);
 
         return redirect()->back();
     }

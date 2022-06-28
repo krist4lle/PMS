@@ -2,12 +2,30 @@
 @section('content')
     <section class="content-header">
         <div class="container-fluid">
-            <div class="col row justify-content-between">
-                <div>
+            <div class="row justify-content-between">
+                <div class="col-4">
                     <h1>My Issues</h1>
                 </div>
-                <div>
-                    <a href="{{ route('me.index') }}" type="button" class="btn btn-outline-secondary">
+                <div class="col row">
+                    <form action="{{ route('me.issues') }}" method="get">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <select class="form-control" name="project">
+                                    <option value="">Choose Project</option>
+                                    @foreach($projects as $project)
+                                        <option value="{{ $project->id }}"
+                                            {{ $project->id == $filteredProjectId ? 'selected' : '' }}>
+                                            {{ $project->title }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary ml-2">Submit</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-4">
+                    <a href="{{ route('me.index') }}" type="button" class="btn btn-outline-secondary float-right">
                         My Profile
                     </a>
                 </div>

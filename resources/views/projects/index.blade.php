@@ -48,7 +48,7 @@
                             </td>
                             <td>
                                 <a href="{{ route('profile.index', $project->manager) }}" class="col-10">
-                                    <img src="{{ $project->manager->avatar }}" alt="project_manager" class="col-7">
+                                    <img src="{{ $project->manager->avatar }}" alt="project_manager" class="col-5">
                                 </a>
                             </td>
                             <td>

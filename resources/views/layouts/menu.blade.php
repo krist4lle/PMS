@@ -12,6 +12,14 @@
         <p>Our Team</p>
     </a>
 </li>
+<!-- My Issues -->
+<li class="nav-item">
+    <a href="{{ route('me.issues', auth()->user()) }}" class="nav-link {{ Request::is('my-issues') ? 'active' : '' }}">
+        <i class="nav-icon fas fa-clipboard-list"></i>
+        <p>My Issues</p>
+        <span class="badge badge-warning">{{ auth()->user()->issues->count() }}</span>
+    </a>
+</li>
 <!-- Departments -->
 <li class="nav-item">
     <a href="{{ route('departments.index') }}" class="nav-link {{ Request::is('departments') ? 'active' : '' }}">

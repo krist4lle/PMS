@@ -32,7 +32,7 @@ Route::middleware(['auth'])->group(function () {
     Route::patch('/me', [App\Http\Controllers\Me\IndexController::class, 'update'])->name('me.update');
     Route::post('/change-password', [App\Http\Controllers\Me\IndexController::class, 'changePassword'])
         ->name('me.update.password');
-    Route::get('my-issues/{user}', [App\Http\Controllers\Me\IndexController::class, 'issues'])
+    Route::get('my-issues', [App\Http\Controllers\Me\IndexController::class, 'issues'])
         ->name('me.issues');
     Route::get('my-projects/{user}', [App\Http\Controllers\Me\IndexController::class, 'projects'])
         ->name('me.projects');

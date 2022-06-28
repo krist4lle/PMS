@@ -18,6 +18,8 @@ class IndexController extends Controller
     {
         $user = auth()->user()->loadCount(['issues', 'projects']);
 
+        dd($user->issues()->whereRelation('status', 'slug', 'done')->get());
+
         return view('me.index', [
             'user' => $user,
         ]);
@@ -41,13 +43,12 @@ class IndexController extends Controller
         return redirect(route('me.index'))->with('successMessage', 'Password changed successfully');
     }
 
-    public function issues(User $user)
+    public function issues()
     {
-        $user->load('issues', 'issues.status');
-        $issues = $user->issues;
+        $user = auth()->user()->load('issues', 'issues.status');
 
         return view('me.issues', [
-            'issues' => $issues
+            'issues' => $user->issues,
         ]);
     }
 

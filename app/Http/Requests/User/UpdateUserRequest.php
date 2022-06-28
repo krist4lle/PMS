@@ -35,9 +35,9 @@ class UpdateUserRequest extends FormRequest
                 Rule::unique('users')->ignore($this->route('user'))
             ],
             'avatar' => 'file',
-            'department' => 'nullable|exists:departments,name',
-            'position' => 'required|exists:positions,title',
-            'parent' => 'nullable|exists:positions,title',
+            'department' => 'nullable|exists:departments,slug',
+            'position' => 'required|exists:positions,id',
+            'parent' => 'nullable|exists:positions,id',
             'password' => 'nullable|string|min:6|max:20|confirmed',
             'password_confirmation' => 'nullable|string|min:6|max:20',
         ];

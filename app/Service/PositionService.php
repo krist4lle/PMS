@@ -10,7 +10,7 @@ class PositionService
     public function positionSave(Position $position, array $positionData): void
     {
         $position->title = $positionData['title'];
-        $this->departmentCheck($positionData['department_name'], $position);
+        $this->departmentCheck($positionData['department'], $position);
         $position->save();
     }
 
@@ -25,9 +25,9 @@ class PositionService
         $position->delete();
     }
 
-    private function departmentCheck(string|null $departmentName, Position $position): void
+    private function departmentCheck(string|null $departmentSlug, Position $position): void
     {
-        $department = Department::where('name', $departmentName)->first();
+        $department = Department::where('slug', $departmentSlug)->first();
         $department !== null
             ? $position->department()->associate($department)
             : $position->department()->dissociate();

@@ -3,10 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\Department;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Illuminate\Http\File;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class DepartmentSeeder extends Seeder
 {
@@ -22,6 +20,8 @@ class DepartmentSeeder extends Seeder
         foreach ($departments as $departmentName) {
             $department = new Department();
             $department->name = $departmentName;
+            $department->slug = Str::slug($departmentName, '_');
+
             $department->save();
         }
     }

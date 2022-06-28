@@ -25,11 +25,11 @@
                                     {{ $message }}
                                 </div>
                                 @enderror
-                                <select class="form-control" name="department_name">
+                                <select class="form-control" name="department">
                                     <option value="">Choose Department</option>
                                     @foreach($departments as $department)
-                                        <option value="{{ $department->name }}"
-                                        {{ old('department_name') == $department->name ? 'selected' : ''}}>
+                                        <option value="{{ $department->slug }}"
+                                        {{ old('department') == $department->slug ? 'selected' : ''}}>
                                             {{ $department->name }}
                                         </option>
                                     @endforeach

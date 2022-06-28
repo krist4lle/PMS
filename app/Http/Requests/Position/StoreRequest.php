@@ -30,7 +30,7 @@ class StoreRequest extends FormRequest
                 'string',
                 Rule::unique('positions')
             ],
-            'department_name' => 'nullable|exists:departments,name'
+            'department' => 'nullable|exists:departments,slug'
         ];
     }
 }

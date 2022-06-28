@@ -88,9 +88,9 @@
                                     <select name="department" id="department" class="form-control">
                                         <option value="">Choose Department</option>
                                         @foreach($departments as $department)
-                                            <option value="{{ $department->name }}"
+                                            <option value="{{ $department->slug }}"
                                             @if(isset($user->department))
-                                                {{ $user->department->name == $department->name ? 'selected' : '' }}
+                                                {{ $user->department->slug == $department->slug ? 'selected' : '' }}
                                                 @endif>
                                                 {{ $department->name }}
                                             </option>
@@ -114,8 +114,8 @@
                                     <select name="position" id="position" class="form-control">
                                         <option>Choose Position</option>
                                         @foreach($positions as $position)
-                                            <option value="{{ $position->title }}"
-                                                {{ $user->position->title == $position->title ? 'selected' : '' }}>
+                                            <option value="{{ $position->id }}"
+                                                {{ $user->position->id == $position->id ? 'selected' : '' }}>
                                                 {{ $position->title }}
                                             </option>
                                         @endforeach
@@ -135,9 +135,9 @@
                                     <select name="parent" id="parent" class="form-control">
                                         <option value="">Choose Supervisor</option>
                                         @foreach($parents as $parent)
-                                            <option value="{{ $parent->position->title }}"
+                                            <option value="{{ $parent->position->id }}"
                                             @if(isset($user->parent->position))
-                                                {{ $parent->position->title == $user->parent->position->title ? 'selected' : '' }}
+                                                {{ $parent->position->id == $user->parent->position->id ? 'selected' : '' }}
                                                 @endif>
                                                 {{ $parent->position->title }}
                                             </option>

@@ -16,7 +16,7 @@ class IssueService
     public function createIssue(array $issueData): void
     {
         $issue = new Issue();
-        $status = IssueStatus::where('status', 'new')->first();
+        $status = IssueStatus::where('slug', 'new')->first();
         $issue->status()->associate($status);
         $project = Project::where('title', $issueData['project'])->first();
         $this->projectStatusCheck($project);
@@ -39,30 +39,34 @@ class IssueService
         $issue->save();
     }
 
-    public function dataToShowIssue(Issue $issue): array
+    public function prepareDataToShowIssue(Issue $issue): array
     {
         $issue->load(['status', 'project', 'project.users', 'project.users.position', 'assignee', 'assignee.position']);
-        $project = $issue->project;
-        $assignee = $issue->assignee;
-        $users = $project->users;
 
         return [
             'issue' => $issue,
-            'project' => $project,
-            'assignee' => $assignee,
-            'users' => $users,
+            'project' => $issue->project,
+            'assignee' => $issue->assignee,
+            'users' => $issue->project->users,
         ];
     }
 
-    public function issueStatus(Issue $issue): void
+    public function changeIssueStatus(Issue $issue): void
     {
-        if ($issue->status->status === 'new') {
-            $status = IssueStatus::where('status', 'in progress')->first();
-        } else {
-            $status = IssueStatus::where('status', 'closed')->first();
-            $issue->finished_at = date('Y-m-d H:i:s');
+        switch ($issue->status->slug) {
+            case 'new':
+                $status = IssueStatus::where('slug', 'in_progress')->first();
+                break;
+            case 'in_progress':
+                $status = IssueStatus::where('slug', 'review')->first();
+                break;
+            case 'review':
+                $status = IssueStatus::where('slug', 'done')->first();
+                $issue->finished_at = date('Y-m-d H:i:s');
+                break;
         }
         $issue->status()->associate($status);
+
         $issue->save();
     }
 
@@ -76,7 +80,7 @@ class IssueService
     public function issueStatusCheck(Issue $issue, string $assigneeId): void
     {
         if ($issue->assignee->id != $assigneeId) {
-            $status = IssueStatus::where('status', 'new')->first();
+            $status = IssueStatus::where('slug', 'new')->first();
             $issue->status()->associate($status);
         }
     }

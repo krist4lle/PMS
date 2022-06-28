@@ -52,38 +52,51 @@
                                         Create Issue
                                     </button>
                                 </h4>
-                                @foreach($issues as $issue)
-                                    <div class="post">
-                                        <div class="row justify-content-between">
-                                            <div>
-                                                <label>
-                                                    {{ $issue->title }}
-                                                    <a href="{{ route('issues.show', $issue) }}">
-                                                        <i class="nav-icon fas fa-arrow-circle-right"></i>
-                                                    </a>
-                                                </label>
-                                            </div>
-                                            <div>
-                                                Status:
-                                                <span class="badge badge-info">{{ $issue->status->status }}</span>
-                                            </div>
-                                        </div>
-                                        <div class="user-block">
-                                            <img class="img-circle img-bordered-sm"
-                                                 src="{{ asset($issue->assignee->avatar) }}" alt="user_image">
-                                            <span class="username">
-                                                <a href="#">
+                                <div class="card-body p-0">
+                                    <table class="table table-striped projects">
+                                        <thead>
+                                        <tr>
+                                            <th style="width: 10%">Title</th>
+                                            <th style="width: 30%">Description</th>
+                                            <th style="width: 10%">Assignee</th>
+                                            <th style="width: 5%">Status</th>
+                                            <th style="width: 5%">Actions</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        @foreach($issues as $issue)
+                                            <tr>
+                                                <td>{{ $issue->title }}</td>
+                                                <td>{{ $issue->description }}</td>
+                                                <td>
                                                     {{ $issue->assignee->first_name }} {{ $issue->assignee->last_name }}
-                                                </a>
-                                            </span>
-                                            <span class="description">
-                                                Created:
-                                                {{ $issue->created_at }}
-                                            </span>
-                                        </div>
-                                        <p>{{ $issue->description }}</p>
-                                    </div>
-                                @endforeach
+                                                </td>
+                                                <td>
+                                                    @if($issue->status->slug === 'new')
+                                                        <span class="badge badge-danger">
+                                                            {{ $issue->status->name }}
+                                                        </span>
+                                                    @elseif($issue->status->slug === 'done')
+                                                        <span class="badge badge-success">
+                                                            {{ $issue->status->name }}
+                                                        </span>
+                                                    @else
+                                                        <span class="badge badge-warning">
+                                                            {{ $issue->status->name }}
+                                                        </span>
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    <a class="btn btn-primary btn-sm mx-2"
+                                                       href="{{ route('issues.show', $issue) }}">
+                                                        <i class="fas fa-eye"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -115,20 +128,36 @@
                                 </div>
                             @endforeach
                             <br>
-                            <p class="text-sm">Deadline
-                                <b class="d-block">
-                                    {{ \Carbon\Carbon::create($project->deadline)->diffForHumans() }}
-                                </b>
-                            </p>
+                            <div class="row">
+                                <div class="col-6">
+                                    <p class="text-sm">Deadline
+                                        <b class="d-block">
+                                            {{ \Carbon\Carbon::create($project->deadline)->toDateString() }}
+                                        </b>
+                                    </p>
+                                </div>
+                                <div class="col-6">
+                                    <p class="text-sm">Closed
+                                        @if($project->finished_at !== null)
+                                        <b class="d-block">
+                                            {{ \Carbon\Carbon::create($project->finished_at)->toDateString() }}
+                                        </b>
+                                        @else
+                                            <b class="d-block">N/A</b>
+                                        @endif
+                                    </p>
+                                </div>
+                            </div>
+
                             <div class="pt-3 pl-2 row">
                                 <div>
-                                    <form action="{{ route('projects.finished', $project) }}" method="post">
+                                    <form action="{{ route('projects.status', $project) }}" method="post">
                                         @csrf
                                         @method('patch')
                                         <input type="hidden" value="{{ date('Y-m-d H:i:s') }}" name="finished_at">
                                         <button class="btn btn-outline-info" type="submit">
                                             @if($project->finished_at !== null)
-                                                Start Project
+                                                Launch Project
                                             @else
                                                 Close Project
                                             @endif

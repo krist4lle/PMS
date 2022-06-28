@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Project\FinishedRequest;
 use App\Http\Requests\Project\StoreRequest;
 use App\Http\Requests\Project\UpdateRequest;
 use App\Models\Project;
@@ -12,7 +11,7 @@ class ProjectController extends Controller
 {
     public function index()
     {
-        $projects = Project::with(['manager', 'users'])->paginate(10);
+        $projects = Project::with(['manager', 'users'])->orderByDesc('updated_at')->paginate(10);
 
         return view('projects.index', [
             'projects' => $projects
@@ -21,7 +20,7 @@ class ProjectController extends Controller
 
     public function create(ProjectService $service)
     {
-        return view('projects.create', $service->dataToCreateProject());
+        return view('projects.create', $service->prepareDataToCreateProject());
     }
 
     public function store(StoreRequest $request, ProjectService $service)
@@ -34,12 +33,12 @@ class ProjectController extends Controller
 
     public function show(Project $project, ProjectService $service)
     {
-        return view('projects.show', $service->dataToShowProject($project));
+        return view('projects.show', $service->prepareDataToShowProject($project));
     }
 
     public function edit(Project $project, ProjectService $service)
     {
-        return view('projects.edit', $service->dataToEditProject($project));
+        return view('projects.edit', $service->prepareDataToEditProject($project));
     }
 
     public function update(UpdateRequest $request, Project $project, ProjectService $service)
@@ -53,17 +52,18 @@ class ProjectController extends Controller
     public function destroy(Project $project)
     {
         if ($project->finished_at === null) {
+
             return redirect()->back()->with('error', 'Impossible to delete Project in progress');
-        } else {
-            $project->delete();
-            return redirect()->route('projects.index')->with('success', 'Project successfully deleted');
         }
+        $project->delete();
+
+        return redirect()->route('projects.index')->with('success', 'Project successfully deleted');
+
     }
 
-    public function finished(FinishedRequest $request, Project $project, ProjectService $service)
+    public function status(Project $project, ProjectService $service)
     {
-        $finishedAtDate = $request->validated();
-        $service->projectStatus($project, $finishedAtDate['finished_at']);
+        $service->projectStatusChange($project);
 
         return redirect()->back();
     }

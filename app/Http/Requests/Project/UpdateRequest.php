@@ -22,7 +22,7 @@ class UpdateRequest extends FormRequest
                 Rule::unique('projects')->ignore($this->route('project')),
             ],
             'description' => 'required|string',
-            'client' => 'required|exists:clients,title',
+            'client' => 'required|exists:clients,id',
             'manager' => 'required|exists:users,id',
             'workers' => 'required|array',
             'workers.*' => 'required|exists:users,id',

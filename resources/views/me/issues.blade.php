@@ -23,7 +23,7 @@
                         <th style="width: 10%">Issue</th>
                         <th style="width: 40%">Description</th>
                         <th style="width: 10%">Status</th>
-                        <th style="width: 20%"></th>
+                        <th style="width: 20%">Actions</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -31,8 +31,16 @@
                         <tr>
                             <td>{{ $issue->title }}</td>
                             <td>{{ $issue->description }}</td>
-                            <td><span class="badge badge-info">{{ $issue->status->status }}</span></td>
-                            <td class="project-actions text-right row">
+                            <td>
+                                @if($issue->status->slug === 'new')
+                                    <span class="badge badge-danger">{{ $issue->status->name }}</span>
+                                @elseif($issue->status->slug === 'done')
+                                    <span class="badge badge-success">{{ $issue->status->name }}</span>
+                                @else
+                                    <span class="badge badge-warning">{{ $issue->status->name }}</span>
+                                @endif
+                            </td>
+                            <td class="text-right row">
                                 <a class="btn btn-primary btn-sm mx-2" href="{{ route('issues.show', $issue) }}">
                                     <i class="fas fa-folder"></i>
                                     View
@@ -42,10 +50,12 @@
                                         @csrf
                                         @method('patch')
                                         <button type="submit" class="btn btn-info btn-sm mx-2">
-                                            @if($issue->status->status === 'new')
-                                                Accept
+                                            @if($issue->status->slug === 'new')
+                                                Accept Issue
+                                            @elseif($issue->status->slug === 'in_progress')
+                                                Send to review
                                             @else
-                                                Close
+                                                Close Issue
                                             @endif
                                         </button>
                                     </form>

@@ -32,7 +32,7 @@ Route::middleware(['auth'])->group(function () {
     Route::patch('/me', [App\Http\Controllers\Me\IndexController::class, 'update'])->name('me.update');
     Route::post('/change-password', [App\Http\Controllers\Me\IndexController::class, 'changePassword'])
         ->name('me.update.password');
-    Route::get('my-issues/{user}', [App\Http\Controllers\Me\IndexController::class, 'issues'])
+    Route::get('my-issues', [App\Http\Controllers\Me\IndexController::class, 'issues'])
         ->name('me.issues');
     Route::get('my-projects/{user}', [App\Http\Controllers\Me\IndexController::class, 'projects'])
         ->name('me.projects');
@@ -48,11 +48,11 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('projects', App\Http\Controllers\ProjectController::class);
 
     Route::resource('clients', App\Http\Controllers\ClientController::class);
-    Route::patch('projects/finished-at/{project}', [App\Http\Controllers\ProjectController::class, 'finished'])
-        ->name('projects.finished');
+    Route::patch('projects/status/{project}', [App\Http\Controllers\ProjectController::class, 'status'])
+        ->name('projects.status');
 
     Route::resource('issues', App\Http\Controllers\IssueController::class)
         ->except('index', 'create', 'edit');
-    Route::patch('issue-accept/{issue}',[App\Http\Controllers\IssueController::class, 'status'])
+    Route::patch('issue-status/{issue}',[App\Http\Controllers\IssueController::class, 'status'])
         ->name('issues.status');
 });

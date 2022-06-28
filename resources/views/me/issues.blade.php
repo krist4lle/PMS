@@ -23,7 +23,7 @@
                         <th style="width: 10%">Issue</th>
                         <th style="width: 40%">Description</th>
                         <th style="width: 10%">Status</th>
-                        <th style="width: 20%"></th>
+                        <th style="width: 20%">Actions</th>
                     </tr>
                     </thead>
                     <tbody>

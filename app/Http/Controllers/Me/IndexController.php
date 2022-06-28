@@ -18,8 +18,6 @@ class IndexController extends Controller
     {
         $user = auth()->user()->loadCount(['issues', 'projects']);
 
-        dd($user->issues()->whereRelation('status', 'slug', 'done')->get());
-
         return view('me.index', [
             'user' => $user,
         ]);

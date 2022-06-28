@@ -21,6 +21,7 @@ class DepartmentService
                 ->with('errorMessage', 'Impossible to edit Department with employees');
         }
         $department->name = $departmentName;
+
         $department->save();
     }
 

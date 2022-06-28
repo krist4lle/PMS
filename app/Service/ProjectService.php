@@ -86,6 +86,7 @@ class ProjectService
 
 
         if ($newStatus || $inProgressStatus || $reviewStatus) {
+
             return redirect()->back()->with('error', 'Impossible to close Project with active Issues');
         }
         $project->finished_at = $this->finishedDateAssignment($project);

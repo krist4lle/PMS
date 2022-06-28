@@ -53,10 +53,9 @@ class IndexController extends Controller
     public function projects(User $user)
     {
         $user->load('projects');
-        $projects = $user->projects;
 
         return view('me.projects', [
-            'projects' => $projects
+            'projects' => $user->projects,
         ]);
     }
 }

@@ -24,7 +24,7 @@
                         @csrf
                         <div class="px-3 row">
                             <div class="col-6">
-                                <label for="first_name" class="form-label">First Name</label>
+                                <label for="first_name" class="form-label">First Name *</label>
                                 @error('first_name')
                                 <div class="alert alert-danger mt-2" role="alert">
                                     {{ $message }}
@@ -34,7 +34,7 @@
                                        placeholder="Enter First Name" value="{{ old('first_name') }}">
                             </div>
                             <div class="col-6">
-                                <label for="last_name" class="form-label">Last Name</label>
+                                <label for="last_name" class="form-label">Last Name *</label>
                                 @error('last_name')
                                 <div class="alert alert-danger mt-2" role="alert">
                                     {{ $message }}
@@ -46,7 +46,19 @@
                         </div>
                         <div class="px-3 pt-2 row">
                             <div class="col-6">
-                                <label for="password" class="form-label">Password</label>
+                                <label for="first_name" class="form-label">Email *</label>
+                                @error('email')
+                                <div class="alert alert-danger mt-2" role="alert">
+                                    {{ $message }}
+                                </div>
+                                @enderror
+                                <input type="email" class="form-control" id="email" name="email"
+                                       value="{{ old('email') }}" placeholder="Enter Email">
+                            </div>
+                        </div>
+                        <div class="px-3 pt-2 row">
+                            <div class="col-6">
+                                <label for="password" class="form-label">Password *</label>
                                 @error('password')
                                 <div class="alert alert-danger mt-2" role="alert">
                                     {{ $message }}
@@ -55,7 +67,7 @@
                                 <input type="password" class="form-control" id="password" name="password">
                             </div>
                             <div class="col-6">
-                                <label for="password_confirmation" class="form-label">Confirm Password</label>
+                                <label for="password_confirmation" class="form-label">Confirm Password *</label>
                                 @error('password_confirmation')
                                 <div class="alert alert-danger mt-2" role="alert">
                                     {{ $message }}
@@ -67,7 +79,7 @@
                         </div>
                         <div class="px-3 pt-2 row">
                             <div class="col-6">
-                                <label for="gender" class="form-label">Gender</label>
+                                <label for="gender" class="form-label">Gender *</label>
                                 <div class="form-group">
                                     <select name="gender" id="gender" class="form-control">
                                         <option {{ old('gender') == 'male' ? 'selected' : '' }} value="male">Male
@@ -78,7 +90,7 @@
                                 </div>
                             </div>
                             <div class="col-6">
-                                <label for="parent" class="form-label">Supervisor</label>
+                                <label for="parent" class="form-label">Supervisor *</label>
                                 @error('parent')
                                 <div class="alert alert-danger mt-2" role="alert">
                                     {{ $message }}
@@ -99,7 +111,7 @@
                         </div>
                         <div class="px-3 row">
                             <div class="col-6">
-                                <label for="department" class="form-label">Department</label>
+                                <label for="department" class="form-label">Department *</label>
                                 @error('department')
                                 <div class="alert alert-danger mt-2" role="alert">
                                     {{ $message }}
@@ -118,7 +130,7 @@
                                 </div>
                             </div>
                             <div class="col-6">
-                                <label for="position" class="form-label">Position</label>
+                                <label for="position" class="form-label">Position *</label>
                                 @error('position')
                                 <div class="alert alert-danger mt-2" role="alert">
                                     {{ $message }}

@@ -128,8 +128,7 @@
                             </div>
                             <div class="col-3 justify-content-end row">
                                 <div class="mx-2">
-                                    <button onclick="editComment{{ $comment->id }}()"
-                                            class="btn btn-sm btn-outline-info">
+                                    <button onclick="formShow(this)" class="btn btn-sm btn-outline-info">
                                         <i class="nav-icon fas fa-pen"></i>
                                         Edit
                                     </button>
@@ -143,39 +142,33 @@
                                     </button>
                                 </form>
                             </div>
-                            <p class="px-2" id="commentContent{{ $comment->id }}">{{ $comment->content }}</p>
-                            <form class="col-12" id="editCommentForm{{ $comment->id }}" style="display: none"
-                                  action="{{ route('comments.update', $comment) }}" method="post">
+                            <p class="px-2">{{ $comment->content }}</p>
+                            <form class="col-12" method="post" action="{{ route('comments.update', $comment) }}">
                                 @csrf
-                                @method('patch')
+                                @method('put')
                                 <textarea class="form-control form-control-sm" placeholder="Type a comment"
-                                          name="content" id="content{{ $comment->id }}">{{ $comment->content }}</textarea>
-                                <button type="submit" class="btn btn-sm btn-outline-secondary mt-2">Edit Comment</button>
-                                <a onclick="cancelEditComment{{ $comment->id }}()"
-                                        class="btn btn-sm btn-outline-danger mt-2">Cancel</a>
+                                          name="content">{{ $comment->content }}</textarea>
+                                <button type="submit" class="btn btn-sm btn-outline-secondary mt-2">
+                                    Edit Comment
+                                </button>
+                                <a onclick="formHide(this)" class="btn btn-sm btn-outline-danger mt-2">Cancel</a>
                             </form>
                         </div>
-                        <script>
-                            function editComment{{ $comment->id }}() {
-                                document.getElementById('editCommentForm{{ $comment->id }}').style.display = 'block';
-                                document.getElementById('commentContent{{ $comment->id }}').style.display = 'none';
-                            }
-
-                            function cancelEditComment{{ $comment->id }}() {
-                                document.getElementById('editCommentForm{{ $comment->id }}').style.display = 'none';
-                                document.getElementById('commentContent{{ $comment->id }}').style.display = 'block';
-                            }
-
-                            function updateComment{{ $comment->id }}() {
-                                const xml = new XMLHttpRequest();
-                                xml.onload = function() {
-
-                                }
-                                xml.open('POST', 'comments/{{ $comment->id }}', true);
-                                xml.send()
-                            }
-                        </script>
                     @endforeach
+                    <script>
+                        function formShow(button) {
+                            let form = button.parentElement;
+                            if (form.style.display === 'none') {
+                                form.style.display = 'block';
+                            } else {
+                                form.style.display = 'none';
+                            }
+                        }
+
+                        function formHide(button) {
+                            button.parentElement.form.style.display = 'none';
+                        }
+                    </script>
                 </div>
             </div>
         </div>

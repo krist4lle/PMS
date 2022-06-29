@@ -128,7 +128,7 @@
                 </div>
             </div>
         </div>
-        <form id="form">
+        <form>
             <input type="text" name="name">
             <input type="text" name="surname">
             <input type="text" name="age">
@@ -137,8 +137,19 @@
         <script>
             function sendRequest(button) {
                 var form = button.parentElement;
-                var data = new FormData(form);
-                console.log(data);
+                var formData = new FormData(form);
+                var data = {};
+                formData.forEach(function(value, key) {
+                    data[key] = value;
+                });
+                fetch('/api/set-api-data', {
+                    method: 'POST',
+                    body: JSON.stringify(data),
+                }).then(function(response) {
+                    return response.json();
+                }).then(function(data) {
+                    console.log(data);
+                });
             }
         </script>
     </body>

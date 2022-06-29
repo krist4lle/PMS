@@ -28,11 +28,10 @@ Route::get('/get-api-data', function () {
 });
 
 Route::post('/set-api-data', function () {
-    $version = request()->json()->get('version');
-    $version += 1;
+    $data = request()->json()->all();
     return response()->json([
         'status' => 'saved',
         'game' => 'Tarkov huynya',
-        'version' => $version,
+        'data' => $data,
     ]);
 });

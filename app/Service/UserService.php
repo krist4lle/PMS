@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Jobs\UserCredentialsEmailJob;
 use App\Mail\User\PasswordMail;
 use App\Models\Department;
 use App\Models\Position;
@@ -54,7 +55,7 @@ class UserService
         $user->avatar = $this->avatarCreate($userData['gender']);
         $this->relations($user, $userData['position'], $userData['department'], $userData['parent']);
         $user->save();
-        Mail::to($user->email)->send(new PasswordMail($userData['password']));
+        dispatch(new UserCredentialsEmailJob($user->email, $userData['email'], $userData['password']));
     }
 
     public function updateUser(User $user, array $userData): void

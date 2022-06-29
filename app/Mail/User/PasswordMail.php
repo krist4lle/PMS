@@ -13,13 +13,16 @@ class PasswordMail extends Mailable
 
     public $password;
 
-    public function __construct($password)
+    public $email;
+
+    public function __construct($password, $email)
     {
         $this->password = $password;
+        $this->email = $email;
     }
 
     public function build()
     {
-        return $this->markdown('mail.user.password');
+        return $this->markdown('mail.user.credentials');
     }
 }

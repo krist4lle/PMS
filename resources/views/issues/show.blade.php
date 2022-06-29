@@ -1,5 +1,6 @@
 @extends('layouts.app')
 @section('content')
+    <new-component></new-component>
     <section class="content-header">
         <div class="container-fluid">
             <div class="row">
@@ -98,39 +99,76 @@
                     </address>
                 </div>
             </div>
-            <div class="row pl-2">
-
-            </div>
             <div class="row">
                 <div class="col-12 table-responsive pt-3">
-                    <h4>Comments</h4>
-                    <table class="table table-striped">
-                        <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Project Title</th>
-                            <th style="width: 60%">About Project</th>
-                            <th>Manager</th>
-                            <th></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td>
-                                <a class="btn btn-primary btn-sm mx-2"
-                                   href="">
-                                    <i class="fas fa-folder"></i>
-                                    View
+                    <h5>
+                        <i class="far fa-comments mr-1"></i> Comments ({{ $issue->comments_count }})
+                    </h5>
+                    <form action="{{ route('comments.store') }}" method="post">
+                        @csrf
+                        <input type="hidden" name="user" value="{{ auth()->user()->id }}">
+                        <input type="hidden" name="issue" value="{{ $issue->id }}">
+                        <textarea class="form-control form-control-sm" placeholder="Type a comment"
+                                  name="content"></textarea>
+                        <button type="submit" class="btn btn-sm btn-outline-secondary mt-2">Add Comment</button>
+                    </form>
+                    <br>
+                    @foreach($comments as $comment)
+                        <div class="post row" id="sid{{ $comment->id }}">
+                            <div class="user-block col-9">
+                                <img class="img-circle img-bordered-sm"
+                                     src="{{ asset($comment->user->avatar) }}" alt="user_image">
+                                <span class="username">
+                                <a href="#">
+                                    {{ $comment->user->first_name }} {{ $comment->user->last_name }}
                                 </a>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
+                            </span>
+                                <span class="description">Shared -
+                                    {{ \Carbon\Carbon::make($comment->updated_at)->diffForHumans() }}</span>
+                            </div>
+                            <div class="col-3 justify-content-end row">
+                                <div class="mx-2">
+                                    <button onclick="formShow(this)" class="btn btn-sm btn-outline-info">
+                                        <i class="nav-icon fas fa-pen"></i>
+                                        Edit
+                                    </button>
+                                </div>
+                                <form action="{{ route('comments.destroy', $comment) }}" method="post">
+                                    @csrf
+                                    @method('delete')
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">
+                                        <i class="nav-icon fas fa-trash"></i>
+                                        Delete
+                                    </button>
+                                </form>
+                            </div>
+                            <p class="px-2">{{ $comment->content }}</p>
+                            <form class="col-12" method="post" action="{{ route('comments.update', $comment) }}">
+                                @csrf
+                                @method('put')
+                                <textarea class="form-control form-control-sm" placeholder="Type a comment"
+                                          name="content">{{ $comment->content }}</textarea>
+                                <button type="submit" class="btn btn-sm btn-outline-secondary mt-2">
+                                    Edit Comment
+                                </button>
+                                <a onclick="formHide(this)" class="btn btn-sm btn-outline-danger mt-2">Cancel</a>
+                            </form>
+                        </div>
+                    @endforeach
+                    <script>
+                        function formShow(button) {
+                            let form = button.parentElement;
+                            if (form.style.display === 'none') {
+                                form.style.display = 'block';
+                            } else {
+                                form.style.display = 'none';
+                            }
+                        }
+
+                        function formHide(button) {
+                            button.parentElement.form.style.display = 'none';
+                        }
+                    </script>
                 </div>
             </div>
         </div>

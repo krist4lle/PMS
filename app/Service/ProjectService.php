@@ -41,7 +41,7 @@ class ProjectService
             'issues.status',
             'issues.assignee',
         ]);
-        $issues = $project->issues->sortByDesc('updated_at');
+        $issues = $project->issues()->orderByDesc('updated_at')->paginate(10);
 
         return [
             'project' => $project,

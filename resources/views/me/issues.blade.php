@@ -83,6 +83,7 @@
                     @endforeach
                     </tbody>
                 </table>
+                {{ $issues->withQueryString() }}
             </div>
         </div>
     </section>

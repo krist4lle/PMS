@@ -28,13 +28,13 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/profile/{user}', [App\Http\Controllers\Employee\IndexController::class, 'profile'])
         ->name('profile.index');
 
-    Route::get('/me', [App\Http\Controllers\Me\IndexController::class, 'index'])->name('me.index');
-    Route::patch('/me', [App\Http\Controllers\Me\IndexController::class, 'update'])->name('me.update');
-    Route::post('/change-password', [App\Http\Controllers\Me\IndexController::class, 'changePassword'])
+    Route::get('/me', [App\Http\Controllers\MeController::class, 'index'])->name('me.index');
+    Route::patch('/me', [App\Http\Controllers\MeController::class, 'update'])->name('me.update');
+    Route::post('/change-password', [App\Http\Controllers\MeController::class, 'changePassword'])
         ->name('me.update.password');
-    Route::get('my-issues', [App\Http\Controllers\Me\IndexController::class, 'issues'])
+    Route::get('my-issues', [App\Http\Controllers\MeController::class, 'issues'])
         ->name('me.issues');
-    Route::get('my-projects', [App\Http\Controllers\Me\IndexController::class, 'projects'])
+    Route::get('my-projects', [App\Http\Controllers\MeController::class, 'projects'])
         ->name('me.projects');
 
     Route::resource('departments', App\Http\Controllers\DepartmentController::class)
@@ -53,6 +53,8 @@ Route::middleware(['auth'])->group(function () {
 
     Route::resource('issues', App\Http\Controllers\IssueController::class)
         ->except('index', 'create', 'edit');
-    Route::patch('issue-status/{issue}',[App\Http\Controllers\IssueController::class, 'status'])
+    Route::patch('issue-status/{issue}', [App\Http\Controllers\IssueController::class, 'status'])
         ->name('issues.status');
+
+    Route::resource('comments', App\Http\Controllers\CommentController::class);
 });

@@ -1,21 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\Me;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Http\Requests\Me\ProjectRequest;
 use App\Http\Requests\Me\UpdatePasswordRequest;
 use App\Http\Requests\Me\UpdateRequest;
-use App\Models\Issue;
-use App\Models\User;
 use App\Service\IssueService;
 use App\Service\UserService;
-use Illuminate\Http\Request;
-use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
 
-class IndexController extends Controller
+class MeController extends Controller
 {
     public function index()
     {

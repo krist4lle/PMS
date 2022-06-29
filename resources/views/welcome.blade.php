@@ -128,5 +128,29 @@
                 </div>
             </div>
         </div>
+        <form>
+            <input type="text" name="name">
+            <input type="text" name="surname">
+            <input type="text" name="age">
+            <button onclick="sendRequest(this); return false;">GO</button>
+        </form>
+        <script>
+            function sendRequest(button) {
+                var form = button.parentElement;
+                var formData = new FormData(form);
+                var data = {};
+                formData.forEach(function(value, key) {
+                    data[key] = value;
+                });
+                fetch('/api/set-api-data', {
+                    method: 'POST',
+                    body: JSON.stringify(data),
+                }).then(function(response) {
+                    return response.json();
+                }).then(function(data) {
+                    console.log(data);
+                });
+            }
+        </script>
     </body>
 </html>

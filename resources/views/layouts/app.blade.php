@@ -102,7 +102,6 @@
     </footer>
 </div>
 
-
 <!-- jQuery -->
 <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
 <!-- jQuery UI 1.11.4 -->
@@ -137,8 +136,12 @@
 <script src="{{ asset('plugins/select2/js/select2.full.min.js') }}"></script>
 
 <script src="{{ asset('plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js') }}"></script>
+
+<script src="{{ asset('plugins/chart.js/Chart.min.js') }}"></script>
+
+<script src="{{ asset('dist/js/pages/dashboard3.js') }}"></script>
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
         $('.js-example-basic-multiple').select2();
     });
     $(function () {
@@ -147,6 +150,6 @@
         $('.duallistbox').bootstrapDualListbox()
     })
 </script>
-
 </body>
 </html>
+

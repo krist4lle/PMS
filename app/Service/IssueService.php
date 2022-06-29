@@ -52,13 +52,14 @@ class IssueService
             'comments',
             'comments.user',
         ]);
+        $comments = $issue->comments()->orderByDesc('updated_at');
 
         return [
             'issue' => $issue->loadCount('comments'),
             'project' => $issue->project,
             'assignee' => $issue->assignee,
             'users' => $issue->project->users,
-            'comments' => $issue->comments,
+            'comments' => $comments->get(),
         ];
     }
 

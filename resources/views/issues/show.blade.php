@@ -103,11 +103,18 @@
                     <h5>
                         <i class="far fa-comments mr-1"></i> Comments ({{ $issue->comments_count }})
                     </h5>
-                    <textarea class="form-control form-control-sm" placeholder="Type a comment"></textarea>
+                    <form action="{{ route('comments.store') }}" method="post">
+                        @csrf
+                        <input type="hidden" name="user" value="{{ auth()->user()->id }}">
+                        <input type="hidden" name="issue" value="{{ $issue->id }}">
+                        <textarea class="form-control form-control-sm" placeholder="Type a comment"
+                                  name="content"></textarea>
+                        <button class="btn btn-sm btn-outline-secondary mt-2">Add Comment</button>
+                    </form>
                     <br>
                     @foreach($comments as $comment)
-                        <div class="post">
-                            <div class="user-block">
+                        <div class="post row">
+                            <div class="user-block col-9">
                                 <img class="img-circle img-bordered-sm"
                                      src="{{ asset($comment->user->avatar) }}" alt="user_image">
                                 <span class="username">
@@ -118,7 +125,23 @@
                                 <span class="description">Shared -
                                     {{ \Carbon\Carbon::make($comment->updated_at)->diffForHumans() }}</span>
                             </div>
-                            <p>{{ $comment->content }}</p>
+                            <div class="col-3 justify-content-end row">
+                                <div class="mx-2">
+                                    <a href="#" class="btn btn-sm btn-outline-info">
+                                        <i class="nav-icon fas fa-pen"></i>
+                                        Edit
+                                    </a>
+                                </div>
+                                <form class="" action="{{ route('comments.destroy', $comment) }}" method="post">
+                                    @csrf
+                                    @method('delete')
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">
+                                        <i class="nav-icon fas fa-trash"></i>
+                                        Delete
+                                    </button>
+                                </form>
+                            </div>
+                            <p class="px-2">{{ $comment->content }}</p>
                         </div>
                     @endforeach
                 </div>

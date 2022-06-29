@@ -98,39 +98,29 @@
                     </address>
                 </div>
             </div>
-            <div class="row pl-2">
-
-            </div>
             <div class="row">
                 <div class="col-12 table-responsive pt-3">
-                    <h4>Comments</h4>
-                    <table class="table table-striped">
-                        <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Project Title</th>
-                            <th style="width: 60%">About Project</th>
-                            <th>Manager</th>
-                            <th></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td>
-                                <a class="btn btn-primary btn-sm mx-2"
-                                   href="">
-                                    <i class="fas fa-folder"></i>
-                                    View
+                    <h5>
+                        <i class="far fa-comments mr-1"></i> Comments ({{ $issue->comments_count }})
+                    </h5>
+                    <textarea class="form-control form-control-sm" placeholder="Type a comment"></textarea>
+                    <br>
+                    @foreach($comments as $comment)
+                        <div class="post">
+                            <div class="user-block">
+                                <img class="img-circle img-bordered-sm"
+                                     src="{{ asset($comment->user->avatar) }}" alt="user_image">
+                                <span class="username">
+                                <a href="#">
+                                    {{ $comment->user->first_name }} {{ $comment->user->last_name }}
                                 </a>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
+                            </span>
+                                <span class="description">Shared -
+                                    {{ \Carbon\Carbon::make($comment->updated_at)->diffForHumans() }}</span>
+                            </div>
+                            <p>{{ $comment->content }}</p>
+                        </div>
+                    @endforeach
                 </div>
             </div>
         </div>

@@ -33,6 +33,11 @@ class Issue extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function comments()
+    {
+        return $this->hasMany(Comment::class, 'issue_id', 'id');
+    }
+
     public function scopeMyIssues($query, int $projectId)
     {
         $query->whereRelation('project', 'id', $projectId);

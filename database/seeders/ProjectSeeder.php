@@ -22,7 +22,7 @@ class ProjectSeeder extends Seeder
 
     public function run()
     {
-        for ($i = 0; $i < 13; $i++) {
+        for ($i = 0; $i < 15; $i++) {
             $this->createProject();
         }
     }

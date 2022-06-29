@@ -42,13 +42,23 @@ class IssueService
 
     public function prepareDataToShowIssue(Issue $issue): array
     {
-        $issue->load(['status', 'project', 'project.users', 'project.users.position', 'assignee', 'assignee.position']);
+        $issue->load([
+            'status',
+            'project',
+            'project.users',
+            'project.users.position',
+            'assignee',
+            'assignee.position',
+            'comments',
+            'comments.user',
+        ]);
 
         return [
-            'issue' => $issue,
+            'issue' => $issue->loadCount('comments'),
             'project' => $issue->project,
             'assignee' => $issue->assignee,
             'users' => $issue->project->users,
+            'comments' => $issue->comments,
         ];
     }
 
@@ -71,14 +81,14 @@ class IssueService
         $issue->save();
     }
 
-    public function projectFilter(User $user, int|null $filteredProjectId): Collection
+    public function projectFilter(User $user, int|null $filteredProjectId)
     {
         $query = $user->issues();
         if ($filteredProjectId !== null) {
             $query->myIssues($filteredProjectId);
         }
 
-        return $query->get();
+        return $query->paginate(10);
     }
 
     private function projectStatusCheck(Project $project)

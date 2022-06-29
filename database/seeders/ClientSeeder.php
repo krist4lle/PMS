@@ -20,7 +20,7 @@ class ClientSeeder extends Seeder
 
     public function run()
     {
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 20; $i++) {
             $this->createClient();
         }
     }

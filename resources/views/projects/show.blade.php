@@ -96,6 +96,7 @@
                                         @endforeach
                                         </tbody>
                                     </table>
+                                    {{ $issues->withQueryString() }}
                                 </div>
                             </div>
                         </div>

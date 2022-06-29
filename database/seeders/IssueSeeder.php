@@ -24,7 +24,7 @@ class IssueSeeder extends Seeder
 
     public function run()
     {
-        for ($i = 0; $i < 30; $i++) {
+        for ($i = 0; $i < 150; $i++) {
             $this->createIssue();
         }
     }

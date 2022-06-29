@@ -165,12 +165,12 @@ class UserSeeder extends Seeder
 
     private function createDesigners($parent)
     {
-        for ($i = 0; $i < 2; $i++) {
+        for ($i = 0; $i < 4; $i++) {
             $data = $this->randomUserData();
             $this->createUser($data, 'Graphic Designer', $parent, 'Design');
         }
 
-        for ($i = 0; $i < 3; $i++) {
+        for ($i = 0; $i < 4; $i++) {
             $data = $this->randomUserData();
             $this->createUser($data, 'UI/UX Designer', $parent, 'Design');
         }
@@ -178,7 +178,7 @@ class UserSeeder extends Seeder
 
     private function createFrontendDevelopers($parent)
     {
-        for ($i = 0; $i < 6; $i++) {
+        for ($i = 0; $i < 7; $i++) {
             $data = $this->randomUserData();
             $this->createUser($data, 'Frontend Developer', $parent, 'Frontend');
         }
@@ -186,12 +186,12 @@ class UserSeeder extends Seeder
 
     private function createBackendDevelopers($parent)
     {
-        for ($i = 0; $i < 4; $i++) {
+        for ($i = 0; $i < 5; $i++) {
             $data = $this->randomUserData();
             $this->createUser($data, 'Backend PHP Developer', $parent, 'Backend');
         }
 
-        for ($i = 0; $i < 2; $i++) {
+        for ($i = 0; $i < 3; $i++) {
             $data = $this->randomUserData();
             $this->createUser($data, 'Backend Node.js Developer', $parent, 'Backend');
         }

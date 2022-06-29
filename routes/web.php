@@ -34,7 +34,7 @@ Route::middleware(['auth'])->group(function () {
         ->name('me.update.password');
     Route::get('my-issues', [App\Http\Controllers\Me\IndexController::class, 'issues'])
         ->name('me.issues');
-    Route::get('my-projects/{user}', [App\Http\Controllers\Me\IndexController::class, 'projects'])
+    Route::get('my-projects', [App\Http\Controllers\Me\IndexController::class, 'projects'])
         ->name('me.projects');
 
     Route::resource('departments', App\Http\Controllers\DepartmentController::class)

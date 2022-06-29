@@ -1,5 +1,6 @@
 @extends('layouts.app')
 @section('content')
+    <new-component></new-component>
     <section class="content-header">
         <div class="container-fluid">
             <div class="row">
@@ -109,11 +110,11 @@
                         <input type="hidden" name="issue" value="{{ $issue->id }}">
                         <textarea class="form-control form-control-sm" placeholder="Type a comment"
                                   name="content"></textarea>
-                        <button class="btn btn-sm btn-outline-secondary mt-2">Add Comment</button>
+                        <button type="submit" class="btn btn-sm btn-outline-secondary mt-2">Add Comment</button>
                     </form>
                     <br>
                     @foreach($comments as $comment)
-                        <div class="post row">
+                        <div class="post row" id="sid{{ $comment->id }}">
                             <div class="user-block col-9">
                                 <img class="img-circle img-bordered-sm"
                                      src="{{ asset($comment->user->avatar) }}" alt="user_image">
@@ -127,12 +128,13 @@
                             </div>
                             <div class="col-3 justify-content-end row">
                                 <div class="mx-2">
-                                    <a href="#" class="btn btn-sm btn-outline-info">
+                                    <button onclick="editComment{{ $comment->id }}()"
+                                            class="btn btn-sm btn-outline-info">
                                         <i class="nav-icon fas fa-pen"></i>
                                         Edit
-                                    </a>
+                                    </button>
                                 </div>
-                                <form class="" action="{{ route('comments.destroy', $comment) }}" method="post">
+                                <form action="{{ route('comments.destroy', $comment) }}" method="post">
                                     @csrf
                                     @method('delete')
                                     <button type="submit" class="btn btn-sm btn-outline-danger">
@@ -141,8 +143,38 @@
                                     </button>
                                 </form>
                             </div>
-                            <p class="px-2">{{ $comment->content }}</p>
+                            <p class="px-2" id="commentContent{{ $comment->id }}">{{ $comment->content }}</p>
+                            <form class="col-12" id="editCommentForm{{ $comment->id }}" style="display: none"
+                                  action="{{ route('comments.update', $comment) }}" method="post">
+                                @csrf
+                                @method('patch')
+                                <textarea class="form-control form-control-sm" placeholder="Type a comment"
+                                          name="content" id="content{{ $comment->id }}">{{ $comment->content }}</textarea>
+                                <button type="submit" class="btn btn-sm btn-outline-secondary mt-2">Edit Comment</button>
+                                <a onclick="cancelEditComment{{ $comment->id }}()"
+                                        class="btn btn-sm btn-outline-danger mt-2">Cancel</a>
+                            </form>
                         </div>
+                        <script>
+                            function editComment{{ $comment->id }}() {
+                                document.getElementById('editCommentForm{{ $comment->id }}').style.display = 'block';
+                                document.getElementById('commentContent{{ $comment->id }}').style.display = 'none';
+                            }
+
+                            function cancelEditComment{{ $comment->id }}() {
+                                document.getElementById('editCommentForm{{ $comment->id }}').style.display = 'none';
+                                document.getElementById('commentContent{{ $comment->id }}').style.display = 'block';
+                            }
+
+                            function updateComment{{ $comment->id }}() {
+                                const xml = new XMLHttpRequest();
+                                xml.onload = function() {
+
+                                }
+                                xml.open('POST', 'comments/{{ $comment->id }}', true);
+                                xml.send()
+                            }
+                        </script>
                     @endforeach
                 </div>
             </div>

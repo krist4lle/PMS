@@ -128,5 +128,18 @@
                 </div>
             </div>
         </div>
+        <form id="form">
+            <input type="text" name="name">
+            <input type="text" name="surname">
+            <input type="text" name="age">
+            <button onclick="sendRequest(this); return false;">GO</button>
+        </form>
+        <script>
+            function sendRequest(button) {
+                var form = button.parentElement;
+                var data = new FormData(form);
+                console.log(data);
+            }
+        </script>
     </body>
 </html>

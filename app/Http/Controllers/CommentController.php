@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Comment\StoreRequest;
+use App\Http\Requests\Comment\UpdateRequest;
 use App\Models\Comment;
 use App\Models\Issue;
 use App\Models\User;
@@ -36,12 +37,15 @@ class CommentController extends Controller
 
     public function edit($id)
     {
-        //
+
     }
 
-    public function update(Request $request, $id)
+    public function update(UpdateRequest $request, Comment $comment, CommentService $service)
     {
-        //
+        $content = $request->validated('content');
+        $service->commentUpdate($comment, $content);
+
+        return redirect()->back()->with('success', 'Comment successfully edited');
     }
 
     public function destroy(Comment $comment)

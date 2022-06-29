@@ -17,4 +17,10 @@ class CommentService
         $comment->issue()->associate($issue);
         $comment->save();
     }
+
+    public function commentUpdate(Comment $comment, string $content): void
+    {
+        $comment->content = $content;
+        $comment->save();
+    }
 }

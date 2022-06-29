@@ -17,3 +17,22 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+
+Route::get('/get-api-data', function () {
+    return response()->json([
+        'status' => 'OK',
+        'game' => 'Tarkov',
+        'version' => 2,
+    ]);
+});
+
+Route::post('/set-api-data', function () {
+    $version = request()->json()->get('version');
+    $version += 1;
+    return response()->json([
+        'status' => 'saved',
+        'game' => 'Tarkov huynya',
+        'version' => $version,
+    ]);
+});

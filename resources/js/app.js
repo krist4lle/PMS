@@ -1,2 +1,11 @@
+import Vue from 'vue'
+import NewComponent from "./components/NewComponent";
+
 require('./bootstrap');
-require('admin-lte');
+
+const app = new Vue({
+    el: '#app',
+    components: {
+        NewComponent,
+    }
+})

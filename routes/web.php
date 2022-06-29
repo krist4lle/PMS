@@ -53,7 +53,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::resource('issues', App\Http\Controllers\IssueController::class)
         ->except('index', 'create', 'edit');
-    Route::patch('issue-status/{issue}',[App\Http\Controllers\IssueController::class, 'status'])
+    Route::patch('issue-status/{issue}', [App\Http\Controllers\IssueController::class, 'status'])
         ->name('issues.status');
 
     Route::resource('comments', App\Http\Controllers\CommentController::class);

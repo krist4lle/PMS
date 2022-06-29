@@ -49,6 +49,16 @@ class GlobalNavigationProvider extends ServiceProvider
                     ],
                 ],
                 (object)[
+                    'name' => 'My projects',
+                    'url' => route('me.projects'),
+                    'iconClass' => 'fa-project-diagram',
+                    'routeGroup' => 'my-projects',
+                    'badge' => (object)[
+                        'type' => 'warning',
+                        'text' => auth()->user()->projects->count(),
+                    ],
+                ],
+                (object)[
                     'name' => 'Departments',
                     'url' => route('departments.index'),
                     'iconClass' => 'fa-users-cog',

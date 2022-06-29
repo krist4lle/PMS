@@ -57,12 +57,12 @@ class IndexController extends Controller
         ]);
     }
 
-    public function projects(User $user)
+    public function projects()
     {
-        $user->load('projects');
+        $user = auth()->user()->load('projects');
 
-        return view('me.projects', [
-            'projects' => $user->projects,
+        return view('projects.index', [
+            'projects' => $user->projects()->paginate(10),
         ]);
     }
 }

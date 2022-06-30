@@ -71,4 +71,22 @@ class User extends Authenticatable
     {
         return $this->hasMany(Comment::class);
     }
+
+    public static function boot()
+    {
+        parent::boot();
+        self::deleting(function ($user) {
+            $user->issues()->each(function ($issue) {
+                $issue->delete();
+            });
+            $user->comments()->each(function ($comment) {
+                $comment->delete();
+            });
+            $user->managerProjects()->each(function ($managerProject) {
+                $manager = User::where('key', 'headManagement')->first();
+                $managerProject->manager()->associate($manager);
+                $managerProject->save();
+            });
+        });
+    }
 }

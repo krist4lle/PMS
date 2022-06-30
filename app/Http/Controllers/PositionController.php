@@ -66,6 +66,6 @@ class PositionController extends Controller
         $this->authorize('delete', $position);
         $service->positionDelete($position);
 
-        return redirect(route('positions.index'))->with('success', 'Position successfully deleted');
+        return redirect()->back()->with('success', 'Position successfully deleted');
     }
 }

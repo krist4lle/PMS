@@ -65,23 +65,21 @@
                                     <i class="fas fa-folder"></i>
                                     View
                                 </a>
-                                @can('status', [$issue, $issue->project])
-                                    @if(empty($issue->finished_at))
-                                        <form action="{{ route('issues.status', $issue) }}" method="post">
-                                            @csrf
-                                            @method('patch')
-                                            <button type="submit" class="btn btn-info btn-sm mx-2">
-                                                @if($issue->status->slug === 'new')
-                                                    Accept Issue
-                                                @elseif($issue->status->slug === 'in_progress')
-                                                    Send to review
-                                                @else
-                                                    Close Issue
-                                                @endif
-                                            </button>
-                                        </form>
-                                    @endif
-                                @endcan
+                                @if(empty($issue->finished_at))
+                                    <form action="{{ route('issues.status', $issue) }}" method="post">
+                                        @csrf
+                                        @method('patch')
+                                        <button type="submit" class="btn btn-info btn-sm mx-2">
+                                            @if($issue->status->slug === 'new')
+                                                Accept Issue
+                                            @elseif($issue->status->slug === 'in_progress')
+                                                Send to review
+                                            @else
+                                                Close Issue
+                                            @endif
+                                        </button>
+                                    </form>
+                                @endif
                             </td>
                         </tr>
                     @endforeach

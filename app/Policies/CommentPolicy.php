@@ -23,8 +23,6 @@ class CommentPolicy
 
     public function update(User $user, Comment $comment, Project $project)
     {
-        $comment->load('user');
-        $project->load('manager');
         if ($project->manager->id === $user->id
             || $user->key === 'headManagement'
             || $comment->user->id === $user->id) {
@@ -37,8 +35,6 @@ class CommentPolicy
 
     public function delete(User $user, Comment $comment, Project $project)
     {
-        $comment->load('user');
-        $project->load('manager');
         if ($project->manager->id === $user->id
             || $user->key === 'headManagement'
             || $comment->user->id === $user->id) {

@@ -11,43 +11,39 @@ class ProjectService
     public function prepareDataToCreateProject(): array
     {
         $clients = Client::all();
-        $managers = User::whereRelation('department', 'name', 'Management')->get();
-        $workers = $this->workers();
-        $data = array_merge($workers, [
+        $ceo = User::where('key', 'ceo')->first();
+        $managers = User::whereRelation('department', 'name', 'Management')->get()->prepend($ceo);
+        $users = User::with('position')->get();
+
+        return [
             'clients' => $clients,
             'managers' => $managers,
-        ]);
-
-        return $data;
+            'users' => $users,
+        ];
     }
 
     public function prepareDataToShowProject(Project $project): array
     {
         $project->load([
-            'client',
-            'manager',
-            'manager.position',
             'users',
-            'users.position',
             'issues',
-            'issues.status',
-            'issues.assignee',
         ])->loadCount('issues');
-        $issues = $project->issues()->orderByDesc('updated_at')->paginate(10);
+        $issues = $project->issues()->with(['status', 'assignee'])
+            ->orderByDesc('updated_at')->paginate(10);
+        $manager = $project->manager;
+        $users = $project->users()->with('position')->get()->prepend($manager);
 
         return [
             'project' => $project,
             'client' => $project->client,
-            'manager' => $project->manager,
-            'users' => $project->users,
+            'users' => $users,
             'issues' => $issues,
+            'manager' => $manager,
         ];
     }
 
     public function prepareDataToEditProject(Project $project): array
     {
-        $project->load(['client', 'manager', 'users']);
-
         return array_merge($this->prepareDataToCreateProject(), [
             'project' => $project,
             'assignedWorkers' => $project->users,
@@ -84,24 +80,6 @@ class ProjectService
 
         $project->save();
 
-    }
-
-    private function workers(): array
-    {
-        $ceo = User::with('position')->where('key', 'ceo')->first();
-        $designers = User::with('position')
-            ->whereRelation('department', 'slug', 'design')->get();
-        $frontenders = User::with('position')
-            ->whereRelation('department', 'slug', 'frontend')->get();
-        $backenders = User::with('position')
-            ->whereRelation('department', 'slug', 'backend')->get();
-
-        return [
-            'designers' => $designers,
-            'frontenders' => $frontenders,
-            'backenders' => $backenders,
-            'ceo' => $ceo,
-        ];
     }
 
     private function saveProject(Project $project, array $projectData): void

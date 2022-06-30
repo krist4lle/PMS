@@ -23,7 +23,6 @@ class IssuePolicy
 
     public function create(User $user, Project $project)
     {
-        $project->load('manager');
         if ($project->manager->id === $user->id
             || $user->key === 'headManagement') {
 
@@ -48,7 +47,6 @@ class IssuePolicy
 
     public function update(User $user, Issue $issue, Project $project)
     {
-        $project->load('manager');
         if ($project->manager->id === $user->id
             || $user->key === 'headManagement') {
 

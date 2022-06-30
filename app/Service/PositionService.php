@@ -5,6 +5,7 @@ namespace App\Service;
 use App\Models\Department;
 use App\Models\Position;
 use App\Models\User;
+use Illuminate\Validation\ValidationException;
 
 class PositionService
 {
@@ -20,8 +21,7 @@ class PositionService
         $position->loadCount('users');
         if ($position->users_count > 0) {
 
-            return redirect(route('departments.index'))
-                ->with('errorMessage', 'Impossible to delete Position with employees');
+            throw ValidationException::withMessages(['errorMessage' => 'Impossible to delete Position with employees']);
         }
         $position->delete();
     }

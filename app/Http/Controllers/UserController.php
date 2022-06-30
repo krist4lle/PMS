@@ -6,11 +6,9 @@ use App\Http\Requests\User\PositionRequest;
 use App\Http\Requests\User\ProjectRequest;
 use App\Http\Requests\User\StoreRequest;
 use App\Http\Requests\User\UpdateUserRequest;
-use App\Models\Department;
 use App\Models\Position;
 use App\Models\User;
 use App\Service\IssueService;
-use App\Service\PositionService;
 use App\Service\UserService;
 use Illuminate\Support\Arr;
 
@@ -31,7 +29,7 @@ class UserController extends Controller
 
     public function show(User $user)
     {
-        $user->load(['department', 'position', 'projects', 'issues'])
+        $user->load(['department', 'position'])
             ->loadCount(['projects', 'issues', 'managerProjects']);
 
         return view('users.show', [

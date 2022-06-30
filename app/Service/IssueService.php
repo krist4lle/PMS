@@ -44,27 +44,20 @@ class IssueService
     {
         $issue->load([
             'status',
-            'project',
-            'project.users',
-            'project.users.position',
-            'project.manager',
-            'project.manager.position',
-            'assignee',
-            'assignee.position',
             'comments',
-            'comments.user',
         ]);
-        $comments = $issue->comments()->orderByDesc('updated_at');
+        $comments = $issue->comments()->with('user')->orderByDesc('updated_at')->get();
+        $users = $issue->project->users()->with('position')->get()->prepend($issue->project->manager);
         $timeSpent = $this->timeSpent($issue->created_at, $issue->updated_at);
 
         return [
             'issue' => $issue->loadCount('comments'),
             'project' => $issue->project,
             'assignee' => $issue->assignee,
-            'users' => $issue->project->users,
-            'manager' => $issue->project->manager,
-            'comments' => $comments->get(),
+            'comments' => $comments,
             'timeSpent' => $timeSpent,
+            'manager' => $issue->project->manager,
+            'users' => $users,
         ];
     }
 
@@ -89,7 +82,7 @@ class IssueService
 
     public function projectFilter(User $user, int|null $filteredProjectId)
     {
-        $query = $user->issues();
+        $query = $user->issues()->with(['status', 'project']);
         if ($filteredProjectId !== null) {
             $query->myIssues($filteredProjectId);
         }

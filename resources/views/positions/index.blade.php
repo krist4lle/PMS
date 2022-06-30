@@ -12,11 +12,12 @@
             <a href="{{ route('positions.create') }}" class="btn btn-info mt-2">Create a new Position</a>
         @endcan
     </section>
-    @if(session()->has('errorMessage'))
+    @if($errors->has('errorMessage'))
         <div class="alert alert-danger mt-2" role="alert">
-            {{ session()->get('errorMessage') }}
+            {{ current($errors->get('errorMessage')) }}
         </div>
     @endif
+
     @if(session()->has('success'))
         <div class="alert alert-success mt-2" role="alert">
             {{ session()->get('success') }}

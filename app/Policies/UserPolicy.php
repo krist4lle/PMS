@@ -26,7 +26,6 @@ class UserPolicy
 
     public function update(User $user, User $model)
     {
-        $model->load('parent');
         if ($model->key === 'ceo') {
 
             return false;
@@ -37,7 +36,6 @@ class UserPolicy
 
     public function delete(User $user, User $model)
     {
-        $model->load('parent');
         if ($model->key === 'ceo') {
 
             return false;

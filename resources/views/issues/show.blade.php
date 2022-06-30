@@ -84,13 +84,15 @@
                 </div>
                 <div class="col-4 invoice-col">
                     <address>
-                        <b>Project</b><br>
+                        <b>Project</b>
+                        <br>
                         <em>
                             {{ $project->title }}
                             <a href="{{ route('projects.show', $project) }}">
                                 <i class="nav-icon fas fa-arrow-circle-right"></i>
                             </a>
-                        </em><br>
+                        </em>
+                        <br>
                         <b>Assignee</b>
                         <br>
                         <em>
@@ -101,6 +103,13 @@
                             <i class="nav-icon fas fa-arrow-circle-right"></i>
                         </a>
                         <br>
+                        <b>Time spent</b>
+                        <br>
+                        @if(empty($issue->finished_at))
+                            <em>N/A</em>
+                        @else
+                            <em>{{ $timeSpent }} - hours</em>
+                        @endif
                     </address>
                 </div>
             </div>

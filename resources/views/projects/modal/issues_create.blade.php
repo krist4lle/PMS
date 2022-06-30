@@ -35,10 +35,6 @@
                     @enderror
                     <select name="assignee" id="assignee" class="form-control">
                         <option value="">Choose Assignee</option>
-                        <option value="{{ $manager->id }}" {{ $manager->id == old('assignee') ? 'selected' : '' }}>
-                            {{ $manager->first_name }} {{ $manager->last_name }} -
-                            "{{ $manager->position->title }}"
-                        </option>
                         @foreach($users as $user)
                             <option value="{{ $user->id }}" {{ $user->id == old('assignee') ? 'selected' : '' }}>
                                 {{ $user->first_name }} {{ $user->last_name }} -
@@ -47,7 +43,7 @@
                         @endforeach
                     </select>
                     <br>
-                    <input type="hidden" name="project" value="{{ $project->title }}">
+                    <input type="hidden" name="project" value="{{ $project->id }}">
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </div>
             </div>

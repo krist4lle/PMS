@@ -55,7 +55,7 @@ class GlobalNavigationProvider extends ServiceProvider
                     'routeGroup' => 'my-projects',
                     'badge' => (object)[
                         'type' => 'warning',
-                        'text' => isset($user->department) && auth()->user()->department->slug === 'management'
+                        'text' => auth()->user()->projects->isEmpty()
                             ? auth()->user()->managerProjects->count()
                             : auth()->user()->projects->count(),
                     ],

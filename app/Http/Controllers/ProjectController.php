@@ -21,11 +21,14 @@ class ProjectController extends Controller
 
     public function create(ProjectService $service)
     {
+        $this->authorize('create', Project::class);
+
         return view('projects.create', $service->prepareDataToCreateProject());
     }
 
     public function store(StoreRequest $request, ProjectService $service)
     {
+        $this->authorize('create', Project::class);
         $projectData = $request->validated();
         $service->createProject(new Project(), $projectData);
 
@@ -39,11 +42,14 @@ class ProjectController extends Controller
 
     public function edit(Project $project, ProjectService $service)
     {
+        $this->authorize('update', $project);
+
         return view('projects.edit', $service->prepareDataToEditProject($project));
     }
 
     public function update(UpdateRequest $request, Project $project, ProjectService $service)
     {
+        $this->authorize('update', $project);
         $projectData = $request->validated();
         $service->updateProject($project, $projectData);
 

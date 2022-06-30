@@ -8,7 +8,9 @@
                 </div>
             </div>
         </div>
-        <a href="{{ route('clients.create') }}" class="btn btn-info mt-2">Add a new Client</a>
+        @can('create', \App\Models\Client::class)
+            <a href="{{ route('clients.create') }}" class="btn btn-info mt-2">Add a new Client</a>
+        @endcan
     </section>
     @if(session()->has('success'))
         <div class="alert alert-success mt-2" role="alert">
@@ -45,18 +47,20 @@
                                     <i class="fas fa-folder"></i>
                                     View
                                 </a>
-                                <a class="btn btn-info btn-sm mx-2" href="{{ route('clients.edit', $client) }}">
-                                    <i class="fas fa-pencil-alt"></i>
-                                    Edit
-                                </a>
-                                <form action="{{ route('clients.destroy', $client) }}" method="post">
-                                    @csrf
-                                    @method('delete')
-                                    <button class="btn btn-danger btn-sm mx-2" type="submit">
-                                        <i class="fas fa-trash"></i>
-                                        Delete
-                                    </button>
-                                </form>
+                                @canany(['update', 'delete'], $client)
+                                    <a class="btn btn-info btn-sm mx-2" href="{{ route('clients.edit', $client) }}">
+                                        <i class="fas fa-pencil-alt"></i>
+                                        Edit
+                                    </a>
+                                    <form action="{{ route('clients.destroy', $client) }}" method="post">
+                                        @csrf
+                                        @method('delete')
+                                        <button class="btn btn-danger btn-sm mx-2" type="submit">
+                                            <i class="fas fa-trash"></i>
+                                            Delete
+                                        </button>
+                                    </form>
+                                @endcanany
                             </td>
                         </tr>
                     @endforeach

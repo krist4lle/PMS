@@ -5,7 +5,9 @@
             <div class="row">
                 <div class="col">
                     <h1>Projects</h1>
-                    <a href="{{ route('projects.create') }}" class="btn btn-info mt-2">Create a new Project</a>
+                    @can('create', \App\Models\Project::class)
+                        <a href="{{ route('projects.create') }}" class="btn btn-info mt-2">Create a new Project</a>
+                    @endcan
                 </div>
             </div>
         </div>
@@ -49,7 +51,8 @@
                             </td>
                             <td>
                                 <a href="{{ route('users.show', $project->manager) }}" class="col-10">
-                                    <img src="{{ asset($project->manager->avatar) }}" alt="project_manager" class="col-5">
+                                    <img src="{{ asset($project->manager->avatar) }}" alt="project_manager"
+                                         class="col-5">
                                 </a>
                             </td>
                             <td>
@@ -77,18 +80,22 @@
                                     <i class="fas fa-folder"></i>
                                     View
                                 </a>
-                                <a class="btn btn-info btn-sm mx-2" href="{{ route('projects.edit', $project) }}">
-                                    <i class="fas fa-pencil-alt">
-                                    </i>
-                                    Edit
-                                </a>
-                                <form action="{{ route('projects.destroy', $project) }}" method="post">
-                                    @csrf
-                                    @method('delete')
-                                    <button class="btn btn-danger btn-sm mx-2" type="submit">
-                                        <i class="fas fa-trash"></i>Delete
-                                    </button>
-                                </form>
+                                @can('update', $project)
+                                    <a class="btn btn-info btn-sm mx-2" href="{{ route('projects.edit', $project) }}">
+                                        <i class="fas fa-pencil-alt">
+                                        </i>
+                                        Edit
+                                    </a>
+                                @endcan
+                                @can('delete', $project)
+                                    <form action="{{ route('projects.destroy', $project) }}" method="post">
+                                        @csrf
+                                        @method('delete')
+                                        <button class="btn btn-danger btn-sm mx-2" type="submit">
+                                            <i class="fas fa-trash"></i>Delete
+                                        </button>
+                                    </form>
+                                @endcan
                             </td>
                         </tr>
                     @endforeach

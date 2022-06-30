@@ -27,6 +27,7 @@ class UpdateRequest extends FormRequest
     {
         return [
             'content' => 'required|string',
+            'project' => 'exists:projects,id'
         ];
     }
 }

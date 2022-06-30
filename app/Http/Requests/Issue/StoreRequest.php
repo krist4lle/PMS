@@ -28,7 +28,7 @@ class StoreRequest extends FormRequest
             'title' => 'required|string',
             'description' => 'required|string',
             'assignee' => 'required|exists:users,id',
-            'project' => 'required|exists:projects,title',
+            'project' => 'required|exists:projects,id',
         ];
     }
 }

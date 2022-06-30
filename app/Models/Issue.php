@@ -42,4 +42,14 @@ class Issue extends Model
     {
         $query->whereRelation('project', 'id', $projectId);
     }
+
+    public static function boot()
+    {
+        parent::boot();
+        self::deleting(function ($issue) {
+            $issue->comments()->each(function ($comment) {
+                $comment->delete();
+            });
+        });
+    }
 }

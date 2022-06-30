@@ -38,6 +38,7 @@
                 <table class="table table-striped projects">
                     <thead>
                     <tr>
+                        <th style="width: 5%">#</th>
                         <th style="width: 10%">Issue</th>
                         <th style="width: 40%">Description</th>
                         <th style="width: 10%">Status</th>
@@ -47,6 +48,7 @@
                     <tbody>
                     @foreach($issues as $issue)
                         <tr>
+                            <td>{{ $issue->id }}</td>
                             <td>{{ $issue->title }}</td>
                             <td>{{ $issue->description }}</td>
                             <td>

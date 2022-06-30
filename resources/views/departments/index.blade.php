@@ -38,18 +38,21 @@
                             <td>{{ $department->name }}</td>
                             <td>{{ $department->users_count }}</td>
                             <td class="project-actions text-right row">
-                                <a class="btn btn-info btn-sm mx-2" href="{{ route('departments.edit', $department) }}">
-                                    <i class="fas fa-pencil-alt"></i>
-                                    Edit
-                                </a>
-                                <form action="{{ route('departments.destroy', $department) }}" method="post">
-                                    @csrf
-                                    @method('delete')
-                                    <button class="btn btn-danger btn-sm mx-2" type="submit">
-                                        <i class="fas fa-trash"></i>
-                                        Delete
-                                    </button>
-                                </form>
+                                @canany(['update', 'delete'], $department)
+                                    <a class="btn btn-info btn-sm mx-2"
+                                       href="{{ route('departments.edit', $department) }}">
+                                        <i class="fas fa-pencil-alt"></i>
+                                        Edit
+                                    </a>
+                                    <form action="{{ route('departments.destroy', $department) }}" method="post">
+                                        @csrf
+                                        @method('delete')
+                                        <button class="btn btn-danger btn-sm mx-2" type="submit">
+                                            <i class="fas fa-trash"></i>
+                                            Delete
+                                        </button>
+                                    </form>
+                                @endcanany
                             </td>
                         </tr>
                     @endforeach

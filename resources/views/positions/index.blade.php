@@ -8,13 +8,16 @@
                 </div>
             </div>
         </div>
-        <a href="{{ route('positions.create') }}" class="btn btn-info mt-2">Create a new Position</a>
+        @can('create', \App\Models\Position::class)
+            <a href="{{ route('positions.create') }}" class="btn btn-info mt-2">Create a new Position</a>
+        @endcan
     </section>
-    @if(session()->has('errorMessage'))
+    @if($errors->has('errorMessage'))
         <div class="alert alert-danger mt-2" role="alert">
-            {{ session()->get('errorMessage') }}
+            {{ current($errors->get('errorMessage')) }}
         </div>
     @endif
+
     @if(session()->has('success'))
         <div class="alert alert-success mt-2" role="alert">
             {{ session()->get('success') }}
@@ -44,18 +47,20 @@
                             <td>{{ $position->title }}</td>
                             <td>{{ $position->users_count }}</td>
                             <td class="project-actions text-right row">
-                                <a class="btn btn-info btn-sm mx-2" href="{{ route('positions.edit', $position) }}">
-                                    <i class="fas fa-pencil-alt"></i>
-                                    Edit
-                                </a>
-                                <form action="{{ route('positions.destroy', $position) }}" method="post">
-                                    @csrf
-                                    @method('delete')
-                                    <button class="btn btn-danger btn-sm mx-2" type="submit">
-                                        <i class="fas fa-trash"></i>
-                                        Delete
-                                    </button>
-                                </form>
+                                @canany(['update', 'delete'], $position)
+                                    <a class="btn btn-info btn-sm mx-2" href="{{ route('positions.edit', $position) }}">
+                                        <i class="fas fa-pencil-alt"></i>
+                                        Edit
+                                    </a>
+                                    <form action="{{ route('positions.destroy', $position) }}" method="post">
+                                        @csrf
+                                        @method('delete')
+                                        <button class="btn btn-danger btn-sm mx-2" type="submit">
+                                            <i class="fas fa-trash"></i>
+                                            Delete
+                                        </button>
+                                    </form>
+                                @endcanany
                             </td>
                         </tr>
                     @endforeach

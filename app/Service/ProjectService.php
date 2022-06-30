@@ -11,57 +11,43 @@ class ProjectService
     public function prepareDataToCreateProject(): array
     {
         $clients = Client::all();
-        $ceo = User::with('position')->where('key', 'ceo')->first();
-        $managers = User::whereRelation('department', 'name', 'Management')->get();
-        $designers = User::with('position')
-            ->whereRelation('department', 'name', 'Design')->get();
-        $frontenders = User::with('position')
-            ->whereRelation('department', 'name', 'Frontend')->get();
-        $backenders = User::with('position')
-            ->whereRelation('department', 'name', 'Backend')->get();
+        $ceo = User::where('key', 'ceo')->first();
+        $managers = User::whereRelation('department', 'name', 'Management')->get()->prepend($ceo);
+        $users = User::with('position')->get();
 
         return [
             'clients' => $clients,
-            'ceo' => $ceo,
             'managers' => $managers,
-            'designers' => $designers,
-            'frontenders' => $frontenders,
-            'backenders' => $backenders,
+            'users' => $users,
         ];
     }
 
     public function prepareDataToShowProject(Project $project): array
     {
         $project->load([
-            'client',
-            'manager',
-            'manager.position',
             'users',
-            'users.position',
             'issues',
-            'issues.status',
-            'issues.assignee',
         ])->loadCount('issues');
-        $issues = $project->issues()->orderByDesc('updated_at')->paginate(10);
+        $issues = $project->issues()->with(['status', 'assignee'])
+            ->orderByDesc('updated_at')->paginate(10);
+        $manager = $project->manager;
+        $users = $project->users()->with('position')->get()->prepend($manager);
 
         return [
             'project' => $project,
             'client' => $project->client,
-            'manager' => $project->manager,
-            'users' => $project->users,
+            'users' => $users,
             'issues' => $issues,
+            'manager' => $manager,
         ];
     }
 
     public function prepareDataToEditProject(Project $project): array
     {
-        $project->load(['client', 'manager', 'users']);
-        $dataToEditProject = [
+        return array_merge($this->prepareDataToCreateProject(), [
             'project' => $project,
             'assignedWorkers' => $project->users,
-        ];
-
-        return array_merge($dataToEditProject, $this->prepareDataToCreateProject());
+        ]);
     }
 
     public function createProject(Project $project, array $projectData): void
@@ -101,8 +87,12 @@ class ProjectService
         $project->title = $projectData['title'];
         $project->description = $projectData['description'];
         $project->deadline = $projectData['deadline'];
-        $this->addClient($project, $projectData['client']);
-        $this->addManager($project, $projectData['manager']);
+        if (isset($projectData['client'])) {
+            $this->addClient($project, $projectData['client']);
+        }
+        if (isset($projectData['manager'])) {
+            $this->addManager($project, $projectData['manager']);
+        }
         $project->save();
     }
 

@@ -13,7 +13,8 @@
                                 <select class="form-control" name="position">
                                     <option value="">Choose Position</option>
                                     @foreach($positions as $position)
-                                        <option value="{{ $position->id }}">
+                                        <option value="{{ $position->id }}"
+                                            {{ $filteredPositionId == $position->id ? 'selected' : '' }}>
                                             {{ $position->title }}
                                         </option>
                                     @endforeach
@@ -24,7 +25,11 @@
                     </form>
                 </div>
                 <div class="col-3">
-                    <a href="{{ route('users.create') }}" class="btn btn-info mt-2 float-right">Create a new User</a>
+                    @can('create', auth()->user())
+                        <a href="{{ route('users.create') }}" class="btn btn-info mt-2 float-right">
+                            Create a new User
+                        </a>
+                    @endcan
                 </div>
             </div>
         </div>
@@ -62,15 +67,17 @@
                                     <i class="fas fa-folder"></i>
                                     View
                                 </a>
-                                <a class="btn btn-info btn-sm mx-2" href="{{ route('users.edit', $user) }}">
-                                    <i class="fas fa-pencil-alt"></i>
-                                    Edit
-                                </a>
-                                <button class="btn btn-danger btn-sm mx-2" data-toggle="modal"
-                                        data-target="#ModalDelete{{ $user->id }}" type="submit">
-                                    <i class="fas fa-fire"></i>
-                                    Fire User
-                                </button>
+                                @canany(['update', 'delete'], $user)
+                                    <a class="btn btn-info btn-sm mx-2" href="{{ route('users.edit', $user) }}">
+                                        <i class="fas fa-pencil-alt"></i>
+                                        Edit
+                                    </a>
+                                    <button class="btn btn-danger btn-sm mx-2" data-toggle="modal"
+                                            data-target="#ModalDelete{{ $user->id }}" type="submit">
+                                        <i class="fas fa-fire"></i>
+                                        Fire User
+                                    </button>
+                                @endcanany
                             </td>
                         </tr>
                         @include('users.modal.delete')

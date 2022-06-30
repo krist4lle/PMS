@@ -16,6 +16,8 @@ class IssueController extends Controller
     public function store(StoreRequest $request, IssueService $service)
     {
         $issueData = $request->validated();
+        $project = Project::find($issueData['project']);
+        $this->authorize('create', [Issue::class, $project]);
         $service->createIssue($issueData);
 
         return redirect()->back()->with('success', 'Issue successfully added');
@@ -28,6 +30,7 @@ class IssueController extends Controller
 
     public function status(Issue $issue, IssueService $service)
     {
+        $this->authorize('status', [$issue, $issue->project]);
         $service->changeIssueStatus($issue);
 
         return redirect()->back();
@@ -35,6 +38,7 @@ class IssueController extends Controller
 
     public function update(UpdateRequest $request, Issue $issue, IssueService $service)
     {
+        $this->authorize('update', [$issue, $issue->project]);
         $issueData = $request->validated();
         $service->updateIssue($issue, $issueData);
 
@@ -44,6 +48,7 @@ class IssueController extends Controller
     public function destroy(Issue $issue)
     {
         $project = $issue->project;
+        $this->authorize('delete', [$issue, $project]);
         $issue->delete();
 
         return redirect()->route('projects.show', $project)->with('success', 'Issue successfully deleted');

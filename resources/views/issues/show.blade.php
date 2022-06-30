@@ -37,34 +37,38 @@
                     <p>{{ $issue->description }}</p>
                 </div>
                 <div class="col-6 row justify-content-end">
-                    @if($issue->status->slug !== 'done')
-                        <form action="{{ route('issues.status', $issue) }}" method="post">
+                    @can('status', [$issue, $project])
+                        @if($issue->status->slug !== 'done')
+                            <form action="{{ route('issues.status', $issue) }}" method="post">
+                                @csrf
+                                @method('patch')
+                                <button type="submit" class="btn btn-outline-info">
+                                    @if($issue->status->slug === 'new')
+                                        Accept Issue
+                                    @elseif($issue->status->slug === 'in_progress')
+                                        Send to review
+                                    @else
+                                        Close Issue
+                                    @endif
+                                </button>
+                            </form>
+                        @endif
+                    @endcan
+                    @canany(['delete', 'update'], [$issue, $project])
+                        <div class="pl-2">
+                            <button class="btn btn-outline-secondary" data-toggle="modal"
+                                    data-target="#Modal">
+                                Edit Issue
+                            </button>
+                        </div>
+                        <form class="pl-2" action="{{ route('issues.destroy', $issue) }}" method="post">
                             @csrf
-                            @method('patch')
-                            <button type="submit" class="btn btn-outline-info">
-                                @if($issue->status->slug === 'new')
-                                    Accept Issue
-                                @elseif($issue->status->slug === 'in_progress')
-                                    Send to review
-                                @else
-                                    Close Issue
-                                @endif
+                            @method('delete')
+                            <button type="submit" class="btn btn-outline-danger">
+                                Delete Issue
                             </button>
                         </form>
-                    @endif
-                    <div class="pl-2">
-                        <button class="btn btn-outline-secondary" data-toggle="modal"
-                                data-target="#Modal">
-                            Edit Issue
-                        </button>
-                    </div>
-                    <form class="pl-2" action="{{ route('issues.destroy', $issue) }}" method="post">
-                        @csrf
-                        @method('delete')
-                        <button type="submit" class="btn btn-outline-danger">
-                            Delete Issue
-                        </button>
-                    </form>
+                    @endcanany
                 </div>
             </div>
             <div class="row invoice-info">
@@ -105,7 +109,7 @@
                         <br>
                         <b>Time spent</b>
                         <br>
-                            <em>{{ $timeSpent }} - hours</em>
+                        <em>{{ $timeSpent }} - hours</em>
                     </address>
                 </div>
             </div>
@@ -137,32 +141,37 @@
                                     {{ \Carbon\Carbon::make($comment->updated_at)->diffForHumans() }}</span>
                             </div>
                             <div class="col-3 justify-content-end row">
-                                <div class="mx-2">
-                                    <button onclick="formShow(this)" class="btn btn-sm btn-outline-info">
-                                        <i class="nav-icon fas fa-pen"></i>
-                                        Edit
-                                    </button>
-                                </div>
-                                <form action="{{ route('comments.destroy', $comment) }}" method="post">
-                                    @csrf
-                                    @method('delete')
-                                    <button type="submit" class="btn btn-sm btn-outline-danger">
-                                        <i class="nav-icon fas fa-trash"></i>
-                                        Delete
-                                    </button>
-                                </form>
+                                @canany(['delete', 'update'], [$comment, $project])
+                                    <div class="mx-2">
+                                        <button onclick="formShow(this)" class="btn btn-sm btn-outline-info">
+                                            <i class="nav-icon fas fa-pen"></i>
+                                            Edit
+                                        </button>
+                                    </div>
+                                    <form action="{{ route('comments.destroy', $comment) }}" method="post">
+                                        @csrf
+                                        @method('delete')
+                                        <button type="submit" class="btn btn-sm btn-outline-danger">
+                                            <i class="nav-icon fas fa-trash"></i>
+                                            Delete
+                                        </button>
+                                    </form>
+                                @endcanany
                             </div>
                             <p class="px-2">{{ $comment->content }}</p>
-                            <form class="col-12" method="post" action="{{ route('comments.update', $comment) }}">
-                                @csrf
-                                @method('put')
-                                <textarea class="form-control form-control-sm" placeholder="Type a comment"
-                                          name="content">{{ $comment->content }}</textarea>
-                                <button type="submit" class="btn btn-sm btn-outline-secondary mt-2">
-                                    Edit Comment
-                                </button>
-                                <a onclick="formHide(this)" class="btn btn-sm btn-outline-danger mt-2">Cancel</a>
-                            </form>
+                            @can('update', [$comment, $project])
+                                <form class="col-12" method="post" action="{{ route('comments.update', $comment) }}">
+                                    @csrf
+                                    @method('put')
+                                    <input type="hidden" value="{{ $project->id }}" name="project">
+                                    <textarea class="form-control form-control-sm" placeholder="Type a comment"
+                                              name="content">{{ $comment->content }}</textarea>
+                                    <button type="submit" class="btn btn-sm btn-outline-secondary mt-2">
+                                        Edit Comment
+                                    </button>
+                                    <a onclick="formHide(this)" class="btn btn-sm btn-outline-danger mt-2">Cancel</a>
+                                </form>
+                            @endcan
                         </div>
                     @endforeach
                     <script>

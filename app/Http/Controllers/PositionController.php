@@ -23,6 +23,7 @@ class PositionController extends Controller
 
     public function create()
     {
+        $this->authorize('create', Position::class);
         $departments = Department::all();
 
         return view('positions.create', [
@@ -32,6 +33,7 @@ class PositionController extends Controller
 
     public function store(StoreRequest $request, PositionService $service)
     {
+        $this->authorize('create', Position::class);
         $positionData = $request->validated();
         $service->positionSave(new Position(), $positionData);
 
@@ -40,6 +42,7 @@ class PositionController extends Controller
 
     public function edit(Position $position)
     {
+        $this->authorize('update', $position);
         $departments = Department::all();
         $position->load('department');
 
@@ -51,6 +54,7 @@ class PositionController extends Controller
 
     public function update(UpdateRequest $request, Position $position, PositionService $service)
     {
+        $this->authorize('update', $position);
         $positionData = $request->validated();
         $service->positionSave($position, $positionData);
 
@@ -59,8 +63,9 @@ class PositionController extends Controller
 
     public function destroy(Position $position, PositionService $service)
     {
+        $this->authorize('delete', $position);
         $service->positionDelete($position);
 
-        return redirect(route('positions.index'))->with('success', 'Position successfully deleted');
+        return redirect()->back()->with('success', 'Position successfully deleted');
     }
 }

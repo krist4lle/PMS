@@ -47,10 +47,12 @@
                             <div class="col-12">
                                 <h4>
                                     <i class="fas fa-exclamation-triangle"></i> {{ $project->issues_count }} Issues
-                                    <button class="float-right btn btn-outline-info" data-toggle="modal"
-                                            data-target="#Modal">
-                                        Create Issue
-                                    </button>
+                                    @can('create', [\App\Models\Issue::class, $project])
+                                        <button class="float-right btn btn-outline-info" data-toggle="modal"
+                                                data-target="#Modal">
+                                            Create Issue
+                                        </button>
+                                    @endcan
                                 </h4>
                                 <div class="card-body p-0">
                                     <table class="table table-striped projects">
@@ -152,34 +154,39 @@
                             </div>
 
                             <div class="pt-3 pl-2 row">
-                                <div>
-                                    <form action="{{ route('projects.status', $project) }}" method="post">
-                                        @csrf
-                                        @method('patch')
-                                        <input type="hidden" value="{{ date('Y-m-d H:i:s') }}" name="finished_at">
-                                        <button class="btn btn-outline-info" type="submit">
-                                            @if($project->finished_at !== null)
-                                                Launch Project
-                                            @else
-                                                Close Project
-                                            @endif
-                                        </button>
-                                    </form>
-                                </div>
-                                <div class="pl-3">
-                                    <a class="btn btn-outline-secondary" href="{{ route('projects.edit', $project) }}">
-                                        Edit Project
-                                    </a>
-                                </div>
-                                <div class="pl-3">
-                                    <form action="{{ route('projects.destroy', $project) }}" method="post">
-                                        @csrf
-                                        @method('delete')
-                                        <button class="btn btn-outline-danger" type="submit">
-                                            Delete Project
-                                        </button>
-                                    </form>
-                                </div>
+                                @can('update', $project)
+                                    <div>
+                                        <form action="{{ route('projects.status', $project) }}" method="post">
+                                            @csrf
+                                            @method('patch')
+                                            <input type="hidden" value="{{ date('Y-m-d H:i:s') }}" name="finished_at">
+                                            <button class="btn btn-outline-info" type="submit">
+                                                @if($project->finished_at !== null)
+                                                    Launch Project
+                                                @else
+                                                    Close Project
+                                                @endif
+                                            </button>
+                                        </form>
+                                    </div>
+                                    <div class="pl-3">
+                                        <a class="btn btn-outline-secondary"
+                                           href="{{ route('projects.edit', $project) }}">
+                                            Edit Project
+                                        </a>
+                                    </div>
+                                @endcan
+                                @can('delete', $project)
+                                    <div class="pl-3">
+                                        <form action="{{ route('projects.destroy', $project) }}" method="post">
+                                            @csrf
+                                            @method('delete')
+                                            <button class="btn btn-outline-danger" type="submit">
+                                                Delete Project
+                                            </button>
+                                        </form>
+                                    </div>
+                                @endcan
                             </div>
                         </div>
                     </div>

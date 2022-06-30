@@ -5,23 +5,11 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Comment\StoreRequest;
 use App\Http\Requests\Comment\UpdateRequest;
 use App\Models\Comment;
-use App\Models\Issue;
-use App\Models\User;
+use App\Models\Project;
 use App\Service\CommentService;
-use Illuminate\Http\Request;
 
 class CommentController extends Controller
 {
-    public function index()
-    {
-        //
-    }
-
-    public function create()
-    {
-        //
-    }
-
     public function store(StoreRequest $request, CommentService $service)
     {
         $data = $request->validated();
@@ -30,19 +18,11 @@ class CommentController extends Controller
         return redirect()->back()->with('success', 'Comment added');
     }
 
-    public function show($id)
-    {
-        //
-    }
-
-    public function edit($id)
-    {
-
-    }
-
     public function update(UpdateRequest $request, Comment $comment, CommentService $service)
     {
         $content = $request->validated('content');
+        $project = Project::find($request->validated('project'));
+        $this->authorize('update', [$comment, $project]);
         $service->commentUpdate($comment, $content);
 
         return redirect()->back()->with('success', 'Comment successfully edited');
@@ -50,6 +30,7 @@ class CommentController extends Controller
 
     public function destroy(Comment $comment)
     {
+        $this->authorize('update', [$comment, $comment->issue->project]);
         $comment->delete();
 
         return redirect()->back();

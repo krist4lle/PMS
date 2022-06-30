@@ -83,7 +83,6 @@
                                 <div class="form-group">
                                     <select name="manager" id="manager" class="form-control">
                                         <option value="">Choose Project Manager</option>
-                                        <option value="{{ $ceo->id }}">{{ $ceo->first_name }} {{ $ceo->last_name }}</option>
                                         @foreach($managers as $manager)
                                             <option value="{{ $manager->id }}"
                                                 {{ old('manager') == $manager->id ? 'selected' : '' }}>
@@ -105,31 +104,11 @@
                                         </div>
                                         @enderror
                                         <select name="workers[]" class="duallistbox" multiple="multiple" style="display: none;">
-                                            <option value="{{ $ceo->id }}">
-                                                {{ $ceo->first_name }} {{ $ceo->last_name }}: "{{ $ceo->position->title }}"
-                                            </option>
-                                            <option value="">Designers</option>
-                                            @foreach($designers as $designer)
-                                                <option value="{{ $designer->id }}"
-                                                    {{ is_array(old('workers')) && in_array($designer->id, old('workers')) ? 'selected' : '' }}>
-                                                    {{ $designer->first_name }} {{ $designer->last_name }}
-                                                    : "{{ $designer->position->title }}"
-                                                </option>
-                                            @endforeach
-                                            <option value="">Frontend Developers</option>
-                                            @foreach($frontenders as $frontender)
-                                                <option value="{{ $frontender->id }}"
-                                                    {{ is_array(old('workers')) && in_array($frontender->id, old('workers')) ? 'selected' : '' }}>
-                                                    {{ $frontender->first_name }} {{ $frontender->last_name }}
-                                                    : "{{ $frontender->position->title }}"
-                                                </option>
-                                            @endforeach
-                                            <option value="">Backend Developers</option>
-                                            @foreach($backenders as $backender)
-                                                <option value="{{ $backender->id }}"
-                                                    {{ is_array(old('workers')) && in_array($backender->id, old('workers')) ? 'selected' : '' }}>
-                                                    {{ $backender->first_name }} {{ $backender->last_name }}
-                                                    : "{{ $backender->position->title }}"
+                                            @foreach($users as $user)
+                                                <option value="{{ $user->id }}"
+                                                    {{ is_array(old('workers')) && in_array($user->id, old('workers')) ? 'selected' : '' }}>
+                                                    {{ $user->first_name }} {{ $user->last_name }}
+                                                    : "{{ $user->position->title }}"
                                                 </option>
                                             @endforeach
                                         </select>

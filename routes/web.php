@@ -61,5 +61,6 @@ Route::middleware(['auth'])->group(function () {
     Route::patch('issue-status/{issue}', [App\Http\Controllers\IssueController::class, 'status'])
         ->name('issues.status');
 
-    Route::resource('comments', App\Http\Controllers\CommentController::class);
+    Route::resource('comments', App\Http\Controllers\CommentController::class)
+        ->only(['store', 'update', 'destroy']);
 });

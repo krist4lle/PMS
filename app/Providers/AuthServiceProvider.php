@@ -4,8 +4,12 @@ namespace App\Providers;
 
 use App\Models\Department;
 use App\Models\Position;
+use App\Models\Project;
+use App\Models\User;
 use App\Policies\DepartmentPolicy;
 use App\Policies\PositionPolicy;
+use App\Policies\ProjectPolicy;
+use App\Policies\UserPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
@@ -19,6 +23,8 @@ class AuthServiceProvider extends ServiceProvider
         // 'App\Models\Model' => 'App\Policies\ModelPolicy',
         Department::class => DepartmentPolicy::class,
         Position::class => PositionPolicy::class,
+        User::class => UserPolicy::class,
+        Project::class => ProjectPolicy::class,
     ];
 
     /**

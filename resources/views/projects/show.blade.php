@@ -152,6 +152,7 @@
                             </div>
 
                             <div class="pt-3 pl-2 row">
+                                @can('update', $project)
                                 <div>
                                     <form action="{{ route('projects.status', $project) }}" method="post">
                                         @csrf
@@ -166,20 +167,24 @@
                                         </button>
                                     </form>
                                 </div>
-                                <div class="pl-3">
-                                    <a class="btn btn-outline-secondary" href="{{ route('projects.edit', $project) }}">
-                                        Edit Project
-                                    </a>
-                                </div>
-                                <div class="pl-3">
-                                    <form action="{{ route('projects.destroy', $project) }}" method="post">
-                                        @csrf
-                                        @method('delete')
-                                        <button class="btn btn-outline-danger" type="submit">
-                                            Delete Project
-                                        </button>
-                                    </form>
-                                </div>
+                                    <div class="pl-3">
+                                        <a class="btn btn-outline-secondary"
+                                           href="{{ route('projects.edit', $project) }}">
+                                            Edit Project
+                                        </a>
+                                    </div>
+                                @endcan
+                                @can('delete', $project)
+                                    <div class="pl-3">
+                                        <form action="{{ route('projects.destroy', $project) }}" method="post">
+                                            @csrf
+                                            @method('delete')
+                                            <button class="btn btn-outline-danger" type="submit">
+                                                Delete Project
+                                            </button>
+                                        </form>
+                                    </div>
+                                @endcan
                             </div>
                         </div>
                     </div>

@@ -11,7 +11,12 @@ class UserPolicy
 
     public function before(User $user)
     {
-        return $user->key === 'ceo';
+        if ($user->key === 'ceo') {
+
+            return true;
+        }
+
+        return null;
     }
 
     public function create(User $user)

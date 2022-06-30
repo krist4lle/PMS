@@ -32,11 +32,6 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function isAdministrator()
-    {
-        return $this->where('key', 'ceo')->exists();
-    }
-
     public function position()
     {
         return $this->belongsTo(Position::class);

@@ -67,9 +67,8 @@ class IssueSeeder extends Seeder
             'new',
             'in_progress',
             'review',
-            'done',
         ];
-        $randStatus = $slugs[rand(0, 3)];
+        $randStatus = $slugs[rand(0, 2)];
 
         return IssueStatus::where('slug', $randStatus)->first();
     }

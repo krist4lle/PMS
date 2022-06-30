@@ -2,11 +2,15 @@
 
 namespace App\Providers;
 
+use App\Models\Client;
+use App\Models\Comment;
 use App\Models\Department;
 use App\Models\Issue;
 use App\Models\Position;
 use App\Models\Project;
 use App\Models\User;
+use App\Policies\ClientPolicy;
+use App\Policies\CommentPolicy;
 use App\Policies\DepartmentPolicy;
 use App\Policies\IssuePolicy;
 use App\Policies\PositionPolicy;
@@ -27,6 +31,8 @@ class AuthServiceProvider extends ServiceProvider
         User::class => UserPolicy::class,
         Project::class => ProjectPolicy::class,
         Issue::class => IssuePolicy::class,
+        Comment::class => CommentPolicy::class,
+        Client::class => ClientPolicy::class,
     ];
 
     /**

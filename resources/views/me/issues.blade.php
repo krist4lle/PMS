@@ -38,6 +38,7 @@
                 <table class="table table-striped projects">
                     <thead>
                     <tr>
+                        <th style="width: 5%">#</th>
                         <th style="width: 10%">Issue</th>
                         <th style="width: 40%">Description</th>
                         <th style="width: 10%">Status</th>
@@ -47,6 +48,7 @@
                     <tbody>
                     @foreach($issues as $issue)
                         <tr>
+                            <td>{{ $issue->id }}</td>
                             <td>{{ $issue->title }}</td>
                             <td>{{ $issue->description }}</td>
                             <td>
@@ -63,21 +65,23 @@
                                     <i class="fas fa-folder"></i>
                                     View
                                 </a>
-                                @if(empty($issue->finished_at))
-                                    <form action="{{ route('issues.status', $issue) }}" method="post">
-                                        @csrf
-                                        @method('patch')
-                                        <button type="submit" class="btn btn-info btn-sm mx-2">
-                                            @if($issue->status->slug === 'new')
-                                                Accept Issue
-                                            @elseif($issue->status->slug === 'in_progress')
-                                                Send to review
-                                            @else
-                                                Close Issue
-                                            @endif
-                                        </button>
-                                    </form>
-                                @endif
+                                @can('status', [$issue, $issue->project])
+                                    @if(empty($issue->finished_at))
+                                        <form action="{{ route('issues.status', $issue) }}" method="post">
+                                            @csrf
+                                            @method('patch')
+                                            <button type="submit" class="btn btn-info btn-sm mx-2">
+                                                @if($issue->status->slug === 'new')
+                                                    Accept Issue
+                                                @elseif($issue->status->slug === 'in_progress')
+                                                    Send to review
+                                                @else
+                                                    Close Issue
+                                                @endif
+                                            </button>
+                                        </form>
+                                    @endif
+                                @endcan
                             </td>
                         </tr>
                     @endforeach

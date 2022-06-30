@@ -23,31 +23,49 @@ class IssuePolicy
 
     public function create(User $user, Project $project)
     {
-        if ($project->manager->id === $user->id) {
+        $project->load('manager');
+        if ($project->manager->id === $user->id
+            || $user->key === 'headManagement') {
 
             return true;
         }
 
-        return $user->key === 'headManagement';
+        return false;
+    }
+
+    public function status(User $user, Issue $issue, Project $project)
+    {
+        $project->load('manager');
+        if ($project->manager->id === $user->id
+            || $user->key === 'headManagement'
+            || !empty($user->projects()->find($project))) {
+
+            return true;
+        }
+
+        return false;
     }
 
     public function update(User $user, Issue $issue, Project $project)
     {
-        if ($project->manager->id === $user->id) {
+        $project->load('manager');
+        if ($project->manager->id === $user->id
+            || $user->key === 'headManagement') {
 
             return true;
         }
 
-        return $user->key === 'headManagement';
+        return false;
     }
 
     public function delete(User $user, Issue $issue, Project $project)
     {
-        if ($project->manager->id === $user->id) {
+        if ($project->manager->id === $user->id
+            || $user->key === 'headManagement') {
 
             return true;
         }
 
-        return $user->key === 'headManagement';
+        return false;
     }
 }

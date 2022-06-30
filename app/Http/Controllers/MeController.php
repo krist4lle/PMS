@@ -39,13 +39,14 @@ class MeController extends Controller
 
     public function issues(ProjectRequest $request, IssueService $service)
     {
-        $user = auth()->user()->load(['issues', 'issues.status', 'projects']);
+        $user = auth()->user()->load(['issues', 'issues.status', 'issues.project', 'projects', 'department']);
+        $user->department->slug === 'management' ? $projects = $user->managerProjects : $projects = $user->projects;
         $filteredProjectId = $request->validated('project');
         $issues = $service->projectFilter($user, $filteredProjectId);
 
         return view('me.issues', [
             'issues' => $issues,
-            'projects' => $user->projects,
+            'projects' => $projects,
             'filteredProjectId' => $filteredProjectId,
         ]);
     }

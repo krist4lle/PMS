@@ -30,7 +30,7 @@ class IssueController extends Controller
 
     public function status(Issue $issue, IssueService $service)
     {
-        $this->authorize('update', [$issue, $issue->project]);
+        $this->authorize('status', [$issue, $issue->project]);
         $service->changeIssueStatus($issue);
 
         return redirect()->back();

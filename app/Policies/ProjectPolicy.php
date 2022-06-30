@@ -32,7 +32,9 @@ class ProjectPolicy
 
     public function update(User $user, Project $project)
     {
-        if ($user->key === 'headManagement' || $project->manager->id === $user->id) {
+        $project->load('manager');
+        if ($user->key === 'headManagement'
+            || $project->manager->id === $user->id) {
 
             return true;
         }

@@ -51,11 +51,10 @@ class UserController extends Controller
 
     public function issues(User $user, ProjectRequest $request, IssueService $service)
     {
-        $user->load(['issues', 'issues.status', 'projects', 'managerProjects']);
+        $user->load(['issues', 'issues.status', 'issues.project', 'projects', 'managerProjects', 'department']);
         $filteredProjectId = $request->validated('project');
         $issues = $service->projectFilter($user, $filteredProjectId);
         $user->department->slug === 'management' ? $projects = $user->managerProjects : $projects = $user->projects;
-
 
         return view('users.issues', [
             'issues' => $issues,

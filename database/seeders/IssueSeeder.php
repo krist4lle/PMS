@@ -24,7 +24,7 @@ class IssueSeeder extends Seeder
 
     public function run()
     {
-        for ($i = 0; $i < 150; $i++) {
+        for ($i = 0; $i < 300; $i++) {
             $this->createIssue();
         }
     }
@@ -34,16 +34,11 @@ class IssueSeeder extends Seeder
         $issue = new Issue();
         $issue->title = $this->issueTitle();
         $issue->description = $this->faker->realText();
-        $status = IssueStatus::where('slug', 'new')->first();
+        $status = $this->randomStatus();
         $issue->status()->associate($status);
         $project = Project::all()->random();
         $issue->project()->associate($project);
-        $i = rand(0, 5);
-        if ($i === 0) {
-            $assignee = $project->manager;
-        } else {
-            $assignee = $project->users->random();
-        }
+        $assignee = $this->randomAssignee($project);
         $issue->assignee()->associate($assignee);
         $issue->save();
     }
@@ -64,5 +59,29 @@ class IssueSeeder extends Seeder
         ];
 
         return $titles[rand(0, 9)];
+    }
+
+    private function randomStatus(): IssueStatus
+    {
+        $slugs = [
+            'new',
+            'in_progress',
+            'review',
+            'done',
+        ];
+        $randStatus = $slugs[rand(0, 3)];
+
+        return IssueStatus::where('slug', $randStatus)->first();
+    }
+
+    private function randomAssignee(Project $project)
+    {
+        $i = rand(0, 5);
+        if ($i === 0) {
+
+            return $project->manager;
+        }
+
+        return $project->users->random();
     }
 }

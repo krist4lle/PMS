@@ -11,7 +11,8 @@ class ProjectController extends Controller
 {
     public function index()
     {
-        $projects = Project::with(['manager', 'users'])->orderByDesc('updated_at')->paginate(10);
+        $projects = Project::with(['manager', 'users'])->withCount('issues')
+            ->orderByDesc('updated_at')->paginate(10);
 
         return view('projects.index', [
             'projects' => $projects

@@ -55,7 +55,9 @@ class GlobalNavigationProvider extends ServiceProvider
                     'routeGroup' => 'my-projects',
                     'badge' => (object)[
                         'type' => 'warning',
-                        'text' => auth()->user()->department->slug === 'management' ? auth()->user()->managerProjects->count() : auth()->user()->projects->count(),
+                        'text' => isset($user->department) && auth()->user()->department->slug === 'management'
+                            ? auth()->user()->managerProjects->count()
+                            : auth()->user()->projects->count(),
                     ],
                 ],
                 (object)[
@@ -89,7 +91,6 @@ class GlobalNavigationProvider extends ServiceProvider
                     'routeGroup' => 'clients',
                 ],
             ]);
-
             $view->with('globalMenuItems', $globalMenuItems);
         });
     }

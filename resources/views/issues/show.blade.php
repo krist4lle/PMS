@@ -105,11 +105,7 @@
                         <br>
                         <b>Time spent</b>
                         <br>
-                        @if(empty($issue->finished_at))
-                            <em>N/A</em>
-                        @else
                             <em>{{ $timeSpent }} - hours</em>
-                        @endif
                     </address>
                 </div>
             </div>

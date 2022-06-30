@@ -30,6 +30,7 @@
                         <th style="width: 20%">Project Name</th>
                         <th style="width: 10%">Project Manager</th>
                         <th style="width: 30%">Team Members</th>
+                        <th style="width: 5%">Issues</th>
                         <th style="width: 8%" class="text-center">Status</th>
                         <th style="width: 20%">Actions</th>
                     </tr>
@@ -63,6 +64,7 @@
                                     @endforeach
                                 </ul>
                             </td>
+                            <td>{{ $project->issues_count }}</td>
                             <td class="project-state">
                                 @if($project->finished_at !== null)
                                     <span class="badge badge-success">Closed</span>

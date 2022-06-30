@@ -47,19 +47,24 @@ class IssueService
             'project',
             'project.users',
             'project.users.position',
+            'project.manager',
+            'project.manager.position',
             'assignee',
             'assignee.position',
             'comments',
             'comments.user',
         ]);
         $comments = $issue->comments()->orderByDesc('updated_at');
+        $timeSpent = $this->timeSpent($issue->created_at, $issue->updated_at);
 
         return [
             'issue' => $issue->loadCount('comments'),
             'project' => $issue->project,
             'assignee' => $issue->assignee,
             'users' => $issue->project->users,
+            'manager' => $issue->project->manager,
             'comments' => $comments->get(),
+            'timeSpent' => $timeSpent,
         ];
     }
 
@@ -105,5 +110,13 @@ class IssueService
             $status = IssueStatus::where('slug', 'new')->first();
             $issue->status()->associate($status);
         }
+    }
+
+    private function timeSpent($createdAt, $updatedAt): string
+    {
+        $startDate = new \DateTime($createdAt);
+        $finishDate = new \DateTime($updatedAt);
+
+        return $startDate->diff($finishDate)->format('%H:%I');
     }
 }

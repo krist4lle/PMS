@@ -36,6 +36,10 @@
                     @enderror
                     <select name="assignee" id="assignee" class="form-control">
                         <option value="">Choose Assignee</option>
+                        <option value="{{ $manager->id }}" {{ $manager->id == old('assignee') ? 'selected' : '' }}>
+                            {{ $manager->first_name }} {{ $manager->last_name }} -
+                            "{{ $manager->position->title }}"
+                        </option>
                         @foreach($users as $user)
                             <option value="{{ $user->id }}" {{ $user->id == $issue->assignee->id ? 'selected' : '' }}>
                                 {{ $user->first_name }} {{ $user->last_name }} -

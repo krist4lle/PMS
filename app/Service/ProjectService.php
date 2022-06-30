@@ -35,12 +35,13 @@ class ProjectService
         $project->load([
             'client',
             'manager',
+            'manager.position',
             'users',
             'users.position',
             'issues',
             'issues.status',
             'issues.assignee',
-        ]);
+        ])->loadCount('issues');
         $issues = $project->issues()->orderByDesc('updated_at')->paginate(10);
 
         return [

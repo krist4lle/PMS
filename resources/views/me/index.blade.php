@@ -58,7 +58,7 @@
                                 <i class="fas fa-list mr-1"></i>
                                 My Projects
                                 <span class="badge badge-warning">
-                                    @if($user->department->slug === 'management')
+                                    @if(isset($user->department) && $user->department->slug === 'management')
                                         {{ $user->manager_projects_count }}
                                     @else
                                         {{ $user->projects_count }}

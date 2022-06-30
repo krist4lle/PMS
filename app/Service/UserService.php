@@ -81,7 +81,7 @@ class UserService
 
     public function retrieveUserProjects(User $user): LengthAwarePaginator
     {
-        if ($user->department->slug === 'management') {
+        if (isset($user->department) && $user->department->slug === 'management') {
 
             return $user->managerProjects()->with(['manager', 'users'])->paginate(10);
         }

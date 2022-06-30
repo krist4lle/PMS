@@ -4,7 +4,9 @@
             <i class="nav-icon fas {{ $menuItem->iconClass }}"></i>
             <p>{{ $menuItem->name }}</p>
             @if(!empty($menuItem->badge))
-                <span class="badge badge-{{ $menuItem->badge->type }}">{{ $menuItem->badge->text }}</span>
+                <span class="badge badge-{{ $menuItem->badge->type }}">
+                        {{ $menuItem->badge->text }}
+                </span>
             @endif
         </a>
     </li>

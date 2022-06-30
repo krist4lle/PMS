@@ -46,7 +46,7 @@
                         <div class="row">
                             <div class="col-12">
                                 <h4>
-                                    Issues
+                                    <i class="fas fa-exclamation-triangle"></i> {{ $project->issues_count }} Issues
                                     <button class="float-right btn btn-outline-info" data-toggle="modal"
                                             data-target="#Modal">
                                         Create Issue
@@ -117,7 +117,8 @@
                             <p class="text-sm">Project Leader
                                 <b class="d-block">
                                     {{ $manager->first_name }} {{ $manager->last_name }}
-                                    <a href="{{ route('users.show', $manager) }}"><i class="nav-icon fas fa-link"></i></a>
+                                    <a href="{{ route('users.show', $manager) }}"><i
+                                            class="nav-icon fas fa-link"></i></a>
                                 </b>
                             </p>
                             <p>Team</p>
@@ -140,9 +141,9 @@
                                 <div class="col-6">
                                     <p class="text-sm">Closed
                                         @if($project->finished_at !== null)
-                                        <b class="d-block">
-                                            {{ \Carbon\Carbon::create($project->finished_at)->toDateString() }}
-                                        </b>
+                                            <b class="d-block">
+                                                {{ \Carbon\Carbon::create($project->finished_at)->toDateString() }}
+                                            </b>
                                         @else
                                             <b class="d-block">N/A</b>
                                         @endif

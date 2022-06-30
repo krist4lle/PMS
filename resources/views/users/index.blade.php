@@ -39,7 +39,7 @@
                             <td>{{ $user->first_name }} {{ $user->last_name }}</td>
                             <td>{{ $user->position->title }}</td>
                             <td class="project-actions text-right row">
-                                <a class="btn btn-primary btn-sm mx-2" href="#">
+                                <a class="btn btn-primary btn-sm mx-2" href="{{ route('users.show', $user) }}">
                                     <i class="fas fa-folder"></i>
                                     View
                                 </a>

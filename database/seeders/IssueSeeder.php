@@ -38,7 +38,12 @@ class IssueSeeder extends Seeder
         $issue->status()->associate($status);
         $project = Project::all()->random();
         $issue->project()->associate($project);
-        $assignee = $project->users->random();
+        $i = rand(0, 5);
+        if ($i === 0) {
+            $assignee = $project->manager;
+        } else {
+            $assignee = $project->users->random();
+        }
         $issue->assignee()->associate($assignee);
         $issue->save();
     }

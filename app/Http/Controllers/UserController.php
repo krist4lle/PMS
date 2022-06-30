@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\User\ProjectRequest;
 use App\Http\Requests\User\StoreRequest;
 use App\Http\Requests\User\UpdateUserRequest;
 use App\Models\Department;
 use App\Models\Position;
 use App\Models\User;
+use App\Service\IssueService;
 use App\Service\UserService;
 
 class UserController extends Controller
@@ -19,6 +21,42 @@ class UserController extends Controller
 
         return view('users.index', [
             'users' => $users,
+        ]);
+    }
+
+    public function show(User $user)
+    {
+        $user->load(['department', 'position', 'projects', 'issues'])
+            ->loadCount(['projects', 'issues', 'managerProjects']);
+
+        return view('users.show', [
+            'user' => $user
+        ]);
+    }
+
+    public function projects(User $user, UserService $service)
+    {
+        $user->load(['projects', 'managerProjects']);
+        $projects = $service->retrieveUserProjects($user);
+
+        return view('projects.index', [
+            'projects' =>  $projects,
+        ]);
+    }
+
+    public function issues(User $user, ProjectRequest $request, IssueService $service)
+    {
+        $user->load(['issues', 'issues.status', 'projects', 'managerProjects']);
+        $filteredProjectId = $request->validated('project');
+        $issues = $service->projectFilter($user, $filteredProjectId);
+        $user->department->slug === 'management' ? $projects = $user->managerProjects : $projects = $user->projects;
+
+
+        return view('users.issues', [
+            'issues' => $issues,
+            'projects' => $projects,
+            'filteredProjectId' => $filteredProjectId,
+            'user' => $user,
         ]);
     }
 

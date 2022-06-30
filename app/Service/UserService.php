@@ -3,14 +3,13 @@
 namespace App\Service;
 
 use App\Jobs\UserCredentialsEmailJob;
-use App\Mail\User\PasswordMail;
 use App\Models\Department;
 use App\Models\Position;
 use App\Models\User;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\File;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 
@@ -78,6 +77,16 @@ class UserService
             $user->password = Hash::make($password);
             $user->save();
         }
+    }
+
+    public function retrieveUserProjects(User $user): LengthAwarePaginator
+    {
+        if ($user->department->slug === 'management') {
+
+            return $user->managerProjects()->with(['manager', 'users'])->paginate(10);
+        }
+
+        return $user->projects()->with(['manager', 'users'])->paginate(10);
     }
 
     private function emailCreate(string $firstName, string $lastName): string

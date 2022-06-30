@@ -89,6 +89,16 @@ class UserService
         return $user->projects()->with(['manager', 'users'])->paginate(10);
     }
 
+    public function positionFilter(int|null $filteredPositionId)
+    {
+        $query = User::with(['position', 'department', 'parent'])->withCount(['projects', 'managerProjects', 'issues']);
+        if ($filteredPositionId !== null) {
+            $query->whereRelation('position', 'id', $filteredPositionId);
+        }
+
+        return $query->paginate(10);
+    }
+
     private function emailCreate(string $firstName, string $lastName): string
     {
         return lcfirst($firstName) . '.' . lcfirst($lastName) . '@pms.test';

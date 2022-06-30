@@ -2,13 +2,32 @@
 @section('content')
     <section class="content-header">
         <div class="container-fluid">
-            <div class="row">
-                <div class="col">
+            <div class="row justify-content-between">
+                <div class="col-4">
                     <h1>Users</h1>
+                </div>
+                <div class="col row">
+                    <form action="{{ route('users.index') }}" method="get">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <select class="form-control" name="position">
+                                    <option value="">Choose Position</option>
+                                    @foreach($positions as $position)
+                                        <option value="{{ $position->id }}">
+                                            {{ $position->title }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary ml-2">Submit</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-3">
+                    <a href="{{ route('users.create') }}" class="btn btn-info mt-2 float-right">Create a new User</a>
                 </div>
             </div>
         </div>
-        <a href="{{ route('users.create') }}" class="btn btn-info mt-2">Create a new User</a>
     </section>
     @if(session()->has('success'))
         <div class="alert alert-success mt-2" role="alert">
@@ -29,7 +48,7 @@
                         <th style="width: 1%">#</th>
                         <th style="width: 20%">User Name</th>
                         <th style="width: 20%">Position</th>
-                        <th style="width: 20%"></th>
+                        <th style="width: 20%">Actions</th>
                     </tr>
                     </thead>
                     <tbody>

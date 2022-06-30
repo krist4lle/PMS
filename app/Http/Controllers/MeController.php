@@ -12,7 +12,7 @@ class MeController extends Controller
 {
     public function index()
     {
-        $user = auth()->user()->loadCount(['issues', 'projects']);
+        $user = auth()->user()->loadCount(['issues', 'projects', 'managerProjects']);
 
         return view('me.index', [
             'user' => $user,
@@ -39,7 +39,7 @@ class MeController extends Controller
 
     public function issues(ProjectRequest $request, IssueService $service)
     {
-        $user = auth()->user()->load('issues', 'issues.status', 'projects');
+        $user = auth()->user()->load(['issues', 'issues.status', 'projects']);
         $filteredProjectId = $request->validated('project');
         $issues = $service->projectFilter($user, $filteredProjectId);
 
@@ -50,12 +50,13 @@ class MeController extends Controller
         ]);
     }
 
-    public function projects()
+    public function projects(UserService $service)
     {
-        $user = auth()->user()->load('projects');
+        $user = auth()->user()->load(['projects', 'managerProjects']);
+        $projects = $service->retrieveUserProjects($user);
 
         return view('projects.index', [
-            'projects' => $user->projects()->paginate(10),
+            'projects' => $projects,
         ]);
     }
 }

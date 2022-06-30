@@ -91,11 +91,16 @@
                                 <i class="nav-icon fas fa-arrow-circle-right"></i>
                             </a>
                         </em><br>
-                        <b>Assignee</b><br>
+                        <b>Assignee</b>
+                        <br>
                         <em>
                             {{ $assignee->first_name }} {{ $assignee->last_name }}:
                             "{{ $assignee->position->title }}"
-                        </em><br>
+                        </em>
+                        <a href="{{ route('users.show', $assignee) }}">
+                            <i class="nav-icon fas fa-arrow-circle-right"></i>
+                        </a>
+                        <br>
                     </address>
                 </div>
             </div>

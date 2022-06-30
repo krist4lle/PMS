@@ -117,7 +117,7 @@
                             <p class="text-sm">Project Leader
                                 <b class="d-block">
                                     {{ $manager->first_name }} {{ $manager->last_name }}
-                                    <a href=""><i class="nav-icon fas fa-link"></i></a>
+                                    <a href="{{ route('users.show', $manager) }}"><i class="nav-icon fas fa-link"></i></a>
                                 </b>
                             </p>
                             <p>Team</p>
@@ -125,7 +125,7 @@
                                 <div>
                                     <b>{{ $user->first_name }} {{ $user->last_name }}</b> -
                                     "{{ $user->position->title }}"
-                                    <a href=""><i class="nav-icon fas fa-link"></i></a>
+                                    <a href="{{ route('users.show', $user) }}"><i class="nav-icon fas fa-link"></i></a>
                                 </div>
                             @endforeach
                             <br>

@@ -44,6 +44,10 @@ Route::middleware(['auth'])->group(function () {
         ->except('show');
 
     Route::resource('users', App\Http\Controllers\UserController::class);
+    Route::get('users-projects/{user}', [App\Http\Controllers\UserController::class, 'projects'])
+        ->name('users.projects');
+    Route::get('users-issues/{user}', [App\Http\Controllers\UserController::class, 'issues'])
+        ->name('users.issues');
 
     Route::resource('projects', App\Http\Controllers\ProjectController::class);
 

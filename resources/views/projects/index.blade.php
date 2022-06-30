@@ -47,16 +47,17 @@
                                 </small>
                             </td>
                             <td>
-                                <a href="{{ route('profile.index', $project->manager) }}" class="col-10">
-                                    <img src="{{ $project->manager->avatar }}" alt="project_manager" class="col-5">
+                                <a href="{{ route('users.show', $project->manager) }}" class="col-10">
+                                    <img src="{{ asset($project->manager->avatar) }}" alt="project_manager" class="col-5">
                                 </a>
                             </td>
                             <td>
                                 <ul class="list-inline">
                                     @foreach($project->users as $user)
                                         <li class="list-inline-item">
-                                            <a href="{{ route('profile.index', $user) }}">
-                                                <img alt="$users_avatar" class="table-avatar" src="{{ $user->avatar }}">
+                                            <a href="{{ route('users.show', $user) }}">
+                                                <img alt="$users_avatar" class="table-avatar"
+                                                     src="{{ asset($user->avatar) }}">
                                             </a>
                                         </li>
                                     @endforeach

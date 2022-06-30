@@ -20,14 +20,14 @@ class ProjectPolicy
         return null;
     }
 
-    public function edit(User $user)
-    {
-        return $user->key !== 'worker';
-    }
-
     public function create(User $user)
     {
         return $user->key === 'headManagement';
+    }
+
+    public function edit(User $user)
+    {
+        return $user->key !== 'worker';
     }
 
     public function update(User $user, Project $project)

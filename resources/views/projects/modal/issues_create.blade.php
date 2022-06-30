@@ -47,7 +47,7 @@
                         @endforeach
                     </select>
                     <br>
-                    <input type="hidden" name="project" value="{{ $project->title }}">
+                    <input type="hidden" name="project" value="{{ $project->id }}">
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </div>
             </div>

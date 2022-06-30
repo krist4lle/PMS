@@ -3,10 +3,12 @@
 namespace App\Providers;
 
 use App\Models\Department;
+use App\Models\Issue;
 use App\Models\Position;
 use App\Models\Project;
 use App\Models\User;
 use App\Policies\DepartmentPolicy;
+use App\Policies\IssuePolicy;
 use App\Policies\PositionPolicy;
 use App\Policies\ProjectPolicy;
 use App\Policies\UserPolicy;
@@ -20,11 +22,11 @@ class AuthServiceProvider extends ServiceProvider
      * @var array<class-string, class-string>
      */
     protected $policies = [
-        // 'App\Models\Model' => 'App\Policies\ModelPolicy',
         Department::class => DepartmentPolicy::class,
         Position::class => PositionPolicy::class,
         User::class => UserPolicy::class,
         Project::class => ProjectPolicy::class,
+        Issue::class => IssuePolicy::class,
     ];
 
     /**

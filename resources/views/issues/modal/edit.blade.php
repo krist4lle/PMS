@@ -36,7 +36,7 @@
                     @enderror
                     <select name="assignee" id="assignee" class="form-control">
                         <option value="">Choose Assignee</option>
-                        <option value="{{ $manager->id }}" {{ $manager->id == old('assignee') ? 'selected' : '' }}>
+                        <option value="{{ $manager->id }}" {{ $manager->id == $issue->assignee->id ? 'selected' : '' }}>
                             {{ $manager->first_name }} {{ $manager->last_name }} -
                             "{{ $manager->position->title }}"
                         </option>

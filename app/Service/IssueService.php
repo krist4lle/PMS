@@ -19,7 +19,7 @@ class IssueService
         $issue = new Issue();
         $status = IssueStatus::where('slug', 'new')->first();
         $issue->status()->associate($status);
-        $project = Project::where('title', $issueData['project'])->first();
+        $project = Project::find($issueData['project']);
         $this->projectStatusCheck($project);
         $issue->project()->associate($project);
         $issue->title = $issueData['title'];

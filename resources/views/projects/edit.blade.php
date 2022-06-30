@@ -35,37 +35,37 @@
                           id="personal_data_form">
                         @csrf
                         @method('put')
+                        <div class="px-3 row">
+                            <div class="col-6">
+                                <label for="title" class="form-label">Project's Title</label>
+                                @error('title')
+                                <div class="alert alert-danger mt-2" role="alert">
+                                    {{ $message }}
+                                </div>
+                                @enderror
+                                <input type="text" class="form-control" id="title" name="title"
+                                       placeholder="Enter Title" value="{{ $project->title }}">
+                            </div>
+                            <div class="col-6">
+                                <label for="title" class="form-label">Deadline</label>
+                                <input type="date" class="form-control" id="deadline"
+                                       name="deadline" placeholder="Enter Title"
+                                       value="{{ \Carbon\Carbon::make($project->deadline)->format('Y-m-d') }}">
+                            </div>
+                        </div>
+                        <div class="px-3 pt-2 row">
+                            <div class="form-floating col-12">
+                                <label for="description" class="form-label">Description</label>
+                                @error('description')
+                                <div class="alert alert-danger mt-2" role="alert">
+                                    {{ $message }}
+                                </div>
+                                @enderror
+                                <textarea name="description" id="description"
+                                          class="form-control">{{ $project->description }}</textarea>
+                            </div>
+                        </div>
                         @can('edit', $project)
-                            <div class="px-3 row">
-                                <div class="col-6">
-                                    <label for="title" class="form-label">Project's Title</label>
-                                    @error('title')
-                                    <div class="alert alert-danger mt-2" role="alert">
-                                        {{ $message }}
-                                    </div>
-                                    @enderror
-                                    <input type="text" class="form-control" id="title" name="title"
-                                           placeholder="Enter Title" value="{{ $project->title }}">
-                                </div>
-                                <div class="col-6">
-                                    <label for="title" class="form-label">Deadline</label>
-                                    <input type="date" class="form-control" id="deadline"
-                                           name="deadline" placeholder="Enter Title"
-                                           value="{{ \Carbon\Carbon::make($project->deadline)->format('Y-m-d') }}">
-                                </div>
-                            </div>
-                            <div class="px-3 pt-2 row">
-                                <div class="form-floating col-12">
-                                    <label for="description" class="form-label">Description</label>
-                                    @error('description')
-                                    <div class="alert alert-danger mt-2" role="alert">
-                                        {{ $message }}
-                                    </div>
-                                    @enderror
-                                    <textarea name="description" id="description"
-                                              class="form-control">{{ $project->description }}</textarea>
-                                </div>
-                            </div>
                             <div class="px-3 pt-2 row">
                                 <div class="col-6">
                                     <label for="client" class="form-label">Client</label>
@@ -76,7 +76,7 @@
                                     @enderror
                                     <div class="form-group">
                                         <select name="client" id="client" class="form-control">
-                                            <option value="">Choose Client</option>
+                                            <option>Choose Client</option>
                                             @foreach($clients as $client)
                                                 <option value="{{ $client->id }}"
                                                     {{ $project->client->id == $client->id ? 'selected' : '' }}>

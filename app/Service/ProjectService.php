@@ -5,7 +5,6 @@ namespace App\Service;
 use App\Models\Client;
 use App\Models\Project;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Collection;
 
 class ProjectService
 {
@@ -110,8 +109,12 @@ class ProjectService
         $project->title = $projectData['title'];
         $project->description = $projectData['description'];
         $project->deadline = $projectData['deadline'];
-        $this->addClient($project, $projectData['client']);
-        $this->addManager($project, $projectData['manager']);
+        if (isset($projectData['client'])) {
+            $this->addClient($project, $projectData['client']);
+        }
+        if (isset($projectData['manager'])) {
+            $this->addManager($project, $projectData['manager']);
+        }
         $project->save();
     }
 

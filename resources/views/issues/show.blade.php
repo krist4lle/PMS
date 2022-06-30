@@ -37,34 +37,36 @@
                     <p>{{ $issue->description }}</p>
                 </div>
                 <div class="col-6 row justify-content-end">
-                    @if($issue->status->slug !== 'done')
-                        <form action="{{ route('issues.status', $issue) }}" method="post">
+                    @canany(['delete', 'update'], [$issue, $project])
+                        @if($issue->status->slug !== 'done')
+                            <form action="{{ route('issues.status', $issue) }}" method="post">
+                                @csrf
+                                @method('patch')
+                                <button type="submit" class="btn btn-outline-info">
+                                    @if($issue->status->slug === 'new')
+                                        Accept Issue
+                                    @elseif($issue->status->slug === 'in_progress')
+                                        Send to review
+                                    @else
+                                        Close Issue
+                                    @endif
+                                </button>
+                            </form>
+                        @endif
+                        <div class="pl-2">
+                            <button class="btn btn-outline-secondary" data-toggle="modal"
+                                    data-target="#Modal">
+                                Edit Issue
+                            </button>
+                        </div>
+                        <form class="pl-2" action="{{ route('issues.destroy', $issue) }}" method="post">
                             @csrf
-                            @method('patch')
-                            <button type="submit" class="btn btn-outline-info">
-                                @if($issue->status->slug === 'new')
-                                    Accept Issue
-                                @elseif($issue->status->slug === 'in_progress')
-                                    Send to review
-                                @else
-                                    Close Issue
-                                @endif
+                            @method('delete')
+                            <button type="submit" class="btn btn-outline-danger">
+                                Delete Issue
                             </button>
                         </form>
-                    @endif
-                    <div class="pl-2">
-                        <button class="btn btn-outline-secondary" data-toggle="modal"
-                                data-target="#Modal">
-                            Edit Issue
-                        </button>
-                    </div>
-                    <form class="pl-2" action="{{ route('issues.destroy', $issue) }}" method="post">
-                        @csrf
-                        @method('delete')
-                        <button type="submit" class="btn btn-outline-danger">
-                            Delete Issue
-                        </button>
-                    </form>
+                    @endcanany
                 </div>
             </div>
             <div class="row invoice-info">
@@ -105,7 +107,7 @@
                         <br>
                         <b>Time spent</b>
                         <br>
-                            <em>{{ $timeSpent }} - hours</em>
+                        <em>{{ $timeSpent }} - hours</em>
                     </address>
                 </div>
             </div>

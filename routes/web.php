@@ -40,10 +40,11 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('departments', App\Http\Controllers\DepartmentController::class)
         ->only('index', 'edit', 'update', 'destroy');
 
-    Route::resource('positions', App\Http\Controllers\PositionController::class)
-        ->except('show');
+    Route::resource('positions', App\Http\Controllers\PositionController::class);
 
     Route::resource('users', App\Http\Controllers\UserController::class);
+    Route::get('users-position', [App\Http\Controllers\UserController::class, 'position'])
+        ->name('users.position');
     Route::get('users-projects/{user}', [App\Http\Controllers\UserController::class, 'projects'])
         ->name('users.projects');
     Route::get('users-issues/{user}', [App\Http\Controllers\UserController::class, 'issues'])

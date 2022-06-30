@@ -30,7 +30,7 @@
                         <th style="width: 10%">Client's Title</th>
                         <th style="width: 30%">About</th>
                         <th style="width: 5%">Projects</th>
-                        <th style="width: 20%"></th>
+                        <th style="width: 20%">Actions</th>
                     </tr>
                     </thead>
                     <tbody>

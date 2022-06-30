@@ -31,7 +31,7 @@
                         <th style="width: 10%">Project Manager</th>
                         <th style="width: 30%">Team Members</th>
                         <th style="width: 8%" class="text-center">Status</th>
-                        <th style="width: 20%"></th>
+                        <th style="width: 20%">Actions</th>
                     </tr>
                     </thead>
                     <tbody>

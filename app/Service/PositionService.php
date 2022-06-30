@@ -4,6 +4,7 @@ namespace App\Service;
 
 use App\Models\Department;
 use App\Models\Position;
+use App\Models\User;
 
 class PositionService
 {

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\User\PositionRequest;
 use App\Http\Requests\User\ProjectRequest;
 use App\Http\Requests\User\StoreRequest;
 use App\Http\Requests\User\UpdateUserRequest;
@@ -9,18 +10,20 @@ use App\Models\Department;
 use App\Models\Position;
 use App\Models\User;
 use App\Service\IssueService;
+use App\Service\PositionService;
 use App\Service\UserService;
 
 class UserController extends Controller
 {
-    public function index()
+    public function index(PositionRequest $request, UserService $service)
     {
-        $users = User::with(['position', 'department', 'parent'])
-            ->withCount(['projects', 'managerProjects', 'issues'])
-            ->paginate(10);
+        $positions = Position::all();
+        $filteredPositionId = $request->validated('position');
+        $users = $service->positionFilter($filteredPositionId);
 
         return view('users.index', [
             'users' => $users,
+            'positions' => $positions,
         ]);
     }
 

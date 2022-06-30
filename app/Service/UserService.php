@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\File;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
@@ -41,6 +42,26 @@ class UserService
             'designEmployees' => $designEmployees,
             'frontendEmployees' => $frontendEmployees,
             'backendEmployees' => $backendEmployees,
+        ];
+    }
+
+    public function prepareData(User $user)
+    {
+        if ($user->key !== 'ceo') {
+            $slug = $user->department->slug;
+            $departments = Department::where('slug', $slug)->get();
+            $positions = Position::whereRelation('department', 'slug', $slug)->get();
+            $parents = User::where('key', $user->key)->get();
+        } else {
+            $departments = Department::all();
+            $positions = Position::all();
+            $parents = User::whereHas('children')->get();
+        }
+
+        return [
+            'departments' => $departments,
+            'positions' => $positions,
+            'parents' => $parents,
         ];
     }
 

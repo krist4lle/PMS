@@ -12,6 +12,7 @@ use App\Models\User;
 use App\Service\IssueService;
 use App\Service\PositionService;
 use App\Service\UserService;
+use Illuminate\Support\Arr;
 
 class UserController extends Controller
 {
@@ -24,6 +25,7 @@ class UserController extends Controller
         return view('users.index', [
             'users' => $users,
             'positions' => $positions,
+            'filteredPositionId' => $filteredPositionId,
         ]);
     }
 
@@ -63,44 +65,35 @@ class UserController extends Controller
         ]);
     }
 
-    public function create()
+    public function create(UserService $service)
     {
-        $departments = Department::all();
-        $positions = Position::all();
-        $parents = User::whereHas('children')->with('position')->get();
+        $user = auth()->user();
+        $this->authorize('create', $user);
 
-        return view('users.create', [
-            'departments' => $departments,
-            'positions' => $positions,
-            'parents' => $parents,
-        ]);
+        return view('users.create', $service->prepareData($user));
     }
 
     public function store(StoreRequest $request, UserService $service)
     {
+        $this->authorize('create', auth()->user());
         $userData = $request->validated();
         $service->createUser($userData);
 
         return redirect()->route('users.index')->with('success', 'User successfully created');
     }
 
-    public function edit(User $user)
+    public function edit(User $user, UserService $service)
     {
+        $this->authorize('update', $user);
         $user->load(['department', 'position', 'parent.position']);
-        $departments = Department::all();
-        $positions = Position::all();
-        $parents = User::whereHas('children')->with('position')->get();
+        $data = Arr::add($service->prepareData(auth()->user()), 'user', $user);
 
-        return view('users.edit', [
-            'user' => $user,
-            'departments' => $departments,
-            'positions' => $positions,
-            'parents' => $parents,
-        ]);
+        return view('users.edit', $data);
     }
 
     public function update(User $user, UpdateUserRequest $userRequest, UserService $service)
     {
+        $this->authorize('update', $user);
         $userData = $userRequest->validated();
         $service->updateUser($user, $userData);
         $service->changePassword($user, $userData['password']);
@@ -110,6 +103,7 @@ class UserController extends Controller
 
     public function destroy(User $user)
     {
+        $this->authorize('delete', $user);
         $user->delete();
 
         return redirect()->route('users.index')->with('success', 'User successfully fired');

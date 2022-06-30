@@ -1,5 +1,8 @@
 @extends('layouts.app')
 @section('content')
+    <div class="float-right">
+        <a href="{{ route('users.index') }}" class="btn btn-outline-secondary mt-2">To Users</a>
+    </div>
     <section class="content pt-5">
         <div class="container-fluid">
             <div class="row justify-content-center">
@@ -39,7 +42,7 @@
                                 <i class="fas fa-list mr-1"></i>
                                 Projects
                                 <span class="badge badge-warning">
-                                    @if($user->department->slug === 'management')
+                                    @if(isset($user->department) && $user->department->slug === 'management')
                                         {{ $user->manager_projects_count }}
                                     @else
                                         {{ $user->projects_count }}

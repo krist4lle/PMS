@@ -143,7 +143,7 @@
                             <div class="col-3 justify-content-end row">
                                 @canany(['delete', 'update'], [$comment, $project])
                                     <div class="mx-2">
-                                        <button onclick="formShow(this)" class="btn btn-sm btn-outline-info">
+                                        <button id="editCommentButton" class="btn btn-sm btn-outline-info">
                                             <i class="nav-icon fas fa-pen"></i>
                                             Edit
                                         </button>
@@ -160,7 +160,8 @@
                             </div>
                             <p class="px-2">{{ $comment->content }}</p>
                             @can('update', [$comment, $project])
-                                <form class="col-12" method="post" action="{{ route('comments.update', $comment) }}">
+                                <form class="col-12" method="post" id="editCommentForm" style="display: none"
+                                      action="{{ route('comments.update', $comment) }}">
                                     @csrf
                                     @method('put')
                                     <input type="hidden" value="{{ $project->id }}" name="project">
@@ -169,28 +170,15 @@
                                     <button type="submit" class="btn btn-sm btn-outline-secondary mt-2">
                                         Edit Comment
                                     </button>
-                                    <a onclick="formHide(this)" class="btn btn-sm btn-outline-danger mt-2">Cancel</a>
+                                    <a id="editCancelButton" class="btn btn-sm btn-outline-danger mt-2">Cancel</a>
                                 </form>
                             @endcan
                         </div>
                     @endforeach
-                    <script>
-                        function formShow(button) {
-                            let form = button.parentElement;
-                            if (form.style.display === 'none') {
-                                form.style.display = 'block';
-                            } else {
-                                form.style.display = 'none';
-                            }
-                        }
-
-                        function formHide(button) {
-                            button.parentElement.form.style.display = 'none';
-                        }
-                    </script>
                 </div>
             </div>
         </div>
     </section>
     @include('issues.modal.edit')
+    <script src="{{ asset('plugins/edit-comment/edit_comment.js') }}"></script>
 @endsection

@@ -158,7 +158,7 @@
                                     </form>
                                 @endcanany
                             </div>
-                            <p class="px-2">{{ $comment->content }}</p>
+                            <p class="px-2" id="commentContent">{{ $comment->content }}</p>
                             @can('update', [$comment, $project])
                                 <form class="col-12" method="post" id="editCommentForm" style="display: none"
                                       action="{{ route('comments.update', $comment) }}">

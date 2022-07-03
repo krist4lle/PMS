@@ -18,9 +18,11 @@ class CommentService
         $comment->save();
     }
 
-    public function commentUpdate(Comment $comment, string $content): void
+    public function commentUpdate(Comment $comment, string $content)
     {
-        $comment->content = $content;
-        $comment->save();
+        if (!empty($content)) {
+            $comment->content = $content;
+            $comment->save();
+        }
     }
 }

@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests\Comment;
 
-use App\Models\User;
+
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
+
 
 class UpdateRequest extends FormRequest
 {
@@ -27,7 +27,8 @@ class UpdateRequest extends FormRequest
     {
         return [
             'content' => 'required|string',
-            'project' => 'exists:projects,id'
+            'project_id' => 'exists:projects,id',
+            'comment_id' => 'exists:comments,id',
         ];
     }
 }

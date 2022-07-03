@@ -7,6 +7,7 @@ use App\Http\Requests\Comment\UpdateRequest;
 use App\Models\Comment;
 use App\Models\Project;
 use App\Service\CommentService;
+use Illuminate\Http\Request;
 
 class CommentController extends Controller
 {
@@ -18,14 +19,18 @@ class CommentController extends Controller
         return redirect()->back()->with('success', 'Comment added');
     }
 
-    public function update(UpdateRequest $request, Comment $comment, CommentService $service)
+    public function updateComment(CommentService $service)
     {
-        $content = $request->validated('content');
-        $project = Project::find($request->validated('project'));
-        $this->authorize('update', [$comment, $project]);
-        $service->commentUpdate($comment, $content);
+        $data = request()->json()->all();
 
-        return redirect()->back()->with('success', 'Comment successfully edited');
+        $project = Project::findOrFail($data['project_id']);
+        $comment = Comment::findOrFail($data['comment_id']);
+        $this->authorize('update', [$comment, $project]);
+        $service->commentUpdate($comment, $data['content']);
+
+        return response()->json([
+            'comment' => $comment->content,
+        ]);
     }
 
     public function destroy(Comment $comment)

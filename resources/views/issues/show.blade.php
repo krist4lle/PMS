@@ -128,7 +128,12 @@
                     </form>
                     <br>
                     @foreach($comments as $comment)
-                        <div class="post row" id="sid{{ $comment->id }}">
+                        @if(session()->has("error{$comment->id}"))
+                            <div class="alert alert-danger mt-2" role="alert">
+                                {{ session()->get("error{$comment->id}") }}
+                            </div>
+                        @endif
+                        <div class="post row">
                             <div class="user-block col-9">
                                 <img class="img-circle img-bordered-sm"
                                      src="{{ asset($comment->user->avatar) }}" alt="user_image">
@@ -160,14 +165,12 @@
                             </div>
                             <p class="px-2" id="commentContent">{{ $comment->content }}</p>
                             @can('update', [$comment, $project])
-                                <form class="col-12" method="post" id="editCommentForm" style="display: none"
-                                      action="{{ route('comments.update', $comment) }}">
-                                    @csrf
-                                    @method('put')
-                                    <input type="hidden" value="{{ $project->id }}" name="project">
+                                <form class="col-12" method="post" id="editCommentForm" style="display: none">
+                                    <input type="hidden" value="{{ $project->id }}" name="project_id">
+                                    <input type="hidden" value="{{ $comment->id }}" name="comment_id">
                                     <textarea class="form-control form-control-sm" placeholder="Type a comment"
                                               name="content">{{ $comment->content }}</textarea>
-                                    <button type="submit" class="btn btn-sm btn-outline-secondary mt-2">
+                                    <button id="submitButton" class="btn btn-sm btn-outline-secondary mt-2">
                                         Edit Comment
                                     </button>
                                     <a id="editCancelButton" class="btn btn-sm btn-outline-danger mt-2">Cancel</a>

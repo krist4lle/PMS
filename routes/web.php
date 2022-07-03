@@ -63,5 +63,5 @@ Route::middleware(['auth'])->group(function () {
 
     Route::resource('comments', App\Http\Controllers\CommentController::class)
         ->only(['store', 'destroy']);
-    Route::post('/comments/update', [App\Http\Controllers\CommentController::class, 'updateComment']);
+    Route::post('comments/update', [App\Http\Controllers\CommentController::class, 'updateComment']);
 });

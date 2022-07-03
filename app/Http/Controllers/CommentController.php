@@ -19,9 +19,9 @@ class CommentController extends Controller
         return redirect()->back()->with('success', 'Comment added');
     }
 
-    public function updateComment(CommentService $service)
+    public function updateComment(UpdateRequest $request, CommentService $service)
     {
-        $data = request()->json()->all();
+        $data = $request->validated();
 
         $project = Project::findOrFail($data['project_id']);
         $comment = Comment::findOrFail($data['comment_id']);

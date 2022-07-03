@@ -18,6 +18,13 @@ editCancelButtons.forEach((editCancelButton, index) => {
     }
 });
 
+function validateComment(json) {
+    json.then(json => {
+            console.log(json.message);
+        }
+    );
+}
+
 editCommentForms.forEach((editCommentForm, index) => {
     editCommentForm.addEventListener('submit', function (event) {
         event.preventDefault();
@@ -28,14 +35,32 @@ editCommentForms.forEach((editCommentForm, index) => {
         });
 
         fetch(`/comments/update`, {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+            },
             method: 'POST',
             body: JSON.stringify(data),
         })
-            .then(response => response.json())
+            .then(response => {
+                if (response.ok) {
+
+                    return response.json();
+                }
+                if (response.status === 422) {
+                    validateComment(response.json());
+                }
+
+                throw new Error();
+            })
             .then(json => {
                 commentContents[index].innerText = json.comment;
                 commentContents[index].setAttribute('style', 'display: block')
                 this.setAttribute('style', 'display: none');
-            });
+            })
+            .catch(error => console.error(error));
+
+
     })
 });

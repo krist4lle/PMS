@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\DepartmentNotEmptyException;
 use App\Http\Requests\Department\UpdateRequest;
 use App\Models\Department;
-use App\Models\User;
 use App\Service\DepartmentService;
-use Illuminate\Http\Request;
 
 class DepartmentController extends Controller
 {
@@ -32,7 +31,14 @@ class DepartmentController extends Controller
     {
         $this->authorize('update', $department);
         $dataName = $request->validated();
-        $service->departmentSave($department, $dataName['name']);
+
+        try {
+            $service->departmentSave($department, $dataName['name']);
+        } catch (DepartmentNotEmptyException $exception) {
+
+            return redirect(route('departments.index'))
+                ->with('errorMessage', 'Impossible to edit Department with employees');
+        }
 
         return redirect(route('departments.index'));
     }

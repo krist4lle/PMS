@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Exceptions\DepartmentNotEmptyException;
 use App\Models\Department;
 use App\Models\Position;
 use App\Models\User;
@@ -17,8 +18,9 @@ class DepartmentService
         $department->loadCount('users');
         if ($department->users_count > 0) {
 
-            return redirect(route('departments.index'))
-                ->with('errorMessage', 'Impossible to edit Department with employees');
+            throw new DepartmentNotEmptyException();
+//            return redirect(route('departments.index'))
+//                ->with('errorMessage', 'Impossible to edit Department with employees');
         }
         $department->name = $departmentName;
 

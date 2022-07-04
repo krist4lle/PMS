@@ -10,6 +10,7 @@ use Faker\Generator;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Http\File;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -51,12 +52,14 @@ class UserSeeder extends Seeder
     {
         $position = Position::where('title', $position)->first();
         $department = Department::where('name', $department)->first();
+        //$token = $this->faker->word;
 
         $user = new User();
         $user->fill($data);
         $user->department()->associate($department);
         $user->parent()->associate($parent);
         $user->position()->associate($position);
+        //$user->createToken($token);
         $user->save();
 
         return $user;

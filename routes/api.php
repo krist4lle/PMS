@@ -14,7 +14,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::apiResource('departments', App\Http\Controllers\API\DepartmentController::class)
+        ->only('index', 'update', 'destroy');
 
+//Route::middleware('auth:sanctum')->group(function (Request $request) {
+//
+//    $token = $request->user()->createToken($request->token_name);
+//    return ['token' => $token->plainTextToken];
+//
+//
+//
+//});

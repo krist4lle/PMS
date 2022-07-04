@@ -128,11 +128,7 @@
                     </form>
                     <br>
                     @foreach($comments as $comment)
-                        @if(session()->has("error{$comment->id}"))
-                            <div class="alert alert-danger mt-2" role="alert">
-                                {{ session()->get("error{$comment->id}") }}
-                            </div>
-                        @endif
+                        <div class="alert alert-danger mt-2" role="alert" style="display: none" id="alertError"></div>
                         <div class="post row">
                             <div class="user-block col-9">
                                 <img class="img-circle img-bordered-sm"

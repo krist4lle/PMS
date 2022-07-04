@@ -20,9 +20,7 @@ class CommentService
 
     public function commentUpdate(Comment $comment, string $content)
     {
-        if (!empty($content)) {
-            $comment->content = $content;
-            $comment->save();
-        }
+        $comment->content = $content;
+        $comment->save();
     }
 }

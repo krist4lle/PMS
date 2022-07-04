@@ -2,7 +2,7 @@ const editCommentButtons = document.querySelectorAll('#editCommentButton');
 const editCancelButtons = document.querySelectorAll('#editCancelButton');
 const editCommentForms = document.querySelectorAll('#editCommentForm');
 const commentContents = document.querySelectorAll('#commentContent');
-const submitButtons = document.querySelectorAll('#submitButton');
+const alertErrors = document.querySelectorAll('#alertError');
 
 editCommentButtons.forEach((editCommentButton, index) => {
     editCommentButton.onclick = function () {
@@ -18,13 +18,6 @@ editCancelButtons.forEach((editCancelButton, index) => {
     }
 });
 
-function validateComment(json) {
-    json.then(json => {
-            console.log(json.message);
-        }
-    );
-}
-
 editCommentForms.forEach((editCommentForm, index) => {
     editCommentForm.addEventListener('submit', function (event) {
         event.preventDefault();
@@ -36,7 +29,6 @@ editCommentForms.forEach((editCommentForm, index) => {
 
         fetch(`/comments/update`, {
             headers: {
-                'X-Requested-With': 'XMLHttpRequest',
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
             },
@@ -44,17 +36,17 @@ editCommentForms.forEach((editCommentForm, index) => {
             body: JSON.stringify(data),
         })
             .then(response => {
-                if (response.ok) {
-
-                    return response.json();
+                if (response.ok !== true) {
+                    response.json().then(json => {
+                        alertErrors[index].setAttribute('style', 'display: block');
+                        alertErrors[index].innerText = json.message;
+                    });
                 }
-                if (response.status === 422) {
-                    validateComment(response.json());
-                }
 
-                throw new Error();
+                return response.json();
             })
             .then(json => {
+                alertErrors[index].setAttribute('style', 'display: none');
                 commentContents[index].innerText = json.comment;
                 commentContents[index].setAttribute('style', 'display: block')
                 this.setAttribute('style', 'display: none');

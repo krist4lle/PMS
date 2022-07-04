@@ -23,8 +23,8 @@ class CommentController extends Controller
     {
         $data = $request->validated();
 
-        $project = Project::findOrFail($data['project_id']);
-        $comment = Comment::findOrFail($data['comment_id']);
+        $project = Project::find($data['project_id']);
+        $comment = Comment::find($data['comment_id']);
         $this->authorize('update', [$comment, $project]);
         $service->commentUpdate($comment, $data['content']);
 

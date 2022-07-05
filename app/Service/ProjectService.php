@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Exceptions\ProjectHasIssuesException;
 use App\Models\Client;
 use App\Models\Project;
 use App\Models\User;
@@ -24,10 +25,7 @@ class ProjectService
 
     public function prepareDataToShowProject(Project $project): array
     {
-        $project->load([
-            'users',
-            'issues',
-        ])->loadCount('issues');
+        $project->load(['users', 'issues'])->loadCount('issues');
         $issues = $project->issues()->with(['status', 'assignee'])
             ->orderByDesc('updated_at')->paginate(10);
         $manager = $project->manager;
@@ -50,10 +48,12 @@ class ProjectService
         ]);
     }
 
-    public function createProject(Project $project, array $projectData): void
+    public function createProject(Project $project, array $projectData): Project
     {
         $this->saveProject($project, $projectData);
         $project->users()->attach($projectData['workers']);
+
+        return $project;
     }
 
     public function updateProject(Project $project, array $projectData): void
@@ -74,19 +74,21 @@ class ProjectService
 
         if ($newStatus || $inProgressStatus || $reviewStatus) {
 
-            return redirect()->back()->with('error', 'Impossible to close Project with active Issues');
+            throw new ProjectHasIssuesException();
+            //return redirect()->back()->with('error', 'Impossible to close Project with active Issues');
         }
         $project->finished_at = $this->finishedDateAssignment($project);
 
         $project->save();
-
     }
 
     private function saveProject(Project $project, array $projectData): void
     {
         $project->title = $projectData['title'];
         $project->description = $projectData['description'];
-        $project->deadline = $projectData['deadline'];
+        if (isset($projectData['deadline'])) {
+            $project->deadline = $projectData['deadline'];
+        }
         if (isset($projectData['client'])) {
             $this->addClient($project, $projectData['client']);
         }
@@ -110,11 +112,6 @@ class ProjectService
 
     private function finishedDateAssignment(Project $project): null|string
     {
-        if ($project->finished_at !== null) {
-
-            return null;
-        }
-
-        return date('Y-m-d');
+        return $project->finished_at !== null ? null : date('Y-m-d');
     }
 }

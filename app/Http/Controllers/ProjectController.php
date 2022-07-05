@@ -58,6 +58,7 @@ class ProjectController extends Controller
 
     public function destroy(Project $project)
     {
+        $this->authorize('delete', $project);
         if ($project->finished_at === null) {
 
             return redirect()->back()->with('error', 'Impossible to delete Project in progress');
@@ -70,6 +71,7 @@ class ProjectController extends Controller
 
     public function status(Project $project, ProjectService $service)
     {
+        $this->authorize('update', $project);
         $service->projectStatusChange($project);
 
         return redirect()->back();

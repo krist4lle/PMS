@@ -18,6 +18,8 @@ Route::apiResource('departments', App\Http\Controllers\API\DepartmentController:
         ->only('index', 'update', 'destroy');
 
 Route::apiResource('projects', App\Http\Controllers\API\ProjectController::class);
+Route::patch('projects/status/{project}', [App\Http\Controllers\API\ProjectController::class, 'status'])
+    ->name('projects.status');
 
 //Route::middleware('auth:sanctum')->group(function (Request $request) {
 //

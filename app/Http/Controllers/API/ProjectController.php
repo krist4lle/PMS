@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Exceptions\ProjectHasIssuesException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Project\StoreRequest;
-use App\Http\Resources\ProjectIndexResource;
+use App\Http\Requests\Project\UpdateRequest;
+use App\Http\Resources\ProjectResource;
 use App\Models\Project;
 use App\Service\ProjectService;
 
@@ -13,55 +15,70 @@ class ProjectController extends Controller
     public function index()
     {
         $page = request()->json()->get('page') ?? 1;
-        $perPage =request()->json()->get('per_page') ?? 10;
+        $perPage = request()->json()->get('per_page') ?? 10;
         $projects = Project::with(['manager', 'users'])->withCount(['issues', 'users'])
             ->orderByDesc('updated_at')->paginate($perPage, ['*'], 'page', $page);
 
-        return ProjectIndexResource::collection($projects);
+        return ProjectResource::collection($projects);
     }
 
     public function store(StoreRequest $request, ProjectService $service)
     {
         $this->authorize('create', Project::class);
-        $projectData = $request->validated();
-        $service->createProject(new Project(), $projectData);
+        $data = $request->validated();
+        $project = $service->createProject(new Project(), $data);
 
-        return redirect(route('projects.index'))->with('success', 'Project successfully created');
+        return new ProjectResource($project);
     }
 
-    public function show(Project $project, ProjectService $service)
+    public function show(Project $project)
     {
+        $project->load(['users', 'issues'])->loadCount('issues');
 
-
-
-        return view('projects.show', $service->prepareDataToShowProject($project));
+        return new ProjectResource($project);
     }
 
-    public function update(\App\Http\Requests\Project\UpdateRequest $request, Project $project, ProjectService $service)
+    public function update(UpdateRequest $request, Project $project, ProjectService $service)
     {
         $this->authorize('update', $project);
         $projectData = $request->validated();
         $service->updateProject($project, $projectData);
 
-        return redirect()->back()->with('success', 'Project successfully edited');
+        return new ProjectResource($project);
     }
 
     public function destroy(Project $project)
     {
+        $this->authorize('delete', $project);
         if ($project->finished_at === null) {
 
-            return redirect()->back()->with('error', 'Impossible to delete Project in progress');
+            return response()->json([
+                'error' => 'Project is not closed',
+            ]);
         }
         $project->delete();
 
-        return redirect()->route('projects.index')->with('success', 'Project successfully deleted');
+        return response()->json([
+            'success' => 'Project delete successfully',
+        ]);
 
     }
 
     public function status(Project $project, ProjectService $service)
     {
-        $service->projectStatusChange($project);
+        $this->authorize('update', $project);
+        try {
+            $service->projectStatusChange($project);
+        } catch (ProjectHasIssuesException $exception) {
 
-        return redirect()->back();
+            return response()->json([
+                'error' => [
+                    'code' => $exception->getCode(),
+                    'message' => $exception->getMessage(),
+                ],
+            ], 400);
+        }
+
+        return new ProjectResource($project);
     }
 }

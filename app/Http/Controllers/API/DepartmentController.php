@@ -8,7 +8,6 @@ use App\Http\Requests\Department\UpdateRequest;
 use App\Http\Resources\DepartmentResource;
 use App\Models\Department;
 use App\Service\DepartmentService;
-use Illuminate\Http\Request;
 
 class DepartmentController extends Controller
 {

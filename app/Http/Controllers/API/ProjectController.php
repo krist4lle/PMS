@@ -24,7 +24,7 @@ class ProjectController extends Controller
 
     public function store(StoreRequest $request, ProjectService $service)
     {
-        $this->authorize('create', Project::class);
+        //$this->authorize('create', Project::class);
         $data = $request->validated();
         $project = $service->createProject(new Project(), $data);
 
@@ -47,23 +47,6 @@ class ProjectController extends Controller
         return new ProjectResource($project);
     }
 
-    public function destroy(Project $project)
-    {
-        $this->authorize('delete', $project);
-        if ($project->finished_at === null) {
-
-            return response()->json([
-                'error' => 'Project is not closed',
-            ]);
-        }
-        $project->delete();
-
-        return response()->json([
-            'success' => 'Project delete successfully',
-        ]);
-
-    }
-
     public function status(Project $project, ProjectService $service)
     {
         $this->authorize('update', $project);
@@ -80,5 +63,23 @@ class ProjectController extends Controller
         }
 
         return new ProjectResource($project);
+    }
+
+    public function destroy(Project $project)
+    {
+        $this->authorize('delete', $project);
+        $id = $project->id;
+        if ($project->finished_at === null) {
+
+            return response()->json([
+                'error' => 'Project is not closed',
+            ]);
+        }
+        $project->delete();
+
+        return response()->json([
+            'success' => "Project #{$id} delete successfully",
+        ]);
+
     }
 }

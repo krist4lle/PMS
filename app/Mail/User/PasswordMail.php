@@ -15,10 +15,13 @@ class PasswordMail extends Mailable
 
     public $email;
 
-    public function __construct($password, $email)
+    public $token;
+
+    public function __construct($password, $email, $token)
     {
         $this->password = $password;
         $this->email = $email;
+        $this->token = $token;
     }
 
     public function build()

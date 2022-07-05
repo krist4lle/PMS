@@ -42,6 +42,11 @@
                             <h3 class="card-title">About Me</h3>
                         </div>
                         <div class="card-body">
+                            <strong><i class="fas fa-lock mr-1"></i>Token</strong>
+                            <p class="text-muted">
+                                {{ $user->token }}
+                            </p>
+                            <hr>
                             <strong><i class="fas fa-envelope mr-1"></i>Email</strong>
                             <p class="text-muted">
                                 {{ $user->email }}

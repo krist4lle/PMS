@@ -52,17 +52,22 @@ class UserSeeder extends Seeder
     {
         $position = Position::where('title', $position)->first();
         $department = Department::where('name', $department)->first();
-        //$token = $this->faker->word;
 
         $user = new User();
         $user->fill($data);
         $user->department()->associate($department);
         $user->parent()->associate($parent);
         $user->position()->associate($position);
-        //$user->createToken($token);
         $user->save();
+        $this->createToken($user);
 
         return $user;
+    }
+
+    private function createToken(User $user)
+    {
+        $user->token = $user->createToken($this->faker->word)->plainTextToken;
+        $user->save();
     }
 
     private function randomUserData()

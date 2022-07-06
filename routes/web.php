@@ -51,10 +51,10 @@ Route::middleware(['auth'])->group(function () {
         ->name('users.issues');
 
     Route::resource('projects', App\Http\Controllers\ProjectController::class);
-
-    Route::resource('clients', App\Http\Controllers\ClientController::class);
     Route::patch('projects/status/{project}', [App\Http\Controllers\ProjectController::class, 'status'])
         ->name('projects.status');
+
+    Route::resource('clients', App\Http\Controllers\ClientController::class);
 
     Route::resource('issues', App\Http\Controllers\IssueController::class)
         ->except('index', 'create', 'edit');

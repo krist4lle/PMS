@@ -10,6 +10,7 @@ use Faker\Generator;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Http\File;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -58,8 +59,15 @@ class UserSeeder extends Seeder
         $user->parent()->associate($parent);
         $user->position()->associate($position);
         $user->save();
+        $this->createToken($user);
 
         return $user;
+    }
+
+    private function createToken(User $user)
+    {
+        $user->token = $user->createToken($this->faker->word)->plainTextToken;
+        $user->save();
     }
 
     private function randomUserData()

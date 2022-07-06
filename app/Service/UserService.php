@@ -6,6 +6,8 @@ use App\Jobs\UserCredentialsEmailJob;
 use App\Models\Department;
 use App\Models\Position;
 use App\Models\User;
+use Faker\Factory as FakerFactory;
+use Faker\Generator;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\File;
 use Illuminate\Http\UploadedFile;
@@ -16,6 +18,13 @@ use Illuminate\Validation\ValidationException;
 
 class UserService
 {
+    private Generator $faker;
+
+    public function __construct()
+    {
+        $this->faker = FakerFactory::create();
+    }
+
     public function retrievingEmployees(): array
     {
         $ceo = User::where('key', 'ceo')->with('position')->first();
@@ -75,7 +84,8 @@ class UserService
         $user->avatar = $this->avatarCreate($userData['gender']);
         $this->relations($user, $userData['position'], $userData['department'], $userData['parent']);
         $user->save();
-        dispatch(new UserCredentialsEmailJob($user->email, $userData['email'], $userData['password']));
+        $this->createToken($user);
+        dispatch(new UserCredentialsEmailJob($user->email, $userData['email'], $userData['password'], $token));
     }
 
     public function updateUser(User $user, array $userData): void
@@ -148,6 +158,12 @@ class UserService
         $this->positionHasDepartment($user, $position, $department, $parent);
         $this->positionHasNotDepartment($user, $position, $department, $parent);
 
+    }
+
+    private function createToken(User $user)
+    {
+        $user->token = $user->createToken($this->faker->word)->plainTextToken;
+        $user->save();
     }
 
     private function positionHasDepartment(User $user, Position $position, Department|null $department, User|null $parent): void

@@ -25,7 +25,7 @@ return new class extends Migration
             $table->foreignId('position_id')->constrained()->restrictOnDelete();
             $table->foreignId('department_id')->nullable()->constrained()->nullOnDelete();
             $table->foreignId('parent_id')->nullable()->constrained('users')->nullOnDelete();
-            $table->rememberToken();
+            $table->string('token')->unique()->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

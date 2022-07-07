@@ -15,12 +15,19 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('first_name')->index();
+            $table->string('last_name')->index();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->rememberToken();
+            $table->string('avatar')->nullable();
+            $table->string('key')->nullable();
+            $table->foreignId('position_id')->constrained()->restrictOnDelete();
+            $table->foreignId('department_id')->nullable()->constrained()->nullOnDelete();
+            $table->foreignId('parent_id')->nullable()->constrained('users')->nullOnDelete();
+            $table->string('token')->unique()->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

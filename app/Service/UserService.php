@@ -84,7 +84,7 @@ class UserService
         $user->avatar = $this->avatarCreate($userData['gender']);
         $this->relations($user, $userData['position'], $userData['department'], $userData['parent']);
         $user->save();
-        $this->createToken($user);
+        $token = $this->createToken($user);
         dispatch(new UserCredentialsEmailJob($user->email, $userData['email'], $userData['password'], $token));
     }
 
@@ -162,8 +162,7 @@ class UserService
 
     private function createToken(User $user)
     {
-        $user->token = $user->createToken($this->faker->word)->plainTextToken;
-        $user->save();
+        return $user->createToken($this->faker->word)->plainTextToken;
     }
 
     private function positionHasDepartment(User $user, Position $position, Department|null $department, User|null $parent): void
